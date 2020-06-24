@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <title>Lotus Monitor</title>
+    
+</head>
+<body style=" border-radius: 10px" class="">
+    <img class="lotusBackground" src="images/lotusclear.png">
+    <div class="content">
+
+
+    <div class="topBar">
+        <div class="logo">
+            <img src="images/lotusTrans.png">
+            <h6>Lotus</h6>
+        </div>
+    </div>
+
+
+
+    <nav class="navbar">
+        <div class = "toolBar">
+            <div class="option-tools" id="close"></div>
+            <div class="option-tools" id="mini"></div>
+            <div class="option-tools" id="max"></div>
+        </div>
+        <div class="pageButton">
+            <div class="twitterButtonContainerOn">
+                <div id="twitterPinkLogo"></div>
+                <button class="navButton"  id="twitterPageButtonInner"></button>
+            </div>
+            <div class="twitterButtonContainerOff hidden">
+                <div id="twitterGreyLogo"  onclick="showTwitterPage()"></div>
+                <button class="navButton"  id="twitterPageButtonOuter" onclick="showTwitterPage()"></button>
+                <div class="navButton" id="twitterPageButtonShadowOuterLight"></div>
+                <div class="navButton" id="twitterPageButtonShadowOuterDark"></div>
+            </div>
+            <div class="discordButtonContainerOn hidden">
+                <div id="discordPinkLogo"></div>
+                <button class="navButton"  id="discordPageButtonInner"></button>
+            </div>
+            <div class="discordButtonContainerOff ">
+                <div id="discordGreyLogo" onclick="showDiscordPage()"></div>
+                <button class="navButton" type="button"  id="discordPageButtonOuter" onclick="showDiscordPage()"></button>
+                <div class="navButton" id="discordPageButtonShadowOuterLight"></div>
+                <div class="navButton" id="discordPageButtonShadowOuterDark"></div>
+            </div>
+            <div class="nitroButtonContainerOn hidden">
+                <div id="nitroPinkLogo"></div>
+                <button class="navButton"  id="nitroPageButtonInner"></button>
+            </div>
+            <div class="nitroButtonContainerOff ">
+                <div id="nitroGreyLogo" onclick="showNitroPage()"></div>
+                <button class="navButton" type="button"  id="nitroPageButtonOuter" onclick="showNitroPage()"></button>
+                <div class="navButton" id="nitroPageButtonShadowOuterLight"></div>
+                <div class="navButton" id="nitroPageButtonShadowOuterDark"></div>
+            </div>
+            <div class="settingsButtonContainerOn hidden">
+                <div id="settingsPinkLogo"></div>
+                <button class="navButton"  id="settingsPageButtonInner"></button>
+            </div>
+            <div class="settingsButtonContainerOff ">
+                <div id="settingsGreyLogo" onclick="showSettingsPage()"></div>
+                <button class="navButton" type="button"  id="settingsPageButtonOuter" onclick="showSettingsPage()"></button>
+                <div class="navButton" id="settingsPageButtonShadowOuterLight"></div>
+                <div class="navButton" id="settingsPageButtonShadowOuterDark"></div>
+            </div>
+        </div>
+    </nav>
+    
+
+    <!--Twitter Page-->
+    <div class="twitterPage">
+        <div class="announcement">
+            <div class="announcementBox" id="announcementDisplay">
+                <div id="announcementPerm">
+                    <img src="images/infoTriangle.png">
+                    <h1>Announcements</h1>
+                </div>
+                <div id="announcementText">
+                    <p>Welcome all users to Lotus v1.0.0! 🎉 <span class="tab"></span> Please open a ticket in Discord for any issuess or questions. </p>
+                </div>
+            </div>
+            <div class="announcementBox" id="announcementMain"></div>
+            <div class="announcementBox" id="announcementLight"></div>
+            <div class="announcementBox" id="announcementDark"></div>
+    </div>
+
+    
+
+        <div class="gridContainer">
+            <div class="accountsContainer">
+                <div class="accountsBox" id="accountsDisplay">
+                    <h3 id="accountsLable">Accounts</h3>
+                    <div class="monitorAll">
+                        <label class="switch" id="monitorAllSwitch">
+                            <input type="checkbox" name="monitorAll">
+                            <span class="slider round"></span>
+                        </label>
+                        <p>Monitor All</p>
+                    </div>
+                    <button class="addAccount" type="button" onclick="addAccount()"><img src="images/Close Copy.png"></button>
+                    
+                    
+                    <div class="accountsListOuter">
+                        <div class="accountsListInner">
+                            <table class="accountsTable">
+                                <colgroup>
+                                    <col width="10%"/>
+                                    <col width="30%"/>
+                                    <col width="50%"/>
+                                    <col width="10%"/>
+                                    </colgroup>
+                                <!--
+                                <tr class="accountRowBackground">
+                                    <td><img class="twitterImage" src="images/defaultPicture.jpg"></td>
+                                    <td> <a class="twitterLink" onclick="openAccountLink(this)"><p>@LotusAIO</p></a></td>
+                                    <td>                        
+                                        <label class="switch accountSwitch">
+                                            <input type="checkbox" name="accountSwitch" onclick="twitterToggle(this)">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </td>
+                                    <td><button class="deleteAccount" onclick="deleteAccount(this)"><img src="images/Close-2.png"></button></td>
+                                </tr>
+                                -->
+                                <tr>
+
+                                </tr>
+                            </table>
+
+
+
+                            <table class="accountsTableBehind">
+                                <colgroup>
+                                    <col width="10%"/>
+                                    <col width="60%"/>
+                                    <col width="20%"/>
+                                    <col width="10%"/>
+                                    </colgroup>
+                                    <!--
+                                <tr class="accountRowBehind">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                -->
+                                <tr>
+                                    
+                                </tr>
+                            </table>
+
+
+                            <table class="accountsTableLight">
+                                <colgroup>
+                                    <col width="10%"/>
+                                    <col width="60%"/>
+                                    <col width="20%"/>
+                                    <col width="10%"/>
+                                    </colgroup>
+                                    <!--
+                                <tr class="accountRowLight">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                -->
+                                <tr>
+                                    
+                                </tr>
+                            </table>
+
+                            <table class="accountsTableDark">
+                                <colgroup>
+                                    <col width="10%"/>
+                                    <col width="60%"/>
+                                    <col width="20%"/>
+                                    <col width="10%"/>
+                                    </colgroup>
+                                    <!--
+                                <tr class="accountRowDark">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                -->
+                                <tr>
+                                    
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="accountsBox" id="accountsMain"></div>
+                <div class="accountsBox" id="accountsLight"></div>
+                <div class="accountsBox" id="accountsDark"></div>
+
+
+            </div>
+            <!--
+            <div class="configContainer">
+                <div class="configBox" id="configDisplay">
+
+                </div>
+                <div class="configBox" id="configMain"></div>
+                <div class="configBox" id="configLight"></div>
+                <div class="configBox" id="configDark"></div>
+
+            </div>
+            -->
+            <div class="tweetsContainer">
+                <div class="tweetBox" id="tweetsDisplay">
+                    <h3 id="tweetsLabel">New Tweets</h3>
+                    <div class="line"></div>
+                    <div class="tweetListOuter">
+                        <div class="tweetListInner">
+                            <table class="tweetTable">
+                                <colgroup>
+                                    <col width="15%"/>
+                                    <col width="67%"/>
+                                    <col width="18%"/>
+                                    </colgroup>
+                                <!--
+                                <tr class="tweetRowBackground">
+                                    <td>
+                                        <div class="tweetInfoCellContainer">
+                                            <div class="tweetUserInfo">
+                                                <img class="twitterImage" src="images/defaultPicture.jpg">
+                                                <div>
+                                                    <p id="shownUsername">Cybersole</p>
+                                                    <a class="twitterLink" onclick="openAccountLink(this)"><p>@Cybersole</p></a>
+                                                </div>
+                                            </div>
+                                            <div class="tweetTimestampContainer">
+                                                <p>05/05/20</p>
+                                                <p>05:00:00 PM EST</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="tweetMessage">With thousands of checkouts across Shopify, YeezySupply, Supreme, and Footsites, Wrath users took stock on ALL of the week's releases. 🥳 
+
+                                        To celebrate our recent success, we'll be having an extremely limited FCFS restock at 3 PM EST. 🙌
+
+                                        </p>
+                                        <img class="tweetImage" src="images/exampleTweetImage.jpg">
+                                    </td>
+                                    <td>
+                                        <div class="detectedTweet">
+                                            <h5>Detected Passwords:</h5>
+                                            <p>NONE</p>
+                                            <h5>Detected Links:</h5>
+                                            <a class="twitterLink" onclick="openAccountLink(this)"></a><p>NONE</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                -->
+                                <tr>
+
+                                </tr>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tweetsBox" id="tweetsMain"></div>
+                <div class="tweetsBox" id="tweetsLight"></div>
+                <div class="tweetsBox" id="tweetsDark"></div>
+
+            </div>
+
+
+        </div>
+
+
+    </div> 
+
+
+
+
+
+
+
+
+
+        <!--Discord Page-->
+    <div class="discordPage hidden">
+    
+
+        <div class="gridContainer">
+            <div class="channelsContainer">
+                <div class="channelsBox" id="channelsDisplay">
+                    <h3 id="channelsLable">Channels</h3>
+                    <div class="monitorAll">
+                        <label class="switch" id="monitorAllSwitch">
+                            <input type="checkbox" name="monitorAllChannels">
+                            <span class="slider round"></span>
+                        </label>
+                        <p>Monitor All</p>
+                    </div>
+                    <button class="addChannel" type="button" onclick="addChannel()"><img src="images/Close Copy.png"></button>
+                    
+                    
+                    <div class="channelsListOuter">
+                        <div class="channelsListInner">
+                            <table class="channelsTable">
+                                <colgroup>
+                                    <col width="60%"/>
+                                    <col width="30%"/>
+                                    <col width="10%"/>
+                                    </colgroup>
+                                <!--
+                                <tr class="channelRowBackground">
+
+                                    <td><p>   697414331117338736</p></td>
+                                    <td>                        
+                                        <label class="switch channelSwitch">
+                                            <input type="checkbox" name="channelSwitch" onclick="discordToggle(this)">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </td>
+                                    <td><button class="deleteChannel" onclick="deleteChannel(this)"><img src="images/Close-2.png"></button></td>
+                                </tr>
+                                -->
+                                <tr>
+
+                                </tr>
+                            </table>
+
+
+
+                            <table class="channelsTableBehind">
+                                <colgroup>
+                                    <col width="10%"/>
+                                    <col width="60%"/>
+                                    <col width="20%"/>
+                                    <col width="10%"/>
+                                    </colgroup>
+                                <!--    
+                                <tr class="channelRowBehind">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                -->
+                                <tr>
+                                    
+                                </tr>
+                            </table>
+
+
+                            <table class="channelsTableLight">
+                                <colgroup>
+                                    <col width="10%"/>
+                                    <col width="60%"/>
+                                    <col width="20%"/>
+                                    <col width="10%"/>
+                                    </colgroup>
+                                <!--
+                                <tr class="channelRowLight">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                -->
+                                <tr>
+                                    
+                                </tr>
+                            </table>
+
+                            <table class="channelsTableDark">
+                                <colgroup>
+                                    <col width="10%"/>
+                                    <col width="60%"/>
+                                    <col width="20%"/>
+                                    <col width="10%"/>
+                                    </colgroup>
+                                   <!-- 
+                                <tr class="channelRowDark">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                -->
+                                <tr>
+                                    
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="channelsBox" id="channelsMain"></div>
+                <div class="channelsBox" id="channelsLight"></div>
+                <div class="channelsBox" id="channelsDark"></div>
+
+
+            </div>
+            
+            <div class="keywordsContainer">
+                <div class="keywordsBox" id="keywordsDisplay">
+                    <h3 id="messagesLabel">Keywords</h3>
+                    <div class="keywordsAdder">
+                        <input type="text" class="keywordsInputBox" placeholder="Keywords to monitor">
+                        <div class="buttonStylingSubmitKeyword">
+                            <button id="addKeywordSubmit" type="button" onclick="processKeyword()"><img src="images/plus button.png" id="addKeywordImg"><p>Add Keyword</p></button>
+                            <div id="addKeywordSubmitBackground"></div>
+                            <div id="addKeywordSubmitDark"></div>
+                            <div id="addKeywordSubmitLight"></div>
+                        </div>
+                    </div>
+                    <div class="keywordsDisplayer">
+                        <div class="keywordsGrid">
+                            <!--
+                            <div class="keyword-item" id="positiveKeyword"><p id="positiveKeywordText">restock</p><button class="deleteKeyword" onclick="deleteKeyword(this)"><img src="images/colose 2 dark.png"></button></div>
+                            <div class="keyword-item" id="negativeKeyword"><p id="negativeKeywordText">restock</p><button class="deleteKeyword" onclick="deleteKeyword(this)"><img src="images/close 2 light grey.png"></button></div>
+                            -->
+                        </div>
+                    </div>
+                </div>
+                <div class="keywordsBox" id="keywordsMain"></div>
+                <div class="keywordsBox" id="keywordsLight"></div>
+                <div class="keywordsBox" id="keywordsDark"></div>
+
+            </div>
+            
+            <div class="messagesContainer">
+                <div class="messageBox" id="messagesDisplay">
+                    <h3 id="messagesLabel">New Messages</h3>
+                    <label class="switch" id="messagesOnSwitch">
+                        <input type="checkbox" name="messageOn" onclick="startDiscordToggle(this)">
+                        <span class="slider round"></span>
+                    </label>
+                    <p id="messagesOnLabel">Monitoring Enabled</p>
+
+                    <div class="line"></div>
+                    <div class="messageListOuter">
+                        <div class="messageListInner">
+                            <table class="messageTable">
+                                <colgroup>
+                                    <col width="15%"/>
+                                    <col width="55%"/>
+                                    <col width="30%"/>
+                                    </colgroup>
+                                
+                                <tr class="messageRowBackground">
+                                    <td>
+                                        <div class="messageInfoCellContainer">
+                                            <div class="messageUserInfo">
+                                                <img class="twitterImage" src="images/defaultPicture.jpg">
+                                                <div>
+                                                    <p id="shownUsername">Cybersole</p>
+                                                    <p>@Cybersole</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="messageMessage">Restock pw=Bruh moment</p>
+                                    </td>
+                                    <td>
+                                        <div class="detectedMessage">
+                                            <div><h5>Detected Passwords:</h5><p>NONE</p></div>
+                                            <div><h5>Detected Links:</h5><a class="twitterLink" onclick="openNormalLink(this)"></a><p>NONE</p></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+
+                                </tr>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="messagesBox" id="messagesMain"></div>
+                <div class="messagesBox" id="messagesLight"></div>
+                <div class="messagesBox" id="messagesDark"></div>
+
+            </div>
+
+
+        </div>
+
+
+    </div> 
+
+
+
+
+
+                <!--Nitro Page-->
+    <div class="nitroPage hidden">
+        <div class="nitroContainer">
+            <div class="nitroClaimBox" id="nitroClaimsDisplay">
+                <h3 id="nitroClaimsLabel">Discord Nitro</h3>
+                <label class="switch" id="nitroClaimsOnSwitch">
+                    <input type="checkbox" name="nitroClaimOn">
+                    <span class="slider round"></span>
+                </label>
+                <p id="nitroClaimsOnLabel">Monitoring Enabled</p>
+                <p id="nitroClear">Clear all</p>
+                
+                <div class="line"></div>
+                <div class="nitroClaimListOuter">
+                    <div class="nitroClaimListInner">
+                        <table class="nitroClaimTable">
+                            <colgroup>
+                                <col width="18%"/>
+                                <col width="18%"/>
+                                <col width="16%"/>
+                                <col width="18%"/>
+                                <col width="8%"/>
+                                <col width="11%"/>
+                                <col width="11%"/>
+                                </colgroup>
+                            
+                            <tr class="nitroClaimRowBackground">
+                                <td>
+                                    <div class="nitroClaimInfoCellContainer">
+                                        <div class="nitroClaimUserInfo">
+                                            <img class="twitterImage" src="images/defaultPicture.jpg">
+                                            <div>
+                                                <p id="userWord">USER</p>
+                                                <div id="nitroGroupedInfo">
+                                                    <p id="shownUsername">User123</p>
+                                                    <p id="nitroUsername">User123#0001</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nitroClaimInfoCellContainer">
+                                        <div class="nitroClaimUserInfo">
+                                            <img class="twitterImage" src="images/defaultPicture.jpg">
+                                            <div>
+                                                <p id="userWord">SERVER</p>
+                                                <div id="nitroGroupedInfo">
+                                                    <p id="shownServer">AM Notify</p>
+                                                    <p id="nitroChannel">#General</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nitroStatus" id="claimedNitro">
+                                        <p id="claimedNitroText">Claimed Nitro!</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nitroTime">
+                                        <p >Claimed time: </p>
+                                        <p id="nitroClaimMS">200ms</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p>05/05/20</p>
+                                </td>
+                                <td>
+                                    <p>05:00:00 PM EST</p>
+                                </td>
+                                <td>
+                                    <button class="deleteNitroMessage" onclick="deleteNitroMessage(this)"><img src="images/close 2 light grey.png"></button>
+                                </td>
+                            </tr>
+                            <tr class="nitroClaimRowBackground">
+                                <td>
+                                    <div class="nitroClaimInfoCellContainer">
+                                        <div class="nitroClaimUserInfo">
+                                            <img class="twitterImage" src="images/defaultPicture.jpg">
+                                            <div>
+                                                <p id="userWord">USER</p>
+                                                <div id="nitroGroupedInfo">
+                                                    <p id="shownUsername">User123</p>
+                                                    <p id="nitroUsername">User123#0001</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nitroClaimInfoCellContainer">
+                                        <div class="nitroClaimUserInfo">
+                                            <img class="twitterImage" src="images/defaultPicture.jpg">
+                                            <div>
+                                                <p id="userWord">SERVER</p>
+                                                <div id="nitroGroupedInfo">
+                                                    <p id="shownServer">AM Notify</p>
+                                                    <p id="nitroChannel">#General</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nitroStatus" id="claimedNitro">
+                                        <p id="claimedNitroText">Claimed Nitro!</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nitroTime">
+                                        <p >Claimed time: </p>
+                                        <p id="nitroClaimMS">200ms</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p>05/05/20</p>
+                                </td>
+                                <td>
+                                    <p>05:00:00 PM EST</p>
+                                </td>
+                                <td>
+                                    <button class="deleteNitroMessage" onclick="deleteNitroMessage(this)"><img src="images/close 2 light grey.png"></button>
+                                </td>
+                            </tr>
+                            <tr class="nitroClaimRowBackground">
+                                <td>
+                                    <div class="nitroClaimInfoCellContainer">
+                                        <div class="nitroClaimUserInfo">
+                                            <img class="twitterImage" src="images/defaultPicture.jpg">
+                                            <div>
+                                                <p id="userWord">USER</p>
+                                                <div id="nitroGroupedInfo">
+                                                    <p id="shownUsername">User123</p>
+                                                    <p id="nitroUsername">User123#0001</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nitroClaimInfoCellContainer">
+                                        <div class="nitroClaimUserInfo">
+                                            <img class="twitterImage" src="images/defaultPicture.jpg">
+                                            <div>
+                                                <p id="userWord">SERVER</p>
+                                                <div id="nitroGroupedInfo">
+                                                    <p id="shownServer">AM Notify</p>
+                                                    <p id="nitroChannel">#General</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nitroStatus" id="failedNitro">
+                                        <p id="failedNitroText">Failed</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nitroTime">
+                                        <p >Claimed time: </p>
+                                        <p id="nitroClaimMS">null</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p>05/05/20</p>
+                                </td>
+                                <td>
+                                    <p>05:00:00 PM EST</p>
+                                </td>
+                                <td>
+                                    <button class="deleteNitroMessage" onclick="deleteNitroMessage(this)"><img src="images/close 2 light grey.png"></button>
+                                </td>
+                            </tr>
+                            <tr>
+
+                            </tr>
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="nitroClaimsBox" id="nitroClaimsMain"></div>
+            <div class="nitroClaimsBox" id="nitroClaimsLight"></div>
+            <div class="nitroClaimsBox" id="nitroClaimsDark"></div>
+
+            
+
+            </div>
+        </div>
+
+
+
+
+
+
+        <!-------------Settings Page------------->
+
+
+        <div class="settingsPage hidden">    
+            <div class="gridContainer">
+                <div class="discordSettingsContainer">
+                    <div class="discordSettingsBox" id="discordSettingsDisplay">
+                        <h3 id="bigSettingsLabel">Discord Settings</h3>
+                        <p id="settingsLabel">Discord Webhook</p>
+                        <p id="settingsInfoLabel">Get new tweets and detected info sent to a Discord channel</p>
+                        <input type="text" class="webhookInputBox" placeholder="Discord Webhook">
+                        <div class="buttonStylingTestWebhook">
+                            <button id="testWebhookSubmit" type="button" onclick="testWebhook()"><img src="images/webhookLogo.png" id="addKeywordImg"><p>Test Webhook</p></button>
+                            <div id="testWebhookSubmitBackground"></div>
+                            <div id="testWebhookSubmitDark"></div>
+                            <div id="testWebhookSubmitLight"></div>
+                        </div>
+                    </div>
+                    <div class="discordSettingsBox" id="discordSettingsMain"></div>
+                    <div class="discordSettingsBox" id="discordSettingsLight"></div>
+                    <div class="discordSettingsBox" id="discordSettingsDark"></div>
+
+                </div>
+                <div class="buttonStylingSaveSettings">
+                    <button id="saveSettingsSubmit" type="button" ><img src="images/saveIcon.png" id="saveSettingsImg"><p>Save Settings</p></button>
+                    <div id="saveSettingsSubmitBackground"></div>
+                    <div id="saveSettingsSubmitDark"></div>
+                    <div id="saveSettingsSubmitLight"></div>
+                </div>
+                <div class="tokenSettingsContainer">
+                    <div class="tokenSettingsBox" id="tokenSettingsDisplay">
+                        <h3 id="bigSettingsLabel">Discord Tokens</h3>
+                        <p id="settingsLabel">Discord Tokens</p>
+                        <p id="settingsInfoLabel">Use monitor and claimer tokens to join discords and claim nitros</p>
+                        <input type="text" class="monitorTokenInputBox" placeholder="Monitor Token">
+                        <input type="text" class="claimerTokenInputBox" placeholder="Claimer Token">
+                        <input type="text" class="claimerTokenInputBox" placeholder="Claimer Token">
+                        <input type="text" class="claimerTokenInputBox" placeholder="Claimer Token">
+
+                    </div>
+                    <div class="tokenSettingsBox" id="tokenSettingsMain"></div>
+                    <div class="tokenSettingsBox" id="tokenSettingsLight"></div>
+                    <div class="tokenSettingsBox" id="tokenSettingsDark"></div>
+                </div>
+                <div class="linkSettingsContainer">
+                    <div class="linkSettingsBox" id="linkSettingsDisplay">
+                        <h3 id="bigSettingsLabel">Clipboard & Links</h3>
+                        <p id="settingsLabel">Passwords to Clipboard</p>
+                        <p id="settingsInfoLabel">All detected passwords will automatically be copied to clipboard.</p>
+                        <label class="switch linkSettingsOnSwitch">
+                            <input type="checkbox" name="nitroClaimOn">
+                            <span class="slider round"></span>
+                        </label>
+                        <p id="linkSettingsOnSwitchLabel">Passwords to Clipboard</p>
+                        <p id="settingsLabel">Auto-Solve Math</p>
+                        <p id="settingsInfoLabel">All detected math will automatically be solved.</p>
+                        <label class="switch linkSettingsOnSwitch">
+                            <input type="checkbox" name="nitroClaimOn">
+                            <span class="slider round"></span>
+                        </label>
+                        <p id="linkSettingsOnSwitchLabel">Auto-Solve Math</p>
+                        <p id="settingsLabel">Open Links</p>
+                        <p id="settingsInfoLabel">All detected links will be automatically opened.</p>
+                        <label class="switch linkSettingsOnSwitch">
+                            <input type="checkbox" name="nitroClaimOn">
+                            <span class="slider round"></span>
+                        </label>
+                        <p id="linkSettingsOnSwitchLabel">Open Links</p>
+                        <p id="settingsLabel">Append Password to Link</p>
+                        <p id="settingsInfoLabel">All detected passwords will be wil be appended to link.</p>
+                        <label class="switch linkSettingsOnSwitch">
+                            <input type="checkbox" name="nitroClaimOn">
+                            <span class="slider round"></span>
+                        </label>
+                        <p id="linkSettingsOnSwitchLabel">Append Password to Link</p>
+
+   
+                    </div>
+                    <div class="linkSettingsBox" id="linkSettingsMain"></div>
+                    <div class="linkSettingsBox" id="linkSettingsLight"></div>
+                    <div class="linkSettingsBox" id="linkSettingsDark"></div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div class="popupAddAccountBackground hidden">
+        </div>
+        <div class="popupAddAccount">
+            <img id="twitterPopupBackground" src="images/add-twitter-logo.png">
+            <button id="closePopup" type="button" onclick="closePopup()"><img src="images/Close-2.png"></button>
+        
+            <div class="innerPopup">
+                <div class="addAccountFeatures">
+                    <h3> Add Twitter Account</h3>
+                    <input type="text" class="accountInputBox" placeholder="@">
+                    <div class="buttonStylingSubmitAccount">
+                        <button id="addAccountSubmit" type="button" onclick="proccessAccount()"><p>Add Account</p></button>
+                        <div id="addAccountSubmitBackground"></div>
+                        <div id="addAccountSubmitDark"></div>
+                        <div id="addAccountSubmitLight"></div>
+                    </div>
+                </div>
+                <div class="twitterPreview">
+                    <div class="twitterPreviewInner">
+
+                    </div>
+                    <div class="twitterPreviewInnerDisplay">
+                            
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+
+
+
+    <div class="popupAddChannelBackground hidden">
+    </div>
+    <div class="popupAddChannel">
+        <img id="channelPopupBackground" src="images/add-discord-logo.png">
+        <button id="closePopup" type="button" onclick="closeChannelPopup()"><img src="images/Close-2.png"></button>
+    
+        <div class="innerChannelPopup">
+            <div class="addAccountFeatures">
+                <h3> Add Discord Channel</h3>
+                <input type="text" class="channelInputBox" placeholder="#">
+                <div class="buttonStylingSubmitChannel">
+                    <button id="addChannelSubmit" type="submit" onclick="processChannel()"><p>Add Channel</p></button>
+                    <div id="addChannelSubmitBackground"></div>
+                    <div id="addChannelSubmitDark"></div>
+                    <div id="addChannelSubmitLight"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+    <script src="index.js"></script>
+
+
+
+
+
+    <!-- footer-->
+    <!--<footer class="footer"> 
+        <img class="mekLogo" src="images/mektoolslogov2.png" alt="mekLogo">
+
+    </footer> -->
+
+</body>
+</html>

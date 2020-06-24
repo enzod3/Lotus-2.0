@@ -1,0 +1,17 @@
+{
+  "name": "lotus2.0",
+  "version": "1.0.0",
+  "description": "Lotus takes stock",
+  "main": "main.js",
+  "scripts": {
+    "test": "electron .",
+    "start": "electron ."
+  },
+  "author": "enz#0001",
+  "license": "ISC",
+  "dependencies": {
+    "cloudscraper": "^4.6.0",
+    "electron": "^9.0.1",
+    "electron-json-storage": "^4.1.8"
+  }
+}

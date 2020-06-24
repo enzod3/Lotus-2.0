@@ -1,0 +1,3749 @@
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+    font-family:  open-sans;
+}
+
+::-webkit-scrollbar {     
+    background-color: transparent;
+    width: 6px;
+    margin-right: 20px;
+}
+
+::-webkit-scrollbar-thumb:window-inactive,
+::-webkit-scrollbar-thumb {
+    background:  #1D2933;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-button:hover{
+    background: #6d6d6d;
+}
+
+@font-face{
+    font-family: transyl;
+    src: url('fonts/Transyl-Regular.ttf') format("truetype");
+}
+
+@font-face{
+    font-family: open-sans;
+    src: url('fonts/OpenSans-Bold.ttf') format("truetype");
+}
+
+
+body{
+    background: radial-gradient(#243442, #141D24);
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.hidden{
+    display: none !important;
+}
+
+button{
+    cursor: pointer;
+}
+
+a{
+    cursor: pointer;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 9px;
+  }
+
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #212C36;
+    box-shadow: inset -2px -2px 2px 0px rgba(255,255,255,0.1), inset 2px 2px 2px 0px rgba(0,0,0,0.1);
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+  
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 7px;
+    width: 7px;
+    left: -1px;
+    bottom: -2.5px;
+    box-shadow:  -2px -2px 2px 0px rgba(255,255,255,0.1),  2px 2px 2px 0px rgba(0,0,0,0.1);
+    background-color: #5E7689;
+    border: 4px solid #243442;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+  
+input:checked + .slider {
+    background-color: #E1629C;
+    box-shadow: inset -2px -2px 2px 0px rgba(255,255,255,0.2), inset  2px 2px 2px 0px rgba(0,0,0,0.2);
+}
+
+
+  
+input:checked + .slider:before {
+    background-color: #E1629C;
+    box-shadow: 0px 0px 10px 0px #E1629C;
+}
+
+
+
+
+  
+/*input:focus + .slider {
+    box-shadow: 0 0 1px #E1629C;
+}*/
+  
+input:checked + .slider:before {
+-webkit-transform: translateX(17px);
+-ms-transform: translateX(17px);
+transform: translateX(17px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 9px;
+}
+
+.slider.round:before {
+    border-radius: 9px;
+}
+
+
+
+.blur{
+    filter: blur(20px);
+}
+
+
+.content{
+    transition: 0.5s;
+}
+
+
+
+
+.topBar{
+    -webkit-app-region: drag;
+    position: absolute;
+    height: 52px;
+    background-color: transparent;
+    width: 100%;
+    z-index: 0;
+    display: flex;
+    flex-direction: row;
+    border-bottom: solid 2px #202E3A;
+}
+
+.topBar .logo{
+    width: 300px;
+    height: 100%;
+    align-items: center;
+    display: flex;
+}
+
+.topBar img{
+    width: 27px;
+    margin-left: 106px;
+    height: 20px;
+}
+
+.topBar h6{
+    color: #AAAAAA;
+    font-family: transyl;
+    font-size: 8px;
+    font-weight: 100;
+    letter-spacing: 8px;
+
+    margin-left: 8px;
+}
+
+
+.lotusBackground{
+    position: absolute;
+    z-index: 0;
+    width: 1150px;
+    bottom: -420px;
+    left: 210px;
+    transition: 0.5s;
+}
+
+
+
+/*-----NavBar------*/
+
+nav{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #25333E;
+    height: 100vh;
+    width: 74px;
+}
+
+.toolBar{
+    width: 58px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 11px;
+    -webkit-app-region: no-drag;
+}
+
+.toolBar .option-tools{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#close{
+    background-color: #FF5A52;
+}
+
+#mini{
+    background-color: rgb(252, 255, 82); 
+}
+
+#max{
+    background-color: #52C22C;
+}
+
+.pageButton{
+    width: 74px;
+    position: relative;
+    margin-top: 76px;
+    display: flex;
+    flex-direction: column;
+    
+    height: 160px;
+    margin-left: 2px;
+}
+
+.navButton{
+    border-radius: 14px;
+    width: 58px;
+    height: 58px;
+    outline: none;
+    border: none;
+    margin-left: 8px;
+}
+
+
+
+
+
+
+
+.twitterButtonContainerOn{
+    
+}
+
+
+#twitterPinkLogo{
+    position: absolute;
+    background-image: url("images/twitterPink.svg");
+    background-repeat: no-repeat;
+    width: 26px;
+    height: 22px;
+    z-index: 15;
+    margin-left: 25px;
+    margin-top: 17px;
+    cursor: pointer;
+}
+
+
+#twitterPageButtonInner{
+    background-color:#25333E;
+    opacity: 0.56;
+    position: absolute;
+    z-index: 10;
+    box-shadow: inset -3px -3px 3px rgba(255,255,255,0.15), inset 3px 3px 3px rgba(0,0,0,0.15);
+}
+
+
+
+
+
+
+
+
+
+
+
+#twitterGreyLogo{
+    position: absolute;
+    background-image: url("images/twitterGrey.svg");
+    background-repeat: no-repeat;
+    width: 26px;
+    height: 22px;
+    z-index: 15;
+    margin-left: 25px;
+    margin-top: 17px;
+    cursor: pointer;
+}
+
+
+.twitterButtonContainerOff:hover #twitterGreyLogo{
+    opacity: .65;
+}
+
+
+
+
+#twitterPageButtonOuter{
+    background-color:#25333E;
+    opacity: 0.56;
+    position: absolute;
+    z-index: 10;
+}
+
+
+#twitterPageButtonShadowOuterDark{
+    background-color: rgba(0,0,0,0.12);
+    z-index: 5;
+    width: 50px;
+    height: 50px;  
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    box-shadow:  0 0 4px 4px rgba(0,0,0,0.12);
+}
+
+#twitterPageButtonShadowOuterLight{
+    background-color: rgba(255,255,255,0.08);
+    z-index: 1;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    left: 0px;
+    top: 0px;
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);
+}
+
+
+
+
+
+
+
+
+#discordPinkLogo{
+    position: absolute;
+    background-image: url("images/discordPink.svg");
+    background-repeat: no-repeat;
+    width: 42px;
+    height: 30px;
+    z-index: 15;
+    margin-left: 21px;
+    margin-top: 89px;
+    cursor: pointer;
+}
+
+
+#discordPageButtonInner{
+    background-color:#25333E;
+    opacity: 0.56;
+    margin-top: 76px;
+    position: absolute;
+    z-index: 10;
+    box-shadow: inset -3px -3px 3px rgba(255,255,255,0.15), inset 3px 3px 3px rgba(0,0,0,0.15);
+}
+
+
+
+
+
+#discordGreyLogo{
+    position: absolute;
+    background-image: url("images/discordGrey.svg");
+    background-repeat: no-repeat;
+    width: 42px;
+    height: 30px;
+    z-index: 15;
+    margin-left: 21px;
+    margin-top: 89px;
+    cursor: pointer;
+}
+
+
+
+
+
+#discordPageButtonOuter{
+    background-color:#25333E;
+    opacity: 0.56;
+    z-index: 10;
+    position: absolute;
+    margin-top: 76px;
+}
+
+.discordButtonContainerOff:hover  #discordGreyLogo{
+    opacity: .65;
+}
+
+
+#discordPageButtonShadowOuterDark{
+    background-color: rgba(0,0,0,0.12);
+    z-index: 5;
+    width: 50px;
+    height: 50px;  
+    position: absolute;
+    margin-top: 76px;
+    left: 8px;
+    top: 8px;
+    box-shadow:  0 0 4px 4px rgba(0,0,0,0.12);
+}
+
+#discordPageButtonShadowOuterLight{
+    background-color: rgba(255,255,255,0.08);
+    z-index: 1;
+    position: absolute;
+    margin-top: 76px;
+    width: 50px;
+    height: 50px;
+    left: 0px;
+    top: 0px;
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);
+}
+
+
+
+
+
+
+
+
+
+#nitroPinkLogo{
+    position: absolute;
+    background-image: url("images/nitroPink.png");
+    background-repeat: no-repeat;
+    width: 35px;
+    height: 25px;
+    z-index: 15;
+    background-size: 33px;
+    margin-left: 17px;
+    margin-top: 168px;
+    cursor: pointer;
+}
+
+
+#nitroPageButtonInner{
+    background-color:#25333E;
+    opacity: 0.56;
+    margin-top: 152px;
+    position: absolute;
+    z-index: 10;
+    box-shadow: inset -3px -3px 3px rgba(255,255,255,0.15), inset 3px 3px 3px rgba(0,0,0,0.15);
+}
+
+
+
+
+
+#nitroGreyLogo{
+    position: absolute;
+    background-image: url("images/nitro.png");
+    background-repeat: no-repeat;
+    width: 35px;
+    height: 25px;
+    z-index: 15;
+    background-size: 33px;
+    margin-left: 17px;
+    margin-top: 168px;
+    cursor: pointer;
+}
+
+
+
+
+
+#nitroPageButtonOuter{
+    background-color:#25333E;
+    opacity: 0.56;
+    z-index: 10;
+    position: absolute;
+    margin-top: 152px;
+}
+
+.nitroButtonContainerOff:hover  #nitroGreyLogo{
+    opacity: .65;
+}
+
+
+#nitroPageButtonShadowOuterDark{
+    background-color: rgba(0,0,0,0.12);
+    z-index: 5;
+    width: 50px;
+    height: 50px;  
+    position: absolute;
+    margin-top: 152px;
+    left: 8px;
+    top: 8px;
+    box-shadow:  0 0 4px 4px rgba(0,0,0,0.12);
+}
+
+#nitroPageButtonShadowOuterLight{
+    background-color: rgba(255,255,255,0.08);
+    z-index: 1;
+    position: absolute;
+    margin-top: 152px;
+    width: 50px;
+    height: 50px;
+    left: 0px;
+    top: 0px;
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#settingsPinkLogo{
+    position: absolute;
+    background-image: url("images/settingsPink.png");
+    background-repeat: no-repeat;
+    width: 26px;
+    height: 26px;
+    z-index: 15;
+    background-size: 26px;
+    margin-left: 23px;
+    margin-top: 243px;
+    cursor: pointer;
+}
+
+
+#settingsPageButtonInner{
+    background-color:#25333E;
+    opacity: 0.56;
+    margin-top: 228px;
+    position: absolute;
+    z-index: 10;
+    box-shadow: inset -3px -3px 3px rgba(255,255,255,0.15), inset 3px 3px 3px rgba(0,0,0,0.15);
+}
+
+
+
+
+
+#settingsGreyLogo{
+    position: absolute;
+    background-image: url("images/settings.png");
+    background-repeat: no-repeat;
+    width: 26px;
+    height: 26px;
+    z-index: 15;
+    background-size: 26px;
+    margin-left: 23px;
+    margin-top: 243px;
+    cursor: pointer;
+}
+
+
+
+
+
+#settingsPageButtonOuter{
+    background-color:#25333E;
+    opacity: 0.56;
+    z-index: 10;
+    position: absolute;
+    margin-top: 228px;
+}
+
+.settingsButtonContainerOff:hover  #settingsGreyLogo{
+    opacity: .65;
+}
+
+
+#settingsPageButtonShadowOuterDark{
+    background-color: rgba(0,0,0,0.12);
+    z-index: 5;
+    width: 50px;
+    height: 50px;  
+    position: absolute;
+    margin-top: 228px;
+    left: 8px;
+    top: 8px;
+    box-shadow:  0 0 4px 4px rgba(0,0,0,0.12);
+}
+
+#settingsPageButtonShadowOuterLight{
+    background-color: rgba(255,255,255,0.08);
+    z-index: 1;
+    position: absolute;
+    margin-top: 228px;
+    width: 50px;
+    height: 50px;
+    left: 0px;
+    top: 0px;
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*---------MainTwitterPage---------*/
+
+.twitterPage{
+    position: absolute;
+    width: calc(100% - 74px);
+    margin-left: 74px;
+}
+
+.announcementBox{
+    position: relative;
+    width: calc(100% - 64px);
+    margin-left: 32px;
+    height: 50px;
+    margin-top: 86px;
+    border-radius: 10px;
+}
+
+#announcementDisplay{
+    position: absolute;
+    z-index: 6;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: calc(100% - 64px);
+}
+
+#announcementPerm{
+    position: absolute;
+    z-index: 6;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+
+#announcementDisplay img{
+    width: 15px;
+    height: 15px;
+    margin-left: 16px;
+}
+
+#announcementDisplay h1{
+    color: #AAAAAA;
+    font-size: 18px;
+    margin-left: 20px;
+}
+
+#announcementText{
+    margin-left: 205px;
+    text-align: center;
+    width: 820px;
+}
+
+p{
+    color: #5E7689;
+    font-size: 10px;
+}
+
+.tab{
+    padding: 0px 10px;
+}
+
+
+#announcementMain{
+    position: absolute;
+    background-color: #243442;
+    opacity: 0.69;
+    z-index: 5;
+}
+
+
+
+#announcementLight{
+    position: absolute;
+    background-color: rgba(255,255,255,0.08);;
+    width: calc(100% - 72px);
+    height: 42px;
+
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);
+}
+
+#announcementDark{
+    position: absolute;
+    background-color: rgba(0,0,0,0.15);
+    width: calc(100% - 72px);
+    height: 42px;
+    left: 8px;
+    top: 8px;
+    box-shadow: 0 0 4px 4px rgba(0,0,0,0.15);
+}
+
+
+
+
+/*-----Grid Twitter-----*/
+
+
+
+.gridContainer{
+    display: grid;
+    width: 100%;
+    height: calc(100vh - 168px);
+
+    grid-template-columns: repeat(40,auto);
+    grid-template-rows: repeat(25,auto);
+    grid-gap: 32px;
+    padding: 0px 32px;
+}
+
+
+
+
+h3{
+    font-size: 18px;
+    color: #AAAAAA;
+}
+
+
+
+.accountsContainer{
+    margin-top: 168px;
+    grid-row: 1 / 22;
+    grid-column: 1 /10;
+    position: relative;
+}
+
+.accountsBox{
+    position: absolute;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+
+#accountsDisplay{
+    z-index: 5;
+}
+
+#accountsLable{
+    margin-top: 16px;
+    margin-left: 16px;
+}
+
+
+.monitorAll{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width:120px;
+    margin-left: 5px;
+    justify-content: space-evenly;
+    margin-top: 16px;
+}
+
+
+
+.addAccount{
+    filter: blur(0px);
+    z-index: 15;
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: #E1629C;
+    outline: none;
+    border: none;
+    margin-left: 77%;
+    margin-top: -22px;
+     box-shadow: 3px 3px 10px 0px rgba(0,0,0,0.5), inset 3px 3px 3px 0px rgba(255,255,255,0.54), inset -3px -3px 3px 0px rgba(0,0,0,0.5);
+}
+
+.addAccount img{
+    margin-top: 4.5px;
+    width: 14px;
+}
+
+.addAccount:hover{
+    opacity: .85;
+}
+
+/*
+.addAccountLight{
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    outline: none;
+    border: none;
+    margin-left: 77%;
+    margin-top: -22px;
+    filter: blur(2px);
+    background-color: rgba(255,255,255,0.08);
+}
+
+*/
+
+.popupAddAccountBackground{
+    z-index: 30;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+}
+#twitterPopupBackground{
+    position: absolute;
+    width: 700px;
+    height: 440px;
+    z-index: -1;
+}
+
+
+.popupAddAccount{
+    z-index: 30;
+    background: radial-gradient(#243442, #141D24);
+    position: absolute;
+    width: 700px;
+    height: 440px;
+    margin-left: calc(50% - 350px);
+    margin-top: calc(50vh - 300px);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.5s;
+    border-radius: 10px;
+   
+}
+
+
+.popupAddAccount.active{
+    margin-top: calc(50vh - 220px);
+    opacity: 1;
+    visibility: visible;
+    transition: 0.5s;
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.521);
+}
+
+
+
+#closePopup{
+    z-index: 10;
+    background-color: transparent;
+    outline: none;
+    border: none;
+
+    float: right;
+    margin-top: 32px;
+    margin-right: 32px;
+}
+
+
+#closePopup img{
+    z-index: 10;
+    width: 10px;
+    height: 10px;
+}
+
+
+#closePopup:hover{
+    opacity: .8;
+
+}
+
+
+
+
+.innerPopup{
+    z-index: 5;
+    display: flex;
+    flex-direction: row;
+    height: 340px;
+    margin-top: 74px;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.addAccountFeatures{
+    z-index: 5;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 120px;
+    margin-top: 74px;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+}
+
+
+
+.accountInputBox{
+    z-index: 5;
+    width: 243px;
+    height: 33px;
+    background-color: #243442;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    box-shadow: inset -3px -3px 3px 0px rgba(255,255,255,0.1), inset 3px 3px 3px 0px rgba(0,0,0,0.15);
+    padding-left: 16px;
+    caret-color: #5E7689;
+    color: #5E7689;
+    font-size: 12px;
+
+}
+
+#accountInputBox::-webkit-input-placeholder{
+    color:#5E7689;
+    font-size: 12px;
+}
+
+
+
+.buttonStylingSubmitAccount{
+    margin-left: -150px;
+    position: relative;
+    align-content: center;
+    text-align: center;
+}
+
+#addAccountSubmit{
+    position: absolute;
+    z-index: 42;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    color: #5E7689;
+    font-size: 12px;
+    width: 152px;
+    height: 33px;
+    border-radius: 17px;
+}
+
+
+#addAccountSubmit:active{
+    background-color: rgba(24, 24, 24, 0.164)
+}
+
+
+#addAccountSubmitBackground{
+    z-index: 39;
+    position: absolute;
+    background-color: #17222B;
+    opacity: .56;
+    width: 152px;
+    height: 33px;
+    border-radius: 17px;
+}
+
+
+
+
+
+#addAccountSubmitLight{
+    z-index: 38;
+    position: absolute;
+    background-color: rgba(255,255,255,0.08);
+    width: 152px;
+    height: 33px;
+
+    border-radius: 17px;
+    left: -3px;
+    top: -3px;
+    filter: blur(2px);
+
+}
+
+#addAccountSubmitDark{
+    z-index: 37;
+    position: absolute;
+    background-color: rgba(0,0,0,0.15);
+    width: 152px;
+    height: 33px;
+
+    border-radius: 17px;
+    left: 3px;
+    top:3px;
+    filter: blur(2px);
+}
+
+
+
+
+
+
+.twitterPreview{
+    flex: 1;
+    position: relative;
+}
+
+.twitterPreviewInner{
+    width: 320px;
+    height: 336px;
+    border-radius: 10px;
+    margin-left: calc(50% - 160px);
+    background-color: #17222B;
+    opacity: .56;
+    position: absolute;
+}
+
+.twitterPreviewInnerDisplay{
+ overflow: auto;
+ height: 336px;
+ position: absolute;
+ margin-left: 25px;
+ margin-top: 15px;
+ height: 306px;
+}
+
+
+
+
+.accountsListOuter{
+    margin-top: 8px;
+    width: 100%;
+    height: calc(100% - 79px);
+    border-top: 2px solid #202E3A;
+}
+
+.accountsListInner{
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 16px;
+    overflow: auto;
+    height: 360px;
+    position: relative;
+    /*background-color: #E1629C;*/
+}
+
+
+
+
+
+
+.accountsTable{
+    border-collapse: separate;
+    border-spacing: 0px 8px;
+    position: absolute;
+    width: 95%;
+    margin-left: 2.5%;
+    z-index: 6;
+}
+
+.accountsTable img{
+    vertical-align: middle;
+    border-radius: 50%;
+    width: 34px;
+    margin-left: 8px;
+}
+
+.deleteAccount{
+    background-color: transparent;
+    margin-right: 16px;
+    outline: none;
+    border: none;
+    width: 12px;
+    margin-bottom: 5px;
+}
+
+
+.deleteAccount img{
+    width: 8px;
+}
+
+.accountRowBackground{
+    /*background-color: #17222B;*/
+    height: 50px;
+}
+
+
+.twitterLink p{
+    margin-left: 10px;
+}
+
+.accountSwitch{
+    vertical-align: middle;
+    float: right;
+}
+
+
+.accountsTable td:nth-child(3){
+    
+}
+
+.accountsTable td:first-child{
+    border-radius: 10px 0px 0px 10px;
+
+}
+.accountsTable td:last-child{
+    border-radius: 0px 10px 10px 0px;
+}
+
+
+
+
+
+
+.accountsTableBehind{
+    border-collapse: separate;
+    border-spacing: 0px 8px;
+    position: absolute;
+    width: 95%;
+    margin-left: 2.5%;
+    z-index: 5;
+}
+
+.accountRowBehind{
+    background-color: #17222B;
+    opacity: .56;
+    height: 50px;
+}
+
+
+.accountsTableBehind td:first-child{
+    border-radius: 10px 0px 0px 10px;
+
+}
+.accountsTableBehind td:last-child{
+    border-radius: 0px 10px 10px 0px;
+}
+
+
+
+
+.accountsTableLight{
+
+    border-collapse: separate;
+    border-spacing: 0px 8px;
+    position: absolute;
+    width: 95%;
+    margin-left: 2.5%;
+    z-index: 3;
+    top: -3px;
+    left: -3px;
+}
+
+.accountRowLight{
+    filter: blur(2px);
+    background-color: rgba(255,255,255,0.08);
+    height: 50px;
+    /*box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);**/
+}
+
+
+.accountsTableLight td:first-child{
+    border-radius: 10px 0px 0px 10px;
+
+}
+.accountsTableLight td:last-child{
+    border-radius: 0px 10px 10px 0px;
+}
+
+
+
+.accountsTableDark{
+
+    border-collapse: separate;
+    border-spacing: 0px 8px;
+    position: absolute;
+    width: 95%;
+    margin-left: 2.5%;
+    z-index: 2;
+    top: 3px;
+    left: 3px;
+}
+
+.accountRowDark{
+    filter: blur(2px);
+    background-color: rgba(0,0,0,0.1);
+    height: 50px;
+    /*box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);**/
+}
+
+
+.accountsTableDark td:first-child{
+    border-radius: 10px 0px 0px 10px;
+
+}
+.accountsTableDark td:last-child{
+    border-radius: 0px 10px 10px 0px;
+}
+
+
+
+
+#accountsMain{
+    z-index: 3;
+    background-color: #243442;
+    opacity: .69;
+}
+
+#accountsDark{
+    z-index: 2;
+    background-color: rgba(0,0,0,0.15);
+    left: 4px;
+    top: 4px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(0,0,0,0.15);
+}
+
+#accountsLight{
+    z-index: 1;
+    background-color: rgba(255,255,255,0.08);
+    left: 0px;
+    top: 0px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*-----------tweet table--------*/
+
+
+
+#tweetsDisplay{
+    z-index: 5;
+    position: absolute;
+    width: 100%;
+}
+
+
+
+#tweetsLabel{
+    margin-top: 16px;
+    margin-left: 16px;
+}
+
+
+#tweetsLabel h3{
+    color: teal;
+}
+
+.tweetListOuter{
+    margin-top: 8px;
+    width: 100%;
+    height: calc(100% - 79px);
+}
+
+.tweetListInner{
+    width: 98%;
+    margin-left: 1%;
+    margin-top: 16px;
+    overflow: auto;
+    height: 600px;
+    position: relative;
+    /*background-color: #E1629C;*/
+}
+
+
+
+
+
+
+.tweetTable{
+    border-collapse: separate;
+    border-spacing: 0px 8px;
+    position: absolute;
+    width: 98%;
+    margin-left: 1%;
+    z-index: 6;
+    height: 100%;
+
+}
+
+
+.line{
+    width: 100%;
+    margin-top: 10px;
+    border-top: 2px solid #202E3A;
+    position: absolute;
+}
+
+
+.tweetUserInfo{
+    display: flex;
+    flex-direction: row;
+    /*margin-top: 16px;
+    margin-left: 16px;*/
+}
+
+.tweetInfoCellContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 16px;
+}
+
+
+
+.tweetUserInfo img{
+    border-radius: 50%;
+    width: 34px;
+    margin-right: 10px;
+}
+
+#tweetStamp{
+    white-space: nowrap;
+}
+
+
+.tweetUserInfo p{
+    font-size: 10px;
+    margin-left: 0px;
+}
+
+
+.tweetUserInfo #shownUsername{
+    color: #AAAAAA;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+
+
+
+.tweetMessage {
+
+    color: #AAAAAA;
+    vertical-align: top;
+    padding: 16px;
+    padding-right: 130px;
+}
+
+
+
+
+.tweetImage{
+    height: 85px;
+    border-radius: 10px;
+    margin-left: 16px;
+    margin-bottom: 8px;
+}
+
+
+
+
+.tweetRowBackground{
+    /*background-color: #17222B;*/
+
+    background-color: rgba(23, 34, 43, 0.56);
+    height: 130px;
+}
+
+
+
+
+
+.detectedTweet{
+    font-size: 10px;
+    vertical-align: top;
+    height: calc(100% - 32px);
+    max-width: 140px;
+    margin: 16px;
+    border: solid 1px #243442;
+    border-radius: 10px;
+    padding: 16px;
+    padding-top: 0px;
+}
+
+
+
+.detectedTweet p{
+    font-size: 10px;
+    color: #AAAAAA;
+}
+
+
+.detectedTweet h5{
+    margin-top: 16px;
+    font-size: 10px;
+    color: #5E7689;
+}
+
+.detectedLink p{
+    font-size: 8px;
+    text-decoration: underline;
+    overflow-wrap: break-word;
+}
+
+
+
+
+
+
+.tweetTable td:first-child{
+    border-radius: 10px 0px 0px 10px;
+    border-right: solid 2px #243442;
+}
+.tweetTable td:last-child{
+    border-radius: 0px 10px 10px 0px;
+    /*border-left: solid 2px #243442;*/
+}
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+.configContainer{
+    grid-row: 1 / 9;
+    grid-column: 10 /41;
+    position: relative;
+    
+}
+
+.configBox{
+    position: absolute;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+
+#configMain{
+    z-index: 3;
+    background-color: #243442;
+    opacity: .69;
+}
+
+#configDark{
+    z-index: 2;
+    background-color: rgba(0,0,0,0.15);
+    left: 4px;
+    top: 4px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(0,0,0,0.15);
+}
+
+#configLight{
+    z-index: 1;
+    background-color: rgba(255,255,255,0.08);
+    left: 0px;
+    top: 0px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);
+}
+
+
+*/
+
+
+
+
+
+
+
+
+.tweetsContainer{
+    margin-top: 168px;
+    grid-row: 1 / 28;
+    grid-column: 10 /41;
+    position: relative;
+}
+
+
+.tweetsBox{
+    position: absolute;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+#tweetsMain{
+
+    z-index: 3;
+    background-color: #243442;
+    opacity: .69;
+}
+
+
+
+
+#tweetsDark{
+    z-index: 2;
+    background-color: rgba(0,0,0,0.15);
+    left: 4px;
+    top: 4px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(0,0,0,0.15);
+}
+
+#tweetsLight{
+    z-index: 1;
+    background-color: rgba(255,255,255,0.08);
+    left: 0px;
+    top: 0px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);
+}
+
+
+/*------Discord Page --------*/
+
+
+
+
+.discordPage{
+    position: absolute;
+    width: calc(100% - 74px);
+    margin-left: 74px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*---Channels discord --------*/
+
+
+
+
+
+.channelsContainer{
+    grid-row: 4 / 21;
+    grid-column: 1 /10;
+    position: relative;
+}
+
+.channelsBox{
+    position: absolute;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+
+#channelsDisplay{
+    z-index: 5;
+}
+
+#channelsLable{
+    margin-top: 16px;
+    margin-left: 16px;
+}
+
+
+.monitorAll{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width:120px;
+    margin-left: 5px;
+    justify-content: space-evenly;
+    margin-top: 16px;
+}
+
+
+
+.addChannel{
+    filter: blur(0px);
+    z-index: 15;
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: #E1629C;
+    outline: none;
+    border: none;
+    margin-left: 77%;
+    margin-top: -22px;
+     box-shadow: 3px 3px 10px 0px rgba(0,0,0,0.5), inset 3px 3px 3px 0px rgba(255,255,255,0.54), inset -3px -3px 3px 0px rgba(0,0,0,0.5);
+}
+
+.addChannel img{
+    margin-top: 4.5px;
+    width: 14px;
+}
+
+.addChannel:hover{
+    opacity: .85;
+}
+
+/*
+.addChannelLight{
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    outline: none;
+    border: none;
+    margin-left: 77%;
+    margin-top: -22px;
+    filter: blur(2px);
+    background-color: rgba(255,255,255,0.08);
+}
+
+*/
+
+.popupAddChannelBackground{
+    z-index: 30;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+}
+
+
+.popupAddChannel{
+    z-index: 30;
+    background: radial-gradient(#243442, #141D24);
+    position: absolute;
+    width: 700px;
+    height: 440px;
+    margin-left: calc(50% - 350px);
+    margin-top: calc(50vh - 300px);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.5s;
+    border-radius: 10px;
+
+}
+
+
+.popupAddChannel.active{
+    margin-top: calc(50vh - 220px);
+    opacity: 1;
+    visibility: visible;
+    transition: 0.5s;
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.521);
+}
+
+
+
+#closePopup{
+    background-color: transparent;
+    outline: none;
+    border: none;
+
+    float: right;
+    margin-top: 32px;
+    margin-right: 32px;
+}
+
+
+#closePopup img{
+    width: 10px;
+    height: 10px;
+}
+
+
+#closePopup:hover{
+    opacity: .8;
+
+}
+
+
+
+
+.innerPopup{
+    display: flex;
+    flex-direction: row;
+    height: 340px;
+    margin-top: 74px;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.addChannelFeatures{
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 120px;
+    margin-top: 74px;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+}
+
+
+
+.channelInputBox{
+    width: 243px;
+    height: 33px;
+    background-color: #243442;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    box-shadow: inset -3px -3px 3px 0px rgba(255,255,255,0.1), inset 3px 3px 3px 0px rgba(0,0,0,0.15);
+    padding-left: 16px;
+    caret-color: #5E7689;
+    color: #5E7689;
+    font-size: 12px;
+
+}
+
+#channelInputBox::-webkit-input-placeholder{
+    color:#5E7689;
+    font-size: 12px;
+}
+
+
+
+.buttonStylingSubmitChannel{
+    margin-left: -150px;
+    position: relative;
+    align-content: center;
+    text-align: center;
+}
+
+#addChannelSubmit{
+    position: absolute;
+    z-index: 42;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    color: #5E7689;
+    font-size: 12px;
+    width: 152px;
+    height: 33px;
+    border-radius: 17px;
+}
+
+
+#addChannelSubmit:active{
+    background-color: rgba(24, 24, 24, 0.164)
+}
+
+
+#addChannelSubmitBackground{
+    z-index: 39;
+    position: absolute;
+    background-color: #17222B;
+    opacity: .56;
+    width: 152px;
+    height: 33px;
+    border-radius: 17px;
+}
+
+
+
+
+
+#addChannelSubmitLight{
+    z-index: 38;
+    position: absolute;
+    background-color: rgba(255,255,255,0.08);
+    width: 152px;
+    height: 33px;
+
+    border-radius: 17px;
+    left: -3px;
+    top: -3px;
+    filter: blur(2px);
+
+}
+
+#addChannelSubmitDark{
+    z-index: 37;
+    position: absolute;
+    background-color: rgba(0,0,0,0.15);
+    width: 152px;
+    height: 33px;
+
+    border-radius: 17px;
+    left: 3px;
+    top:3px;
+    filter: blur(2px);
+}
+
+
+
+
+
+
+#channelPopupBackground{
+    position: absolute;
+    width: 700px;
+    height: 337px;
+    z-index: -1;
+}
+
+
+.popupAddChannel{
+    z-index: 30;
+    background: radial-gradient(#243442, #141D24);
+    position: absolute;
+    width: 700px;
+    height: 337px;
+    margin-left: calc(50% - 350px);
+    margin-top: calc(50vh - 300px);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.5s;
+    border-radius: 10px;
+   
+}
+
+
+.popupAddChannel.active{
+    margin-top: calc(50vh - 165px);
+    opacity: 1;
+    visibility: visible;
+    transition: 0.5s;
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.521);
+}
+
+
+
+.innerChannelPopup{
+    z-index: -1;
+    margin-top: 30px;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    height: 300px;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+
+
+
+
+
+.channelInputBox{
+    z-index: 5;
+    width: 243px;
+    height: 33px;
+    background-color: #243442;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    box-shadow: inset -3px -3px 3px 0px rgba(255,255,255,0.1), inset 3px 3px 3px 0px rgba(0,0,0,0.15);
+    padding-left: 16px;
+    caret-color: #5E7689;
+    color: #5E7689;
+    font-size: 12px;
+
+}
+
+#ChannelInputBox::-webkit-input-placeholder{
+    color:#5E7689;
+    font-size: 12px;
+}
+
+
+
+.buttonStylingSubmitChannel{
+    margin-left: -150px;
+    position: relative;
+    align-content: center;
+    text-align: center;
+}
+
+#addChannelSubmit{
+    position: absolute;
+    z-index: 42;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    color: #5E7689;
+    font-size: 12px;
+    width: 152px;
+    height: 33px;
+    border-radius: 17px;
+}
+
+
+#addChannelSubmit:active{
+    background-color: rgba(24, 24, 24, 0.164)
+}
+
+
+#addChannelSubmitBackground{
+    z-index: 39;
+    position: absolute;
+    background-color: #17222B;
+    opacity: .56;
+    width: 152px;
+    height: 33px;
+    border-radius: 17px;
+}
+
+
+
+
+
+#addChannelSubmitLight{
+    z-index: 38;
+    position: absolute;
+    background-color: rgba(255,255,255,0.08);
+    width: 152px;
+    height: 33px;
+
+    border-radius: 17px;
+    left: -3px;
+    top: -3px;
+    filter: blur(2px);
+
+}
+
+#addChannelSubmitDark{
+    z-index: 37;
+    position: absolute;
+    background-color: rgba(0,0,0,0.15);
+    width: 152px;
+    height: 33px;
+
+    border-radius: 17px;
+    left: 3px;
+    top:3px;
+    filter: blur(2px);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.channelsListOuter{
+    margin-top: 8px;
+    width: 100%;
+    height: calc(100% - 79px);
+    border-top: 2px solid #202E3A;
+}
+
+.channelsListInner{
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 16px;
+    overflow: auto;
+    height: 340px;
+    position: relative;
+    /*background-color: #E1629C;*/
+}
+
+
+
+
+
+
+.channelsTable{
+    border-collapse: separate;
+    border-spacing: 0px 8px;
+    position: absolute;
+    width: 95%;
+    margin-left: 2.5%;
+    z-index: 6;
+}
+
+.channelsTable img{
+    vertical-align: middle;
+    border-radius: 50%;
+    width: 34px;
+    margin-left: 8px;
+}
+
+.deleteChannel{
+    background-color: transparent;
+    margin-right: 16px;
+    outline: none;
+    border: none;
+    width: 12px;
+    margin-bottom: 5px;
+}
+
+
+.deleteChannel img{
+    width: 8px;
+}
+
+.channelRowBackground{
+    /*background-color: #17222B;*/
+    height: 50px;
+}
+
+
+.twitterLink p{
+    margin-left: 0px;
+}
+
+.channelSwitch{
+    vertical-align: middle;
+    float: right;
+}
+
+
+.channelsTable td:nth-child(3){
+    
+}
+
+.channelsTable td:first-child{
+    border-radius: 10px 0px 0px 10px;
+    text-align: center;
+
+}
+.channelsTable td:last-child{
+    border-radius: 0px 10px 10px 0px;
+}
+
+
+
+
+
+
+.channelsTableBehind{
+    border-collapse: separate;
+    border-spacing: 0px 8px;
+    position: absolute;
+    width: 95%;
+    margin-left: 2.5%;
+    z-index: 5;
+}
+
+.channelRowBehind{
+    background-color: #17222B;
+    opacity: .56;
+    height: 50px;
+}
+
+
+.channelsTableBehind td:first-child{
+    border-radius: 10px 0px 0px 10px;
+
+}
+.channelsTableBehind td:last-child{
+    border-radius: 0px 10px 10px 0px;
+}
+
+
+
+
+.channelsTableLight{
+
+    border-collapse: separate;
+    border-spacing: 0px 8px;
+    position: absolute;
+    width: 95%;
+    margin-left: 2.5%;
+    z-index: 3;
+    top: -3px;
+    left: -3px;
+}
+
+.channelRowLight{
+    filter: blur(2px);
+    background-color: rgba(255,255,255,0.08);
+    height: 50px;
+    /*box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);**/
+}
+
+
+.channelsTableLight td:first-child{
+    border-radius: 10px 0px 0px 10px;
+
+}
+.channelsTableLight td:last-child{
+    border-radius: 0px 10px 10px 0px;
+}
+
+
+
+.channelsTableDark{
+
+    border-collapse: separate;
+    border-spacing: 0px 8px;
+    position: absolute;
+    width: 95%;
+    margin-left: 2.5%;
+    z-index: 2;
+    top: 3px;
+    left: 3px;
+}
+
+.channelRowDark{
+    filter: blur(2px);
+    background-color: rgba(0,0,0,0.1);
+    height: 50px;
+    /*box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);**/
+}
+
+
+.channelsTableDark td:first-child{
+    border-radius: 10px 0px 0px 10px;
+
+}
+.channelsTableDark td:last-child{
+    border-radius: 0px 10px 10px 0px;
+}
+
+
+
+
+#channelsMain{
+    z-index: 3;
+    background-color: #243442;
+    opacity: .69;
+}
+
+#channelsDark{
+    z-index: 2;
+    background-color: rgba(0,0,0,0.15);
+    left: 4px;
+    top: 4px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(0,0,0,0.15);
+}
+
+#channelsLight{
+    z-index: 1;
+    background-color: rgba(255,255,255,0.08);
+    left: 0px;
+    top: 0px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);
+}
+
+
+
+
+
+
+
+/*------Keywords----------*/
+
+.keywordsInputBox{
+    width: 267px;
+    height: 33px;
+    background-color: #243442;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    box-shadow: inset -3px -3px 3px 0px rgba(255,255,255,0.1), inset 3px 3px 3px 0px rgba(0,0,0,0.15);
+    padding-left: 16px;
+    caret-color: #5E7689;
+    color: #5E7689;
+    font-size: 12px;
+
+}
+
+::placeholder{
+    color:#5E7689;
+    font-size: 10px;
+}
+
+
+
+#keywordsDisplay{
+    z-index: 5;
+    position: absolute;
+    width: 100%;
+}
+
+.keywordsContainer{
+    grid-row: 4 / 10;
+    grid-column: 10 /41;
+    position: relative;
+}
+
+
+.keywordsBox{
+    position: absolute;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+
+#keywordsMain{
+
+    z-index: 3;
+    background-color: #243442;
+    opacity: .69;
+}
+
+
+
+
+#keywordsDark{
+    z-index: 2;
+    background-color: rgba(0,0,0,0.15);
+    left: 4px;
+    top: 4px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(0,0,0,0.15);
+}
+
+#keywordsLight{
+    z-index: 1;
+    background-color: rgba(255,255,255,0.08);
+    left: 0px;
+    top: 0px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);
+}
+
+
+
+.keywordsAdder{
+    margin-left: 16px;
+    margin-top: 16px;
+}
+
+
+
+.buttonStylingSubmitKeyword{
+    margin-top: 16px;
+    position: absolute;
+    align-content: center;
+    text-align: center;
+}
+
+#addKeywordSubmit{
+    position: absolute;
+    z-index: 42;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    color: #5E7689;
+    font-size: 12px;
+    width: 168px;
+    height: 33px;
+    border-radius: 17px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+#addKeywordSubmit:active{
+    background-color: rgba(24, 24, 24, 0.164)
+}
+
+
+#addKeywordSubmitBackground{
+    z-index: 39;
+    position: absolute;
+    background-color: #17222B;
+    opacity: .56;
+    width: 168px;
+    height: 33px;
+    border-radius: 17px;
+}
+
+
+
+#addKeywordImg{
+    height: 12px;
+    margin-left: 34px;
+    margin-right: 9px;
+}
+
+
+#addKeywordSubmitLight{
+    z-index: 38;
+    position: absolute;
+    background-color: rgba(255,255,255,0.08);
+    width: 168px;
+    height: 33px;
+
+    border-radius: 17px;
+    left: -3px;
+    top: -3px;
+    filter: blur(2px);
+
+}
+
+#addKeywordSubmitDark{
+    z-index: 37;
+    position: absolute;
+    background-color: rgba(0,0,0,0.15);
+    width: 168px;
+    height: 33px;
+
+    border-radius: 17px;
+    left: 3px;
+    top:3px;
+    filter: blur(2px);
+}
+
+
+
+
+
+
+
+
+.keywordsDisplayer{
+    position: absolute;
+    height: 122px;
+    width: 672px;
+    box-shadow: inset -3px -3px 3px 0px rgba(255,255,255,0.1), inset 3px 3px 3px 0px rgba(0,0,0,0.15);
+    border-radius: 10px;
+    top: 16px;
+    float: right;
+    right: 20px;
+    overflow: auto;
+    padding: 16px;
+    padding-top: 22px;
+}
+
+
+
+.keywordsGrid{
+    position: absolute;
+    align-self: center;
+    width: 640px;
+
+    display: grid;
+    grid-template-columns: repeat(6, auto );
+    grid-gap: 10px;
+    color: #5E7689;
+    font-size: 12px;
+    text-align: center;
+    padding: auto;
+    margin-bottom: 16px;
+    justify-content: start;
+}
+
+
+.keyword-item{
+    width: 98px;
+    height: 33px;
+    background-color: rgba(23, 34, 43, 0.561);
+    border-radius: 16.5px;
+    vertical-align: middle;
+    position: relative;
+}
+
+.keyword-item p{
+    font-size: 10px;
+    font-weight: 400;
+    vertical-align: middle;
+    overflow: hidden;
+    margin-top: 8.5px;
+    margin-right: 26px;
+    margin-left: 6px;
+}
+
+
+.deleteKeyword{
+    background-color: transparent;
+    outline: none;
+    border: none;
+    width: 6px;
+    height: 6px;
+    float: right;
+    display: block;
+    position: absolute;
+    top: 9px;
+    right: 16px;
+}
+
+
+
+.deleteKeyword img{
+    width: 6px;
+    margin-top: 5px;
+    float: right;
+}
+
+#positiveKeyword{
+    background-color: rgba(30, 155, 93);
+    color: #1D2A34;
+}
+#negativeKeyword{
+    background-color: rgba(255, 39, 68, 0.596);
+    color: #AAAAAA
+}
+
+#positiveKeywordText{
+    color: #1D2A34;
+}
+#negativeKeywordText{
+    color: #AAAAAA
+}
+
+
+
+/*-----------Message table--------*/
+
+
+
+#messagesDisplay{
+    z-index: 5;
+    position: absolute;
+    width: 100%;
+}
+
+
+
+#messagesLabel{
+    margin-top: 14px;
+    margin-left: 16px;
+    display: inline-block;
+}
+
+#messagesOnLabel{
+    vertical-align: top;
+    margin-top: 18px;
+    margin-left: 54px;
+    display: inline-block;
+}
+
+#messagesOnSwitch{
+    position: absolute;
+    top: 0px;
+    margin-top: 22px;
+    margin-left: 15px;
+    display: inline-block;
+}
+
+
+#messagesLabel p{
+    color: teal;
+}
+
+.messageListOuter{
+    margin-top: 8px;
+    width: 100%;
+    height: calc(100% - 79px);
+}
+
+.messageListInner{
+    width: 98%;
+    margin-left: 1%;
+    margin-top: 16px;
+    overflow: auto;
+    height: 600px;
+    position: relative;
+    /*background-color: #E1629C;*/
+}
+
+
+
+
+
+
+.messageTable{
+    border-collapse: separate;
+    border-spacing: 0px 8px;
+    position: absolute;
+    width: 98%;
+    margin-left: 1%;
+    z-index: 6;
+    height: 100%;
+
+}
+
+
+.line{
+    width: 100%;
+    margin-top: 10px;
+    border-top: 2px solid #202E3A;
+    position: absolute;
+}
+
+
+.messageUserInfo{
+    display: flex;
+    flex-direction: row;
+    /*margin-top: 16px;
+    margin-left: 16px;*/
+}
+
+.messageInfoCellContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 16px;
+}
+
+
+
+.messageUserInfo img{
+    border-radius: 50%;
+    width: 34px;
+    margin-right: 10px;
+}
+
+
+
+.messageUserInfo p{
+    font-size: 10px;
+    margin-left: 0px;
+}
+
+
+.messageUserInfo #shownUsername{
+    color: #AAAAAA;
+    font-size: 12px;
+}
+
+
+
+
+.messageMessage {
+
+    color: #AAAAAA;
+    vertical-align: top;
+    padding: 16px;
+    padding-right: 130px;
+}
+
+
+
+
+.messageImage{
+    height: 85px;
+    border-radius: 10px;
+    margin-left: 16px;
+    margin-bottom: 8px;
+}
+
+
+
+
+.messageRowBackground{
+    /*background-color: #17222B;*/
+
+    background-color: rgba(23, 34, 43, 0.56);
+    height: 88px;
+}
+
+
+
+
+
+.detectedMessage{
+    font-size: 10px;
+    vertical-align: top;
+    height: calc(100% - 32px);
+    margin: 16px;
+    border: solid 1px #243442;
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.detectedMessage p{
+    font-size: 10px;
+    color: #AAAAAA;
+}
+
+
+.detectedMessage h5{
+
+    font-size: 10px;
+    color: #5E7689;
+}
+
+.detectedLink p{
+    font-size: 8px;
+    text-decoration: underline;
+    overflow-wrap: break-word;
+}
+
+
+
+
+
+
+.messageTable td:first-child{
+    border-radius: 10px 0px 0px 10px;
+    border-right: solid 2px #243442;
+}
+.messageTable td:last-child{
+    border-radius: 0px 10px 10px 0px;
+    /*border-left: solid 2px #243442;*/
+}
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+.configContainer{
+    grid-row: 1 / 9;
+    grid-column: 10 /41;
+    position: relative;
+    
+}
+
+.configBox{
+    position: absolute;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+
+#configMain{
+    z-index: 3;
+    background-color: #243442;
+    opacity: .69;
+}
+
+#configDark{
+    z-index: 2;
+    background-color: rgba(0,0,0,0.15);
+    left: 4px;
+    top: 4px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(0,0,0,0.15);
+}
+
+#configLight{
+    z-index: 1;
+    background-color: rgba(255,255,255,0.08);
+    left: 0px;
+    top: 0px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);
+}
+
+
+*/
+
+
+
+
+
+
+
+
+.messagesContainer{
+    grid-row: 10 / 28;
+    grid-column: 10 /41;
+    position: relative;
+}
+
+
+.messagesBox{
+    position: absolute;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+#messagesMain{
+
+    z-index: 3;
+    background-color: #243442;
+    opacity: .69;
+}
+
+
+
+
+#messagesDark{
+    z-index: 2;
+    background-color: rgba(0,0,0,0.15);
+    left: 4px;
+    top: 4px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(0,0,0,0.15);
+}
+
+#messagesLight{
+    z-index: 1;
+    background-color: rgba(255,255,255,0.08);
+    left: 0px;
+    top: 0px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*-----------nitroClaim page--------*/
+
+.nitroPage{
+    position: absolute;
+    width: calc(100% - 74px);
+    height: 100vh;
+    margin-left: 74px;
+}
+
+.nitroContainer{
+    height: 782px;
+    width: 95%;
+    position: relative;
+    margin-left: 2.5%;
+    margin-top: 86px;
+}
+
+
+.nitroClaimsBox{
+    position: absolute;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+#nitroClaimsDisplay{
+    z-index: 5;
+    position: absolute;
+    
+    width: 100%;
+    height: 100%;
+    
+}
+
+
+
+#nitroClaimsLabel{
+    margin-top: 14px;
+    margin-left: 16px;
+    
+    display: inline-block;
+}
+
+#nitroClaimsOnLabel{
+    vertical-align: top;
+    margin-top: 18px;
+    margin-left: 54px;
+    display: inline-block;
+}
+
+#nitroClaimsOnSwitch{
+    position: absolute;
+    top: 0px;
+    margin-top: 22px;
+    margin-left: 15px;
+    display: inline-block;
+}
+
+
+#nitroClear{
+    vertical-align: top;
+    margin-top: 18px;
+    margin-right:16px;
+    float: right;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.nitroClaimListOuter{
+    margin-top: 8px;
+    width: 100%;
+    height: calc(100% - 79px);
+}
+
+.nitroClaimListInner{
+    width: 99%;
+    margin-left: 0.5%;
+    margin-top: 16px;
+    overflow: auto;
+    height: 600px;
+    position: relative;
+    /*background-color: #E1629C;*/
+}
+
+
+
+
+
+
+.nitroClaimTable{
+    border-collapse: separate;
+    border-spacing: 0px 8px;
+    position: absolute;
+    width: 99%;
+    margin-left: 0.5%;
+    z-index: 6;
+    height: 100%;
+
+}
+
+
+.line{
+    width: 100%;
+    margin-top: 10px;
+    border-top: 2px solid #202E3A;
+    position: absolute;
+}
+
+
+
+
+
+/*----------------------celinfo-------------------------*/
+
+
+
+.nitroClaimUserInfo{
+    display: flex;
+    flex-direction: row;
+    /*margin-top: 16px;
+    margin-left: 16px;*/
+}
+
+.nitroClaimInfoCellContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 16px;
+}
+
+#userWord{
+    position: absolute;
+    margin-top: 3px;
+    font-size: 8px;
+    color: #5E7689;
+    letter-spacing: 1px;
+}
+
+#nitroGroupedInfo{
+    margin-top: 10px;
+}
+
+
+
+#nitroUsername{
+    font-size: 12px;
+    display: inline;
+}
+
+.nitroClaimUserInfo img{
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    margin-right: 10px;
+}
+
+
+
+.nitroClaimUserInfo p{
+    font-size: 10px;
+    margin-left: 0px;
+}
+
+
+.nitroClaimUserInfo #shownUsername{
+    color: #AAAAAA;
+    font-size: 12px;
+    display: inline;
+}
+
+
+
+.nitroClaimUserInfo #shownServer{
+    color: #AAAAAA;
+    font-size: 12px;
+    display: inline;
+}
+
+
+#nitroChannel{    
+    font-size: 12px;
+    display: inline;
+}
+
+
+
+
+
+.deleteNitroMessage{
+    background-color: transparent;
+    margin-right: 34px;
+    outline: none;
+    border: none;
+    width: 10px;
+    height: 10px;
+    float: right;
+    margin-bottom: 7px;
+}
+
+.deleteNitroMessage img{
+    width: 10px;
+    height: 10px;
+}
+
+
+
+
+.nitroClaimnitroClaim {
+
+    color: #AAAAAA;
+    vertical-align: top;
+    padding: 16px;
+    padding-right: 130px;
+}
+
+
+
+
+.nitroClaimImage{
+    height: 85px;
+    border-radius: 10px;
+    margin-left: 16px;
+    margin-bottom: 8px;
+}
+
+
+
+
+.nitroClaimRowBackground{
+    /*background-color: #17222B;*/
+
+    background-color: rgba(23, 34, 43, 0.56);
+    height: 60px;
+    position: relative;
+}
+
+
+
+
+
+.detectednitroClaim{
+    font-size: 10px;
+    vertical-align: top;
+    height: calc(100% - 32px);
+    margin: 16px;
+    border: solid 1px #243442;
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.detectednitroClaim p{
+    font-size: 10px;
+    color: #AAAAAA;
+}
+
+
+
+.nitroStatus{
+    width: 144px;
+    height: 34px;
+    border-radius: 10px;
+    background-color: #263441;
+    margin-left: calc((100% - 144px)/2);
+    text-align: center;
+}
+
+.nitroStatus p{
+ padding-top: 10px;   
+ background-color: transparent;
+}
+
+
+
+
+#claimedNitro{
+    background-color: rgb(30, 155, 93);
+}
+#failedNitro{
+    background-color: rgba(255, 39, 68, 0.56);
+}
+
+
+
+#claimedNitroText{
+    color: #1D2A34;
+}
+#failedNitroText{
+    color: #AAAAAA
+}
+
+
+.nitroTime{
+    background-color: #263441;
+    border-radius: 10px;
+    width: 168px;
+    height: 34px;
+    margin-left: calc((100% - 168px)/2);
+    text-align: center;
+}
+
+.nitroTime p{
+    padding-top: 10px;   
+    display: inline-block;
+}
+
+#nitroClaimMS{
+    color: #AAAAAA
+}
+
+
+
+
+
+.detectednitroClaim h5{
+
+    font-size: 10px;
+    color: #5E7689;
+}
+
+.detectedLink p{
+    font-size: 8px;
+    text-decoration: underline;
+    overflow-wrap: break-word;
+}
+
+
+
+
+
+
+.nitroClaimTable td:first-child{
+    border-radius: 10px 0px 0px 10px;
+    border-right: solid 2px #243442;
+}
+
+
+
+.nitroClaimTable td:nth-child(2){
+    border-right: solid 2px #243442;
+}
+
+
+
+.nitroClaimTable td:nth-child(5){
+    text-align: center;
+}
+
+.nitroClaimTable td:nth-child(6){
+    text-align: center;
+}
+
+.nitroClaimTable td:last-child{
+    border-radius: 0px 10px 10px 0px;
+    /*border-left: solid 2px #243442;*/
+}
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+.configContainer{
+    grid-row: 1 / 9;
+    grid-column: 10 /41;
+    position: relative;
+    
+}
+
+.configBox{
+    position: absolute;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+
+#configMain{
+    z-index: 3;
+    background-color: #243442;
+    opacity: .69;
+}
+
+#configDark{
+    z-index: 2;
+    background-color: rgba(0,0,0,0.15);
+    left: 4px;
+    top: 4px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(0,0,0,0.15);
+}
+
+#configLight{
+    z-index: 1;
+    background-color: rgba(255,255,255,0.08);
+    left: 0px;
+    top: 0px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);
+}
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+#nitroClaimsMain{
+
+    z-index: 3;
+    background-color: #243442;
+    opacity: .69;
+}
+
+
+
+
+#nitroClaimsDark{
+    z-index: 2;
+    background-color: rgba(0,0,0,0.15);
+    left: 4px;
+    top: 4px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(0,0,0,0.15);
+}
+
+#nitroClaimsLight{
+    z-index: 1;
+    background-color: rgba(255,255,255,0.08);
+    left: 0px;
+    top: 0px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);
+}
+
+
+
+
+
+/*----------Settings Page --------------------*/
+
+.settingsPage{
+    position: absolute;
+    width: calc(100% - 74px);
+    height: 100vh;
+    margin-left: 74px;
+}
+
+
+#bigSettingsLabel{
+    margin-top: 16px;
+    margin-left: 16px;
+}
+
+
+#settingsLabel{
+    margin-left: 16px;
+    font-size: 12px;
+    margin-top: 16px;
+}
+
+#settingsInfoLabel{
+    margin-left: 16px;
+    font-size: 10px;
+    margin-top: 6px;
+}
+
+
+
+
+
+.discordSettingsContainer{
+    margin-top: 90px;
+    grid-row: 1 / 12;
+    grid-column: 1 /14;
+    position: relative;
+}
+
+.discordSettingsBox{
+    position: absolute;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+
+
+#discordSettingsDisplay{
+    z-index: 5;
+    position: absolute;
+    width: 100%;
+}
+
+
+
+#discordSettingsMain{
+    z-index: 3;
+    background-color: #243442;
+    opacity: .69;
+}
+
+
+#discordSettingsDark{
+    z-index: 2;
+    background-color: rgba(0,0,0,0.15);
+    left: 4px;
+    top: 4px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(0,0,0,0.15);
+}
+
+#discordSettingsLight{
+    z-index: 1;
+    background-color: rgba(255,255,255,0.08);
+    left: 0px;
+    top: 0px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);
+}
+
+
+
+
+
+
+.webhookInputBox{
+    width: 92%;
+    height: 33px;
+    background-color: #243442;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    box-shadow: inset -3px -3px 3px 0px rgba(255,255,255,0.1), inset 3px 3px 3px 0px rgba(0,0,0,0.15);
+    padding-left: 16px;
+    caret-color: #5E7689;
+    color: #5E7689;
+    font-size: 12px;
+    margin-left: 4%;
+    margin-top:16px;
+
+}
+
+
+
+.buttonStylingTestWebhook{
+    margin-top: 16px;
+    margin-left: 16px;
+    position: absolute;
+    align-content: center;
+    text-align: center;
+}
+
+#testWebhookSubmit{
+    margin-top: 5px;
+    position: absolute;
+    z-index: 42;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    color: #5E7689;
+    font-size: 12px;
+    width: 168px;
+    height: 33px;
+    border-radius: 17px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+#testWebhookSubmit:active{
+    background-color: rgba(24, 24, 24, 0.164)
+}
+
+
+#testWebhookSubmitBackground{
+    margin-top: 6px;
+    z-index: 39;
+    position: absolute;
+    background-color: #17222B;
+    opacity: .56;
+    width: 168px;
+    height: 33px;
+    border-radius: 17px;
+}
+
+
+
+#testWebhookImg{
+    height: 12px;
+    margin-left: 34px;
+    margin-right: 9px;
+}
+
+
+#testWebhookSubmitLight{
+    margin-top: 6px;
+    z-index: 38;
+    position: absolute;
+    background-color: rgba(255,255,255,0.08);
+    width: 168px;
+    height: 33px;
+
+    border-radius: 17px;
+    left: -3px;
+    top: -3px;
+    filter: blur(2px);
+
+}
+
+#testWebhookSubmitDark{
+    margin-top: 6px;
+    z-index: 37;
+    position: absolute;
+    background-color: rgba(0,0,0,0.15);
+    width: 168px;
+    height: 33px;
+
+    border-radius: 17px;
+    left: 3px;
+    top:3px;
+    filter: blur(2px);
+}
+
+
+
+
+
+
+
+
+
+
+
+.tokenSettingsContainer{
+    margin-top: 90px;
+    grid-row: 1 / 15;
+    grid-column: 14 /27;
+    position: relative;
+}
+
+.tokenSettingsBox{
+    position: absolute;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+#tokenSettingsDisplay{
+    z-index: 5;
+    position: absolute;
+    width: 100%;
+}
+
+
+
+#tokenSettingsMain{
+
+    z-index: 3;
+    background-color: #243442;
+    opacity: .69;
+}
+
+
+#tokenSettingsDark{
+    z-index: 2;
+    background-color: rgba(0,0,0,0.15);
+    left: 4px;
+    top: 4px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(0,0,0,0.15);
+}
+
+#tokenSettingsLight{
+    z-index: 1;
+    background-color: rgba(255,255,255,0.08);
+    left: 0px;
+    top: 0px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);
+}
+
+
+
+
+
+
+
+.monitorTokenInputBox{
+    width: 92%;
+    height: 33px;
+    background-color: #243442;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    box-shadow: inset -3px -3px 3px 0px rgba(255,255,255,0.1), inset 3px 3px 3px 0px rgba(0,0,0,0.15);
+    padding-left: 16px;
+    caret-color: #5E7689;
+    color: #5E7689;
+    font-size: 12px;
+    margin-left: 4%;
+    margin-top:16px;
+    margin-bottom: 10px;
+}
+
+.claimerTokenInputBox{
+    width: 92%;
+    height: 33px;
+    background-color: #243442;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    box-shadow: inset -3px -3px 3px 0px rgba(255,255,255,0.1), inset 3px 3px 3px 0px rgba(0,0,0,0.15);
+    padding-left: 16px;
+    caret-color: #5E7689;
+    color: #5E7689;
+    font-size: 12px;
+    margin-left: 4%;
+    margin-top:16px;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.linkSettingsContainer{
+    margin-top: 90px;
+    grid-row: 1 / 19;
+    grid-column: 27 /41;
+    position: relative;
+}
+
+.linkSettingsBox{
+    position: absolute;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+#linkSettingsDisplay{
+    z-index: 5;
+    position: absolute;
+    width: 100%;
+}
+
+
+
+#linkSettingsMain{
+
+    z-index: 3;
+    background-color: #243442;
+    opacity: .69;
+}
+
+
+#linkSettingsDark{
+    z-index: 2;
+    background-color: rgba(0,0,0,0.15);
+    left: 4px;
+    top: 4px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(0,0,0,0.15);
+}
+
+#linkSettingsLight{
+    z-index: 1;
+    background-color: rgba(255,255,255,0.08);
+    left: 0px;
+    top: 0px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.08);
+}
+
+
+
+.linkSettingsOnSwitch{
+    display: inline-block;
+    margin-top: 16px;
+    margin-left: 15px;
+}
+
+#linkSettingsOnSwitchLabel{
+    vertical-align: top;
+    display: inline-block;
+    margin-left: 10px;
+    margin-top: 13px;
+}
+
+
+
+
+
+
+.buttonStylingSaveSettings{
+    margin-top: 166px;
+    margin-left: 970px;
+    position: absolute;
+    align-content: center;
+    text-align: center;
+}
+
+#saveSettingsSubmit{
+    margin-top: 434px;
+    position: absolute;
+    z-index: 42;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    color: #5E7689;
+    font-size: 12px;
+    width: 268px;
+    height: 33px;
+    border-radius: 17px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+#saveSettingsSubmit p{
+    margin-left: 4px;
+
+}
+#saveSettingsImg{
+    height: 12px;
+    margin-left: 84px;
+    margin-right: 9px;
+}
+
+#saveSettingsSubmit:active{
+    background-color: rgba(24, 24, 24, 0.164)
+}
+
+
+#saveSettingsSubmitBackground{
+    margin-top: 435px;
+
+    z-index: 39;
+    position: absolute;
+    background-color: #17222B;
+    opacity: .56;
+    width: 268px;
+    height: 33px;
+    border-radius: 17px;
+}
+
+
+
+
+
+#saveSettingsSubmitLight{
+    margin-top: 435px;
+
+    z-index: 38;
+    position: absolute;
+    background-color: rgba(255,255,255,0.08);
+    width: 268px;
+    height: 33px;
+
+    border-radius: 17px;
+    left: -3px;
+    top: -3px;
+    filter: blur(2px);
+
+}
+
+#saveSettingsSubmitDark{
+    margin-top: 435px;
+
+    z-index: 37;
+    position: absolute;
+    background-color: rgba(0,0,0,0.15);
+    width: 268px;
+    height: 33px;
+
+    border-radius: 17px;
+    left: 3px;
+    top:3px;
+    filter: blur(2px);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ----Footer-----*/
+
+footer{
+    position: fixed;
+    justify-content: space-around;
+    background-color: #A3ABFF;
+    height: 32px;
+    border-radius: 25px 25px 10px 10px;
+    bottom: 0;
+    width: 100%;
+}
+
+
+footer img{
+    position: absolute;
+    width: 5.9%;
+    margin-left: 47.05%;
+    z-index: 5;
+    bottom: 8px;
+}
+

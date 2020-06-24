@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="auth.css">
+    <title>Lotus Monitor</title>
+    
+</head>
+<body>
+    <div class="container">
+        <img id="backImg" src="images/lotusBack.png">
+        <div class="topBar">
+        </div>
+        <nav class="navbar">
+            <div class = "toolBar">
+                <div class="option-tools" id="close"></div>
+                <div class="option-tools" id="mini"></div>
+                <div class="option-tools" id="max"></div>
+            </div>
+        </nav>
+        <div class="mainBox" data-tilt  data-tilt-max="8" >
+            <img id="infoImg" src="images/add-twitter-logo.png">
+            <div class="flexInfo">
+                <img id="lotusLogo"src="images/logo.png">
+                <h3>Welcome to LotusAIO™</h3>
+                <p>Please provide your authentication credentials.</p>
+                <input type="text" class="keyInputBox" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" spellcheck="false">
+                <div class="buttonStylingSubmitKey">
+                    <button id="keySubmit" type="button" onclick="processKey()"><img src="images/keyIcon.png"><p>Activate</p></button>
+                    <div id="keySubmitBackground"></div>
+                    <div id="keySubmitDark"></div>
+                    <div id="keySubmitLight"></div>
+                </div>
+            </div>
+        </div>
+        <script src="plugins/jquery.js"></script>
+        <script src="plugins/vanilla-tilt.js"></script>
+        
+        <script src="auth.js"></script>
+    </div>
+
+</body>
+</html>
