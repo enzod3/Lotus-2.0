@@ -600,34 +600,6 @@ function startDiscordMonitor(Token) {
 	// Whenever a message is created, checks if message is in channel ID
 	bot.on("messageCreate", (msg) => {
         channelID = msg.channel.id
-        try {
-            EmbedCheck = msg.embeds[0].title
-            contentArray = []
-            contentArray.push(msg.embeds[0].description)
-            iterate = true
-            while (iterate == true) {
-                try {
-                    var content = msg.embeds[0].fields[x].value
-                    contentArray.push(content)
-                } catch {
-                    iterate = false
-                }
-            }
-
-            try {
-                contentArray.push(msg.embeds[0].url)
-            } catch {
-                embedurl = undefined
-            }
-
-            var content = contentArray.join(' ');
-            notEditedContent = content
-
-        } catch (error) {
-
-            content = msg.content
-            notEditedContent = content
-        }
 
         /*
         if(ChannelLinks.includes(channelID)){
@@ -642,6 +614,36 @@ function startDiscordMonitor(Token) {
         }
         */
        if(ChannelLinks.includes(channelID) || ChannelLinks.includes('all')){
+            try {
+                EmbedCheck = msg.embeds[0].title
+                contentArray = []
+                contentArray.push(msg.embeds[0].description)
+                iterate = true
+                while (iterate == true) {
+                    try {
+                        var content = msg.embeds[0].fields[x].value
+                        contentArray.push(content)
+                    } catch {
+                        iterate = false
+                    }
+                }
+
+                try {
+                    contentArray.push(msg.embeds[0].url)
+                } catch {
+                    embedurl = undefined
+                }
+
+                var content = contentArray.join(' ');
+                notEditedContent = content
+
+            } catch (error) {
+
+                content = msg.content
+                notEditedContent = content
+            }
+
+
             includesPositives = false
             for (i = 0; i < PositiveKeywords.length; i++) {
                 if((content.toLowerCase()).includes(PositiveKeywords[i])){
