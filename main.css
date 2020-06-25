@@ -1432,7 +1432,29 @@ h3{
     overflow-wrap: break-word;
 }
 
+.inTextLink{
+ display: inline;
+ color: #75a0c4;
+ opacity: 0.6;
+}
 
+.inTextLink:hover{
+   opacity: 1;
+}
+   
+
+#clickableWord{
+    display: inline;
+    cursor: pointer;
+    color: #dddddd;
+    opacity: 1;
+    overflow-wrap: break-word;
+    font-weight: 300;
+   }
+   
+#clickableWord:hover{
+    opacity: 0.8;
+}   
 
 
 

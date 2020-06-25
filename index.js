@@ -130,6 +130,13 @@ function openNormalLink(e){
     shell.openExternal(link);
 }
 
+function copyToClip(e){
+    ipcRenderer.send("copy:text",e.innerText)
+}
+
+
+
+
 
 
 
@@ -596,7 +603,15 @@ checkboxChannelAll.addEventListener( 'change', function() {
 
 
 
+function urlify(text) {
+    var urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, function(url) {
+      return '<a onclick="openNormalLink(this)"><p class="inTextLink">' + url + '</p></a>';
 
+    })
+    // or alternatively
+    // return text.replace(urlRegex, '<a href="$1">$1</a>')
+}
 
 
 
@@ -632,6 +647,8 @@ var accountInputBackground = document.getElementsByClassName("popupAddAccountBac
 accountInputBackground.addEventListener("click",function(e){
     closePopup()
 })
+
+
 
 
 
@@ -793,6 +810,13 @@ function createNewChannelRow(channelID){
 
 
 }
+
+
+
+
+
+
+
 
 
 
@@ -1001,7 +1025,7 @@ ipcRenderer.on('new:discordMessage', function(e, messageInfo){
 
     var messageText = document.createElement('p');
     messageText.classList.add('messageMessage')
-    messageText.innerText = messageInfo.content;
+    messageText.innerHTML = urlify(messageInfo.content);
     messageCell.appendChild(messageText)
 
 
@@ -1026,6 +1050,8 @@ ipcRenderer.on('new:discordMessage', function(e, messageInfo){
     var pass = document.createElement('p');
     if(messageInfo.pass != undefined){
         pass.innerText = messageInfo.pass;
+        pass.id = "clickableWord"
+        pass.onclick = function() {copyToClip(this)};
         passDiv.appendChild(pass)
 
     }else{
@@ -1045,7 +1071,7 @@ ipcRenderer.on('new:discordMessage', function(e, messageInfo){
             var linkWrap = document.createElement('a');
             linkWrap.classList.add('detectedLink')
             linkWrap.onclick = function() {openNormalLink(this)};
-            link.innerText = messageInfo.links[i]
+            link.innerHTML = messageInfo.links[i]
             linkWrap.appendChild(link)
             linkDiv.appendChild(linkWrap)
           }

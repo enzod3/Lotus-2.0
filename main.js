@@ -14,7 +14,8 @@ var opn = require('opn');
 const console = require("console");
 const fetch = require("node-fetch");
 var opn = require('opn');
-
+const clipboardy = require('clipboardy');
+var isWin = process.platform === "win32";
 
 //const bodyParser = require('body-parser');
 
@@ -149,6 +150,24 @@ ipcMain.on('newKey',function(e, key){
     console.log(key)
 })
 
+var getClipboard = function(func) {
+    exec('/usr/bin/xclip -o -selection clipboard', function(err, stdout, stderr) {
+      if (err || stderr) return func(err || new Error(stderr));
+      func(null, stdout);
+    });
+  };
+
+
+
+function copy(message){
+    clipboardy.writeSync(message)
+}
+
+
+ipcMain.on('copy:text', function(e,text){
+    console.log("copied "+text)
+    copy(text)
+})
 
 
 
@@ -648,14 +667,18 @@ function startDiscordMonitor(Token) {
                     messageInfo.name = msg.author.username
                     messageInfo.username = msg.author.username+'#'+msg.author.discriminator
                     messageInfo.content = content
-                    messageInfo.pass = undefined
+                    let possiblePass = getPassword(content)
+                    if(possiblePass != ''){
+                        messageInfo.pass = possiblePass
+                    }else{
+                        messageInfo.pass = undefined
+                    }
                     let possibleLinks = detectLinks(content)
                     if(possibleLinks != null){
                         messageInfo.links = possibleLinks
                     }else{
                         messageInfo.links = undefined
                     }
-
                     console.log(messageInfo)
                     mainWindow.webContents.send('new:discordMessage',messageInfo)
                     
@@ -678,78 +701,6 @@ function startDiscordMonitor(Token) {
 }
 
 
-
-
-
-
-function mainDiscord(){
-    if (settings.openLinks == true) {
-        try {
-            EmbedCheck = msg.embeds[0].title
-            contentArray = []
-            contentArray.push(msg.embeds[0].description)
-            iterate = true
-            while (iterate == true) {
-                try {
-                    var content = msg.embeds[0].fields[x].value
-                    contentArray.push(content)
-                } catch {
-                    iterate = false
-                }
-            }
-
-            try {
-                contentArray.push(msg.embeds[0].url)
-            } catch {
-                embedurl = undefined
-            }
-
-            var content = contentArray.join(' ');
-            notEditedContent = content
-            console.log(content)
-
-        } catch (error) {
-
-            content = msg.content
-            notEditedContent = content
-        }
-
-        if (ChannelLinks.includes(channelID)) {
-            openLinks(content, msg)
-
-        }
-    }
-    if (discordJoining == false) {
-        channelID = parseInt(msg.channel.id)
-        if (ChannelLinks.includes(channelID)) {
-            console.log("Running")
-            try {
-                EmbedCheck = msg.embeds[0].title
-                contentArray = []
-                contentArray.push(msg.embeds[0].description)
-                iterate = true
-                while (iterate == true) {
-                    try {
-                        var content = msg.embeds[0].fields[x].value
-                        contentArray.push(content)
-                    } catch {
-                        iterate = false
-                    }
-                }
-                try {
-                    contentArray.push(msg.embeds[0].url)
-                } catch {
-                    embedurl = undefined
-                }
-                var content = contentArray.join(' ');
-                console.log(content)
-            } catch (error) {
-                content = msg.content
-            }
-            discordJoiner(content, msg)
-        }
-    }
-}
 
 
 
@@ -789,6 +740,36 @@ function detectLinks(message){
     }
 }
 
+
+
+
+
+
+function getPassword(description) {
+	var keywords = ['Password', 'Pass', 'Password Is', 'Password:', 'pass', 'password:', 'password is', 'PW', 'PW:', 'pW', 'Pw', 'pw', 'pw:', 'Password Below', 'Password=', 'password=', 'Password =', 'password =']
+	for (let x of keywords) {
+		var fields = description.split(x);
+		//console.log("Running For Password: "+fields)
+		if (fields[1] != undefined) {
+			fields.shift()
+			var spacedpw = fields[0]
+			var spacedpw = spacedpw.split(/\n/g)
+			var spacedpw = spacedpw[0]
+			var unspacedpw = spacedpw.replace(/ /g, '')
+			var unspacedpw = unspacedpw.replace(":", '')
+			var unspacedpw = unspacedpw.replace("word", '')
+			var unspacedpw = unspacedpw.replace("pass", '')
+			var unspacedpw = unspacedpw.replace("is", '')
+			var unspacedpw = unspacedpw.replace("Is", '')
+			var unspacedpw = unspacedpw.replace("IS", '')
+			unspacedpw = unspacedpw.replace('?', '');
+			var unspacedpw = unspacedpw.replace("=", '')
+			var password = unspacedpw
+			return password
+			break
+		}
+	}
+}
 
 
 
