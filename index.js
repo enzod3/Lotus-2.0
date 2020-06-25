@@ -1,4 +1,5 @@
 const electron = require('electron');
+const { ipcMain } = require('electron');
 var shell = require('electron').shell;
 const {ipcRenderer} = electron;
 window.$ = window.jQuery = require("./plugins/jquery.js")
@@ -661,6 +662,7 @@ $("#saveSettingsSubmit").on('click', function(){
     settings.solveMath = $(".linkSettingsOnSwitch")[1].children[0].checked
     settings.openLinks = $(".linkSettingsOnSwitch")[2].children[0].checked
     settings.appendLinkPass = $(".linkSettingsOnSwitch")[3].children[0].checked
+    settings.joinDiscords = $(".linkSettingsOnSwitch")[4].children[0].checked
     console.log(settings)
     ipcRenderer.send('save:settings', settings)
 })
@@ -683,7 +685,7 @@ ipcRenderer.on('load:settings', function(e, settings){
     document.getElementsByClassName("linkSettingsOnSwitch")[1].children[0].checked = settings.solveMath
     document.getElementsByClassName("linkSettingsOnSwitch")[2].children[0].checked = settings.openLinks
     document.getElementsByClassName("linkSettingsOnSwitch")[3].children[0].checked = settings.appendLinkPass
-
+    document.getElementsByClassName("linkSettingsOnSwitch")[4].children[0].checked = settings.joinDiscords
 
 })
 //document.getElementsByClassName("webhookInputBox")[0].value = 'dfdgsf'
@@ -856,7 +858,7 @@ function processKeyword(e){
     keyword = document.getElementsByClassName("keywordsInputBox")[0].value
     document.getElementsByClassName("keywordsInputBox")[0].value = ''
     if(keyword != ''){
-        keyword = keyword.toLowerCase()
+        keyword = keyword.toLowerCase().trim()
         if(keyword.charAt(0) == "+"){
             ipcRenderer.send('add:positiveKeyword',keyword.substring(1))
             addPositiveKeyword(keyword.substring(1))
@@ -946,3 +948,130 @@ function startDiscordToggle(e){
 }
 
 
+
+
+ipcRenderer.on('new:discordMessage', function(e, messageInfo){
+
+    var messagesTable = document.getElementsByClassName("messageTable")[0].getElementsByTagName('tbody')[0];
+    var tr  = messagesTable.insertRow(0);
+
+    tr.classList.add('messageRowBackground')
+
+
+    
+    /*--------------First Cell----------------*/
+
+    var infoCell = tr.insertCell();
+
+    var infoDiv = document.createElement('div');
+    infoDiv.classList.add('messageInfoCellContainer');
+    var userInfoDiv = document.createElement('div');
+    userInfoDiv.classList.add('messageUserInfo');
+    
+    var pfpimg = document.createElement('img');
+    pfpimg.classList.add('Image');
+    pfpimg.src = messageInfo.userPfp;
+    userInfoDiv.appendChild(pfpimg)
+
+    var innerInfoDiv = document.createElement('div');
+    var displayName = document.createElement('p');
+    displayName.innerText = messageInfo.name
+    displayName.id = "shownUsername"
+    innerInfoDiv.appendChild(displayName)
+    var shownName = document.createElement('p');
+    shownName.innerText=messageInfo.username;
+
+    innerInfoDiv.appendChild(shownName);
+    userInfoDiv.appendChild(innerInfoDiv)
+
+    
+    infoDiv.appendChild(userInfoDiv)
+    infoCell.appendChild(infoDiv)
+
+    /*-----------------------------------------*/
+
+
+
+
+
+    /*----------------Second Cell-----------------*/
+
+
+    var messageCell = tr.insertCell();
+
+    var messageText = document.createElement('p');
+    messageText.classList.add('messageMessage')
+    messageText.innerText = messageInfo.content;
+    messageCell.appendChild(messageText)
+
+
+
+    /*-----------------------------------------*/
+
+
+
+
+    /*----------------Third Cell-----------------*/
+
+
+    var detectedCell = tr.insertCell();
+
+    var detectedDiv = document.createElement('div');
+    var passDiv = document.createElement('div');
+    detectedDiv.classList.add('detectedMessage')
+
+    var passTitle = document.createElement('h5')
+    passTitle.innerText = 'Detected Passwords:'
+    passDiv.appendChild(passTitle)
+    var pass = document.createElement('p');
+    if(messageInfo.pass != undefined){
+        pass.innerText = messageInfo.pass;
+        passDiv.appendChild(pass)
+
+    }else{
+        pass.innerText = 'NONE';
+        passDiv.appendChild(pass)
+    }
+    
+    detectedDiv.appendChild(passDiv)
+    
+    var linkDiv = document.createElement('div');
+    var linkTitle = document.createElement('h5')
+    linkTitle.innerText = 'Detected Links:'
+    linkDiv.appendChild(linkTitle)
+    if(messageInfo.links != undefined){
+        for (i = 0; i < messageInfo.links.length; i++) {
+            var link = document.createElement('p');
+            var linkWrap = document.createElement('a');
+            linkWrap.classList.add('detectedLink')
+            linkWrap.onclick = function() {openNormalLink(this)};
+            link.innerText = messageInfo.links[i]
+            linkWrap.appendChild(link)
+            linkDiv.appendChild(linkWrap)
+          }
+    }else{
+        var link = document.createElement('p');
+        link.innerText = 'NONE';
+        linkDiv.appendChild(link)
+    }
+    detectedDiv.appendChild(linkDiv)
+
+    detectedCell.appendChild(detectedDiv)
+    /*-----------------------------------------*/
+
+
+
+
+    //tweetsTable.appendChild(tr)
+
+
+
+
+
+
+})
+
+
+function clearMessageTable(){
+    $('.messageRowBackground').remove()
+}

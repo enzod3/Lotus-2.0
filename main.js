@@ -13,6 +13,7 @@ const Eris = require("eris");
 var opn = require('opn');
 const console = require("console");
 const fetch = require("node-fetch");
+var opn = require('opn');
 
 
 //const bodyParser = require('body-parser');
@@ -30,7 +31,7 @@ discordJoining = true
 var ChannelLinks = [] // list of channel ID's for link opening
 var PositiveKeywords = [] // List of positive keywords
 var NegativeKeywords = [] // List of negative keywords
-
+var oldLinks = []
 
 var botInstanceLinks //Self-bot instance. 
 var botInstanceNitros
@@ -70,7 +71,8 @@ function mainWindow(){
                 passwordCopy: false,
                 solveMath: false,
                 openLinks: false,
-                appendLinkPass: false
+                appendLinkPass: false,
+                joinDiscords: false
               }   
               storage.set('settings', data)
               saveSettings(data)
@@ -463,7 +465,7 @@ function startTwitter(handle){
 
 
 function stopMonitorInstance(handle){
-    if(instances[handle] != undefined|instances[handle].info!=undefined){
+    if(instances[handle] != undefined||instances[handle].info!=undefined){
         console.log('Cleared @'+handle )
         clearInterval(instances[handle].info)
         instances[handle].oldIDs = []
@@ -620,7 +622,7 @@ function startDiscordMonitor(Token) {
             }
         }
         */
-       if(ChannelLinks.includes(channelID)){
+       if(ChannelLinks.includes(channelID) || ChannelLinks.includes('all')){
             includesPositives = false
             for (i = 0; i < PositiveKeywords.length; i++) {
                 if((content.toLowerCase()).includes(PositiveKeywords[i])){
@@ -633,11 +635,34 @@ function startDiscordMonitor(Token) {
                     includesNegatives = true
                 }
             }
-            console.log(includesPositives,includesNegatives)
             if(includesPositives || PositiveKeywords.length == 0){
-                if(NegativeKeywords != true){
+                if(includesNegatives != true){
                     //mainDiscord()
-                    console.log(content)
+                    messageInfo = {}
+                    if(msg.author.avatar == null){
+                        messageInfo.userPfp = "https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png"
+                    }else{
+                        messageInfo.userPfp = `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.webp?size=256`
+                    }
+                    
+                    messageInfo.name = msg.author.username
+                    messageInfo.username = msg.author.username+'#'+msg.author.discriminator
+                    messageInfo.content = content
+                    messageInfo.pass = undefined
+                    let possibleLinks = detectLinks(content)
+                    if(possibleLinks != null){
+                        messageInfo.links = possibleLinks
+                    }else{
+                        messageInfo.links = undefined
+                    }
+
+                    console.log(messageInfo)
+                    mainWindow.webContents.send('new:discordMessage',messageInfo)
+                    
+                    if(settings.openLinks){
+                        openLinks(content)
+                    }
+                    
                 }
         }
         
@@ -725,6 +750,45 @@ function mainDiscord(){
         }
     }
 }
+
+
+
+
+
+function openLinks(message){
+    let re = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gm
+    if(message.match(re) != null){
+        for (index = 0; index < message.match(re).length; index++) { 
+            var link = message.match(re)[index]
+            if(oldLinks.length < 3){
+                if(oldLinks.includes(link) == false){
+                     opn(link); 
+                     oldLinks.push(link)
+                }
+            }else{
+                oldLinks.shift()
+                if(oldLinks.includes(link)==false){
+                    opn(link); 
+                    oldLinks.push(link)
+                }
+            }
+        } 
+    }
+}
+
+
+
+
+
+function detectLinks(message){
+    let re = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gm
+    if(message.match(re) != null){
+        return message.match(re)
+    }else{
+        return null
+    }
+}
+
 
 
 

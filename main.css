@@ -896,7 +896,10 @@ h3{
 }
 
 
-
+.Image{
+    width: 34px;
+    height: 34px;
+}
 
 .innerPopup{
     z-index: 5;
@@ -2466,6 +2469,8 @@ h3{
     z-index: 5;
     position: absolute;
     width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 
@@ -2499,7 +2504,8 @@ h3{
 .messageListOuter{
     margin-top: 8px;
     width: 100%;
-    height: calc(100% - 79px);
+    height: calc(100% - 68px);
+
 }
 
 .messageListInner{
@@ -2507,7 +2513,7 @@ h3{
     margin-left: 1%;
     margin-top: 16px;
     overflow: auto;
-    height: 600px;
+    height: 100%;
     position: relative;
     /*background-color: #E1629C;*/
 }
@@ -2523,7 +2529,6 @@ h3{
     position: absolute;
     width: 98%;
     margin-left: 1%;
-    z-index: 6;
     height: 100%;
 
 }
@@ -2618,6 +2623,19 @@ h3{
     padding: 12px;
     display: flex;
     justify-content: space-between;
+}
+
+.detectedMessage div:first-child{ 
+    width: 108px;
+}
+.detectedMessage div:last-child{ 
+    width: 85px;
+}
+
+
+.detectedMessage p {
+    overflow-wrap: break-word;
+    word-break: break-all;
 }
 
 
@@ -2845,6 +2863,30 @@ h3{
     display: inline-block;
     cursor: pointer;
 }
+
+
+#nitroClear:hover{
+    opacity: .8;
+}
+
+
+
+#messageClear{
+    vertical-align: top;
+    margin-top: 18px;
+    margin-right:16px;
+    float: right;
+    display: inline-block;
+    cursor: pointer;
+}
+
+
+#messageClear:hover{
+    opacity: .8;
+}
+
+
+
 
 .nitroClaimListOuter{
     margin-top: 8px;
@@ -3552,12 +3594,9 @@ h3{
 
 
 
-
-
-
 .linkSettingsContainer{
     margin-top: 90px;
-    grid-row: 1 / 19;
+    grid-row: 1 / 21;
     grid-column: 27 /41;
     position: relative;
 }
@@ -3628,8 +3667,8 @@ h3{
 
 
 .buttonStylingSaveSettings{
-    margin-top: 166px;
-    margin-left: 970px;
+    margin-top: 196px;
+    margin-left: 960px;
     position: absolute;
     align-content: center;
     text-align: center;

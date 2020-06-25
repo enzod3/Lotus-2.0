@@ -445,6 +445,7 @@
                         <span class="slider round"></span>
                     </label>
                     <p id="messagesOnLabel">Monitoring Enabled</p>
+                    <p id="messageClear" onclick="clearMessageTable()">Clear all</p>
 
                     <div class="line"></div>
                     <div class="messageListOuter">
@@ -455,12 +456,12 @@
                                     <col width="55%"/>
                                     <col width="30%"/>
                                     </colgroup>
-                                
+                                <!--
                                 <tr class="messageRowBackground">
                                     <td>
                                         <div class="messageInfoCellContainer">
                                             <div class="messageUserInfo">
-                                                <img class="twitterImage" src="images/defaultPicture.jpg">
+                                                <img class="Image" src="images/defaultPicture.jpg">
                                                 <div>
                                                     <p id="shownUsername">Cybersole</p>
                                                     <p>@Cybersole</p>
@@ -474,11 +475,11 @@
                                     <td>
                                         <div class="detectedMessage">
                                             <div><h5>Detected Passwords:</h5><p>NONE</p></div>
-                                            <div><h5>Detected Links:</h5><a class="twitterLink" onclick="openNormalLink(this)"></a><p>NONE</p></div>
+                                            <div><h5>Detected Links:</h5><a class="detectedLink" onclick="openNormalLink(this)"></a><p>NONE</p></div>
                                         </div>
                                     </td>
                                 </tr>
-                                
+                                -->
                                 <tr>
 
                                 </tr>
@@ -766,6 +767,7 @@
                             <span class="slider round"></span>
                         </label>
                         <p id="linkSettingsOnSwitchLabel">Auto-Solve Math</p>
+                        
                         <p id="settingsLabel">Open Links</p>
                         <p id="settingsInfoLabel">All detected links will be automatically opened.</p>
                         <label class="switch linkSettingsOnSwitch">
@@ -773,6 +775,7 @@
                             <span class="slider round"></span>
                         </label>
                         <p id="linkSettingsOnSwitchLabel">Open Links</p>
+
                         <p id="settingsLabel">Append Password to Link</p>
                         <p id="settingsInfoLabel">All detected passwords will be wil be appended to link.</p>
                         <label class="switch linkSettingsOnSwitch">
@@ -780,6 +783,15 @@
                             <span class="slider round"></span>
                         </label>
                         <p id="linkSettingsOnSwitchLabel">Append Password to Link</p>
+
+                        <p id="settingsLabel">Join Discords</p>
+                        <p id="settingsInfoLabel">Detected discord invites will be joined</p>
+                        <label class="switch  linkSettingsOnSwitch">
+                            <input type="checkbox" name="nitroClaimOn">
+                            <span class="slider round"></span>
+                        </label>
+                        <p id="linkSettingsOnSwitchLabel">Attempt to join discords</p>
+
 
    
                     </div>
