@@ -649,7 +649,7 @@ accountInputBackground.addEventListener("click",function(e){
 })
 
 
-
+document.getElementById("autoSolveMathInput").disabled = true;
 
 
 var channelInputBackground = document.getElementsByClassName("popupAddChannelBackground")[0];

@@ -15,6 +15,7 @@ const console = require("console");
 const fetch = require("node-fetch");
 var opn = require('opn');
 const clipboardy = require('clipboardy');
+const { start } = require('repl');
 var isWin = process.platform === "win32";
 
 //const bodyParser = require('body-parser');
@@ -590,60 +591,40 @@ ipcMain.on('remove:negativeKeyword',function(e, keyword){
 
 ipcMain.on('start:discordMonitoring', function(e){
     startDiscordMonitor(settings.monitorToken)
+    startBot = true
 })
 
 
-
 function startDiscordMonitor(Token) {
-	// Creates Bot Instance with token
 	var bot = new Eris(Token);
-	// Whenever a message is created, checks if message is in channel ID
 	bot.on("messageCreate", (msg) => {
         channelID = msg.channel.id
-
-        /*
-        if(ChannelLinks.includes(channelID)){
-            if(noNegativeKeywords && noPositiveKeywords){
-                mainDiscord()
-            }
-            else if(noNegativeKeywords && noPositiveKeywords == false){
-                for (i = 0; i < cars.negat; i++) {
-                    text += cars[i] + "<br>";
-                }
-            }
-        }
-        */
-       if(ChannelLinks.includes(channelID) || ChannelLinks.includes('all')){
+        if(ChannelLinks.includes(channelID) || ChannelLinks.includes('all')){
             try {
                 EmbedCheck = msg.embeds[0].title
                 contentArray = []
+                contentArray.push(msg.content)
                 contentArray.push(msg.embeds[0].description)
                 iterate = true
+                fieldIndex = 0
                 while (iterate == true) {
                     try {
-                        var content = msg.embeds[0].fields[x].value
-                        contentArray.push(content)
+                        var content = msg.embeds[0].fields[fieldIndex].value
+                        contentArray.push(content )
                     } catch {
                         iterate = false
                     }
+                    fieldIndex += 1
                 }
-
                 try {
                     contentArray.push(msg.embeds[0].url)
                 } catch {
                     embedurl = undefined
                 }
-
                 var content = contentArray.join(' ');
-                notEditedContent = content
-
             } catch (error) {
-
                 content = msg.content
-                notEditedContent = content
             }
-
-
             includesPositives = false
             for (i = 0; i < PositiveKeywords.length; i++) {
                 if((content.toLowerCase()).includes(PositiveKeywords[i])){
@@ -660,47 +641,43 @@ function startDiscordMonitor(Token) {
                 if(includesNegatives != true){
                     //mainDiscord()
                     messageInfo = {}
-                    if(msg.author.avatar == null){
-                        messageInfo.userPfp = "https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png"
-                    }else{
-                        messageInfo.userPfp = `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.webp?size=256`
-                    }
-                    
+                    if(msg.author.avatar == null){messageInfo.userPfp = "https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png"}
+                    else{messageInfo.userPfp = `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.webp?size=256`}
                     messageInfo.name = msg.author.username
                     messageInfo.username = msg.author.username+'#'+msg.author.discriminator
                     messageInfo.content = content
+
                     let possiblePass = getPassword(content)
-                    if(possiblePass != ''){
-                        messageInfo.pass = possiblePass
-                    }else{
-                        messageInfo.pass = undefined
-                    }
+                    if(possiblePass != ''){messageInfo.pass = possiblePass}
+                    else{messageInfo.pass = undefined}
+
                     let possibleLinks = detectLinks(content)
-                    if(possibleLinks != null){
-                        messageInfo.links = possibleLinks
-                    }else{
-                        messageInfo.links = undefined
-                    }
+                    if(possibleLinks != null){messageInfo.links = possibleLinks}
+                    else{messageInfo.links = undefined}
                     console.log(messageInfo)
                     mainWindow.webContents.send('new:discordMessage',messageInfo)
-                    
+                    if(settings.passwordCopy){
+                        if(possiblePass != undefined){
+                            copy(possiblePass)
+                        }
+                    }
                     if(settings.openLinks){
                         openLinks(content)
-                    }
-                    
+                    }     
                 }
         }
-        
-        
-
        }
-
-
-
-
 	})
-	botInstanceLinks = bot.connect()
+    botInstanceLinks = bot.connect()
+    ipcMain.on('stop:discordMonitoring', function(e){
+        try{stopMain()}catch(e){console.log(e)}
+    })
+    
+    function stopMain() {
+        bot.disconnect()
+    }    
 }
+
 
 
 
@@ -748,28 +725,36 @@ function detectLinks(message){
 
 
 function getPassword(description) {
+    description = description.split(' ')
 	var keywords = ['Password', 'Pass', 'Password Is', 'Password:', 'pass', 'password:', 'password is', 'PW', 'PW:', 'pW', 'Pw', 'pw', 'pw:', 'Password Below', 'Password=', 'password=', 'Password =', 'password =']
 	for (let x of keywords) {
-		var fields = description.split(x);
-		//console.log("Running For Password: "+fields)
-		if (fields[1] != undefined) {
-			fields.shift()
-			var spacedpw = fields[0]
-			var spacedpw = spacedpw.split(/\n/g)
-			var spacedpw = spacedpw[0]
-			var unspacedpw = spacedpw.replace(/ /g, '')
-			var unspacedpw = unspacedpw.replace(":", '')
-			var unspacedpw = unspacedpw.replace("word", '')
-			var unspacedpw = unspacedpw.replace("pass", '')
-			var unspacedpw = unspacedpw.replace("is", '')
-			var unspacedpw = unspacedpw.replace("Is", '')
-			var unspacedpw = unspacedpw.replace("IS", '')
-			unspacedpw = unspacedpw.replace('?', '');
-			var unspacedpw = unspacedpw.replace("=", '')
-			var password = unspacedpw
-			return password
-			break
-		}
+        for(let desItem of description){
+            var fields = desItem.split(x);
+            //console.log("Running For Password: "+fields)
+            if (fields[1] != undefined) {
+                var desIndex = description.indexOf(desItem)
+                spacedpw = description[desIndex+1]
+                console.log(description, desIndex)
+                /*
+                fields.shift()
+                var spacedpw = fields[0]
+                var spacedpw = spacedpw.split(/\n/g)
+                var spacedpw = spacedpw[0]
+                */
+                var unspacedpw = spacedpw.replace(/ /g, '')
+                var unspacedpw = unspacedpw.replace(":", '')
+                var unspacedpw = unspacedpw.replace("word", '')
+                var unspacedpw = unspacedpw.replace("pass", '')
+                var unspacedpw = unspacedpw.replace("is", '')
+                var unspacedpw = unspacedpw.replace("Is", '')
+                var unspacedpw = unspacedpw.replace("IS", '')
+                unspacedpw = unspacedpw.replace('?', '');
+                var unspacedpw = unspacedpw.replace("=", '')
+                var password = unspacedpw
+                return password
+                break
+            }
+        }
 	}
 }
 

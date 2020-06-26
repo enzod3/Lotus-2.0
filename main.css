@@ -937,6 +937,7 @@ h3{
     border: none;
     box-shadow: inset -3px -3px 3px 0px rgba(255,255,255,0.1), inset 3px 3px 3px 0px rgba(0,0,0,0.15);
     padding-left: 16px;
+    padding-right: 8px;
     caret-color: #5E7689;
     color: #5E7689;
     font-size: 12px;
@@ -1768,34 +1769,9 @@ h3{
 
 
 
-.channelInputBox{
-    width: 243px;
-    height: 33px;
-    background-color: #243442;
-    border-radius: 10px;
-    outline: none;
-    border: none;
-    box-shadow: inset -3px -3px 3px 0px rgba(255,255,255,0.1), inset 3px 3px 3px 0px rgba(0,0,0,0.15);
-    padding-left: 16px;
-    caret-color: #5E7689;
-    color: #5E7689;
-    font-size: 12px;
-
-}
-
-#channelInputBox::-webkit-input-placeholder{
-    color:#5E7689;
-    font-size: 12px;
-}
 
 
 
-.buttonStylingSubmitChannel{
-    margin-left: -150px;
-    position: relative;
-    align-content: center;
-    text-align: center;
-}
 
 #addChannelSubmit{
     position: absolute;
@@ -1922,13 +1898,14 @@ h3{
     border: none;
     box-shadow: inset -3px -3px 3px 0px rgba(255,255,255,0.1), inset 3px 3px 3px 0px rgba(0,0,0,0.15);
     padding-left: 16px;
+    padding-right: 8px;
     caret-color: #5E7689;
     color: #5E7689;
     font-size: 12px;
 
 }
 
-#ChannelInputBox::-webkit-input-placeholder{
+#channelInputBox::-webkit-input-placeholder{
     color:#5E7689;
     font-size: 12px;
 }
@@ -2236,6 +2213,7 @@ h3{
     border: none;
     box-shadow: inset -3px -3px 3px 0px rgba(255,255,255,0.1), inset 3px 3px 3px 0px rgba(0,0,0,0.15);
     padding-left: 16px;
+    padding-right: 8px;
     caret-color: #5E7689;
     color: #5E7689;
     font-size: 12px;
@@ -3404,9 +3382,10 @@ h3{
     border: none;
     box-shadow: inset -3px -3px 3px 0px rgba(255,255,255,0.1), inset 3px 3px 3px 0px rgba(0,0,0,0.15);
     padding-left: 16px;
+    padding-right: 8px;
     caret-color: #5E7689;
     color: #5E7689;
-    font-size: 12px;
+    font-size: 10px;
     margin-left: 4%;
     margin-top:16px;
 
@@ -3571,9 +3550,10 @@ h3{
     border: none;
     box-shadow: inset -3px -3px 3px 0px rgba(255,255,255,0.1), inset 3px 3px 3px 0px rgba(0,0,0,0.15);
     padding-left: 16px;
+    padding-right: 8px;
     caret-color: #5E7689;
     color: #5E7689;
-    font-size: 12px;
+    font-size: 10px;
     margin-left: 4%;
     margin-top:16px;
     margin-bottom: 10px;
@@ -3588,9 +3568,10 @@ h3{
     border: none;
     box-shadow: inset -3px -3px 3px 0px rgba(255,255,255,0.1), inset 3px 3px 3px 0px rgba(0,0,0,0.15);
     padding-left: 16px;
+    padding-right: 8px;
     caret-color: #5E7689;
     color: #5E7689;
-    font-size: 12px;
+    font-size: 10px;
     margin-left: 4%;
     margin-top:16px;
 
@@ -3675,6 +3656,11 @@ h3{
     margin-top: 16px;
     margin-left: 15px;
 }
+
+#autoSolveMathSwitch span{
+    cursor: not-allowed;
+}
+
 
 #linkSettingsOnSwitchLabel{
     vertical-align: top;
