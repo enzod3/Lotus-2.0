@@ -10,11 +10,26 @@
   "author": "enz#0001",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.2",
+    "cheerio": "^1.0.0-rc.3",
     "clipboard": "^2.0.6",
     "clipboardy": "^2.3.0",
     "cloudscraper": "^4.6.0",
+    "console": "^0.7.2",
     "copy-to-clipboard": "^3.3.1",
-    "electron": "^9.0.1",
-    "electron-json-storage": "^4.1.8"
+    "electron": "^9.0.5",
+    "electron-json-storage": "^4.1.8",
+    "eris": "^0.13.3",
+    "fs": "0.0.1-security",
+    "http": "0.0.1-security",
+    "https": "^1.0.0",
+    "install": "^0.13.0",
+    "node-fetch": "^2.6.0",
+    "npm": "^6.14.5",
+    "opn": "^6.0.0",
+    "os": "^0.1.1",
+    "path": "^0.12.7",
+    "request": "^2.88.2",
+    "url": "^0.11.0"
   }
 }
