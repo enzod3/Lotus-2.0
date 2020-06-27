@@ -527,8 +527,9 @@ function proccessAccount(e){
     
     var profileCell = tr.insertCell()
     */
-
-    ipcRenderer.send('newAccount',handle)
+    if(handle != ""){
+        ipcRenderer.send('newAccount',handle)
+    }
     document.getElementsByClassName("accountInputBox")[0].value = ""
     $( "#twitterPreviewScript" ).remove()
     $( ".twitter-timeline" ).remove()
@@ -971,6 +972,22 @@ function startDiscordToggle(e){
     }
 }
 
+function openMessageLink(e){
+    var link = e.children[1].href
+    console.log(link)
+    if(link != ''){
+        shell.openExternal(link);
+    }
+
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -1005,7 +1022,12 @@ ipcRenderer.on('new:discordMessage', function(e, messageInfo){
     var shownName = document.createElement('p');
     shownName.innerText=messageInfo.username;
 
+    var messageLink = document.createElement('a')
+    messageLink.href = messageInfo.messageSource;
+    userInfoDiv.appendChild(messageLink)
+
     innerInfoDiv.appendChild(shownName);
+    userInfoDiv.onclick = function() {openMessageLink(this)};
     userInfoDiv.appendChild(innerInfoDiv)
 
     
@@ -1013,8 +1035,6 @@ ipcRenderer.on('new:discordMessage', function(e, messageInfo){
     infoCell.appendChild(infoDiv)
 
     /*-----------------------------------------*/
-
-
 
 
 
@@ -1031,8 +1051,6 @@ ipcRenderer.on('new:discordMessage', function(e, messageInfo){
 
 
     /*-----------------------------------------*/
-
-
 
 
     /*----------------Third Cell-----------------*/
@@ -1084,20 +1102,241 @@ ipcRenderer.on('new:discordMessage', function(e, messageInfo){
 
     detectedCell.appendChild(detectedDiv)
     /*-----------------------------------------*/
-
-
-
-
     //tweetsTable.appendChild(tr)
-
-
-
-
-
 
 })
 
 
 function clearMessageTable(){
     $('.messageRowBackground').remove()
+}
+
+
+
+
+
+function startNitroToggle(e){
+    if(e.checked) {
+        //console.log('start ' + handle)
+        ipcRenderer.send('start:nitroMonitoring')
+    } else {
+        ipcRenderer.send('stop:nitroMonitoring')
+
+    }
+}
+
+function clearNitroTable(){
+    $('.nitroClaimRowBackground').remove()
+}
+
+
+
+
+
+
+
+ipcRenderer.on('new:nitroMessage', function(e, nitroInfo){
+
+    var nitroTable = document.getElementsByClassName("nitroClaimTable")[0].getElementsByTagName('tbody')[0];
+    var tr  = nitroTable.insertRow(0);
+
+    tr.classList.add('nitroClaimRowBackground')
+
+
+    
+    /*--------------First Cell----------------*/
+
+    var infoCell = tr.insertCell();
+
+    var infoDiv = document.createElement('div');
+    infoDiv.classList.add('nitroClaimInfoCellContainer');
+    var userInfoDiv = document.createElement('div');
+    userInfoDiv.classList.add('nitroClaimUserInfo');
+    
+    var pfpimg = document.createElement('img');
+    pfpimg.classList.add('Image');
+    pfpimg.src = nitroInfo.userPfp;
+    userInfoDiv.appendChild(pfpimg)
+
+    var outerInfoDiv = document.createElement('div');
+    var userWord = document.createElement('p');
+    userWord.innerText = "USER"
+    userWord.id = "userWord"
+    outerInfoDiv.append(userWord)
+
+    var innerInfoDiv = document.createElement('div');
+    innerInfoDiv.id = "nitroGroupedInfo"
+    var displayName = document.createElement('p');
+    displayName.innerText = nitroInfo.name
+    displayName.id = "shownUsername"
+    innerInfoDiv.appendChild(displayName)
+    var shownName = document.createElement('p');
+    shownName.innerHTML = "&nbsp;"+nitroInfo.username;
+    shownName.id = "nitroUsername"
+
+    var messageLink = document.createElement('a')
+    messageLink.href = nitroInfo.messageSource;
+    userInfoDiv.appendChild(messageLink)
+
+    innerInfoDiv.appendChild(shownName);
+    userInfoDiv.onclick = function() {openMessageLink(this)};
+    outerInfoDiv.appendChild(innerInfoDiv)
+    userInfoDiv.appendChild(outerInfoDiv)
+
+    
+    infoDiv.appendChild(userInfoDiv)
+    infoCell.appendChild(infoDiv)
+
+    /*-----------------------------------------*/
+
+
+
+        
+    /*--------------Second Cell----------------*/
+
+    var serverCell = tr.insertCell();
+
+    var infoDiv = document.createElement('div');
+    infoDiv.classList.add('nitroClaimInfoCellContainer');
+    var userInfoDiv = document.createElement('div');
+    userInfoDiv.classList.add('nitroClaimUserInfo');
+    
+    var pfpimg = document.createElement('img');
+    pfpimg.classList.add('Image');
+    pfpimg.src = nitroInfo.serverImgLink;
+    userInfoDiv.appendChild(pfpimg)
+
+    var outerInfoDiv = document.createElement('div');
+    var userWord = document.createElement('p');
+    userWord.innerText = "SERVER"
+    userWord.id = "userWord"
+    outerInfoDiv.append(userWord)
+
+    var innerInfoDiv = document.createElement('div');
+    innerInfoDiv.id = "nitroGroupedInfo"
+    var displayName = document.createElement('p');
+    displayName.innerText = nitroInfo.server
+    displayName.id = "shownServer"
+    innerInfoDiv.appendChild(displayName)
+    var shownName = document.createElement('p');
+    shownName.innerHTML = "&nbsp;#"+nitroInfo.channel;
+    shownName.id = "nitroChannel"
+
+
+    var messageLink = document.createElement('a')
+    messageLink.href = nitroInfo.messageSource;
+    userInfoDiv.appendChild(messageLink)
+
+
+    innerInfoDiv.appendChild(shownName);
+    userInfoDiv.onclick = function() {openMessageLink(this)};
+    outerInfoDiv.appendChild(innerInfoDiv)
+    userInfoDiv.appendChild(outerInfoDiv)
+
+    
+    infoDiv.appendChild(userInfoDiv)
+    serverCell.appendChild(infoDiv)
+
+    /*-----------------------------------------*/
+
+
+
+    /*----------------Third Cell-----------------*/
+
+
+    var statusCell = tr.insertCell();
+
+    var statusDiv = document.createElement('div')
+    statusDiv.classList.add("nitroStatus")
+    if(nitroInfo.validNitro){
+        statusDiv.id = "claimedNitro"
+    }else{
+        statusDiv.id = "failedNitro"
+    }
+    var claimedTitle = document.createElement('p');
+    if(nitroInfo.validNitro){
+        claimedTitle.innerText = "Claimed Nitro! "
+        claimedTitle.id = "claimedNitroText"
+    }else{
+        claimedTitle.innerText = "Failed"
+        claimedTitle.id = "failedNitroText"
+    }
+    statusDiv.appendChild(claimedTitle)
+    statusCell.appendChild(statusDiv)
+
+
+
+    /*-----------------------------------------*/
+
+
+    /*----------------Fourth Cell-----------------*/
+
+
+    var claimTimeCell = tr.insertCell();
+
+    var statusDiv = document.createElement('div')
+    statusDiv.classList.add("nitroTime")
+    var claimedTitle = document.createElement('p');
+    claimedTitle.innerHTML = "Claimed time:&nbsp;"
+    var claimedStatus = document.createElement('p');
+    claimedStatus.innerText = nitroInfo.claimTime.toString()+"ms"
+    claimedStatus.id = "nitroClaimMS"
+
+    statusDiv.appendChild(claimedTitle)
+    statusDiv.appendChild(claimedStatus)
+    claimTimeCell.appendChild(statusDiv)
+
+
+
+    /*-----------------------------------------*/
+
+
+
+    /*----------------Fifth Cell-----------------*/
+
+
+    var dateCell = tr.insertCell();
+
+
+    var dateText = document.createElement('p');
+    dateText.innerText = nitroInfo.date
+
+    dateCell.appendChild(dateText)
+
+
+
+    /*-----------------------------------------*/
+
+
+    /*----------------Sixth Cell-----------------*/
+
+
+    var timeCell = tr.insertCell();
+
+
+    var timeText = document.createElement('p');
+    timeText.innerText = nitroInfo.time
+    timeCell.appendChild(timeText)
+    /*-----------------------------------------*/
+
+    /*----------------Seventh Cell-----------------*/
+    var detectedCell = tr.insertCell();
+    var deleteButton = document.createElement('button');
+    var deleteImg = document.createElement('img');
+    deleteImg.src = "images/close 2 light grey.png"
+    deleteButton.classList.add("deleteNitroMessage")
+    deleteButton.onclick = function() {deleteNitroMessage(this)};
+    deleteButton.appendChild(deleteImg)
+    detectedCell.appendChild(deleteButton)
+    /*-----------------------------------------*/
+
+
+})
+
+
+function deleteNitroMessage(e){
+    var nitroTable = document.getElementsByClassName("nitroClaimTable")[0].getElementsByTagName('tbody')[0];
+    var i = e.parentNode.parentNode.rowIndex;
+    //console.log(i)
+    nitroTable.deleteRow(i)
 }

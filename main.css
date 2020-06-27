@@ -2545,6 +2545,7 @@ h3{
 .messageUserInfo{
     display: flex;
     flex-direction: row;
+    cursor: pointer;
     /*margin-top: 16px;
     margin-left: 16px;*/
 }
@@ -2939,6 +2940,7 @@ h3{
 .nitroClaimUserInfo{
     display: flex;
     flex-direction: row;
+    cursor: pointer;
     /*margin-top: 16px;
     margin-left: 16px;*/
 }

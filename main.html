@@ -512,11 +512,12 @@
             <div class="nitroClaimBox" id="nitroClaimsDisplay">
                 <h3 id="nitroClaimsLabel">Discord Nitro</h3>
                 <label class="switch" id="nitroClaimsOnSwitch">
-                    <input type="checkbox" name="nitroClaimOn">
+                    <input type="checkbox" name="nitroClaimOn" onclick="startNitroToggle(this)">
                     <span class="slider round"></span>
                 </label>
                 <p id="nitroClaimsOnLabel">Monitoring Enabled</p>
-                <p id="nitroClear">Clear all</p>
+                <p id="nitroClear" onclick="clearNitroTable()">Clear all</p>
+                
                 
                 <div class="line"></div>
                 <div class="nitroClaimListOuter">
@@ -531,7 +532,7 @@
                                 <col width="11%"/>
                                 <col width="11%"/>
                                 </colgroup>
-                            
+                            <!--
                             <tr class="nitroClaimRowBackground">
                                 <td>
                                     <div class="nitroClaimInfoCellContainer">
@@ -586,7 +587,7 @@
                                 <td>
                                     <div class="nitroClaimInfoCellContainer">
                                         <div class="nitroClaimUserInfo">
-                                            <img class="twitterImage" src="images/defaultPicture.jpg">
+                                            <img class="Image" src="images/defaultPicture.jpg">
                                             <div>
                                                 <p id="userWord">USER</p>
                                                 <div id="nitroGroupedInfo">
@@ -681,7 +682,7 @@
                                 <td>
                                     <button class="deleteNitroMessage" onclick="deleteNitroMessage(this)"><img src="images/close 2 light grey.png"></button>
                                 </td>
-                            </tr>
+                            </tr>-->
                             <tr>
 
                             </tr>

@@ -16,6 +16,8 @@ const fetch = require("node-fetch");
 var opn = require('opn');
 const clipboardy = require('clipboardy');
 const { start } = require('repl');
+const { settings } = require('cluster');
+const { time } = require('console');
 var isWin = process.platform === "win32";
 
 //const bodyParser = require('body-parser');
@@ -192,7 +194,6 @@ ipcMain.on('newAccount', function(e, handle){
                 const pfpLink = $('.avatar')[0].children[0].next.attribs.src
                 //console.log((($('dir-ltr')[3]).text()).replace(/\n/g, ' '))
                 mainWindow.webContents.send('new:accountRow', pfpLink, handle);
-                console.log(($(".w-mediaonebox")).find('img')[0].attribs.src)
                 
             }catch(e){
                 const pfpLink = 'https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png'
@@ -346,8 +347,11 @@ function startMonitorInstance(handle){
                     .catch((error) => {
                         instances[handle].ready = true
                             if(error.response == undefined){
-                                console.log('Timeout Breached: ' + handle)
-                                //console.log(error)
+                                if(error.status =='ECONNABORTED'){
+                                    console.log('Timeout Breached: ' + handle)
+                                }else{
+                                    console.log(error)
+                                }
                             }else{
                                 console.log(error.response.status)
                             }
@@ -440,8 +444,8 @@ function sendTweet(tweetInfo){
     var humanDateFormat = dateObject.toLocaleString("en-US", {timeZoneName: "short"})
     humanDateFormat = humanDateFormat.split(",");
 
-    date = (humanDateFormat[1]).trim()
-    time = (humanDateFormat[0]).trim()
+    var date = (humanDateFormat[1]).trim()
+    var time = (humanDateFormat[0]).trim()
     
     mainWindow.webContents.send('new:tweet', tweetInfo.pfpLink,tweetInfo.username,tweetInfo.displayName,date,time,tweetInfo.message,tweetInfo.img,tweetInfo.receivedStamp);
 
@@ -485,7 +489,7 @@ function startTwitter(handle){
 
 
 function stopMonitorInstance(handle){
-    if(instances[handle] != undefined||instances[handle].info!=undefined){
+    if(instances[handle] != undefined){
         console.log('Cleared @'+handle )
         clearInterval(instances[handle].info)
         instances[handle].oldIDs = []
@@ -515,8 +519,8 @@ function loadSettings(settings){
 }
 
 function saveSettings(settingsNew){
-    settings = settingsNew
-    console.log(settings)
+    global.settings = settingsNew
+    console.log(global.settings)
 }
 
 
@@ -590,13 +594,13 @@ ipcMain.on('remove:negativeKeyword',function(e, keyword){
 
 
 ipcMain.on('start:discordMonitoring', function(e){
-    startDiscordMonitor(settings.monitorToken)
-    startBot = true
+    startDiscordMonitor(global.settings.monitorToken)
 })
 
 
 function startDiscordMonitor(Token) {
-	var bot = new Eris(Token);
+    var bot = new Eris(Token);
+    
 	bot.on("messageCreate", (msg) => {
         channelID = msg.channel.id
         if(ChannelLinks.includes(channelID) || ChannelLinks.includes('all')){
@@ -610,7 +614,7 @@ function startDiscordMonitor(Token) {
                 while (iterate == true) {
                     try {
                         var content = msg.embeds[0].fields[fieldIndex].value
-                        contentArray.push(content )
+                        contentArray.push(content + '\n')
                     } catch {
                         iterate = false
                     }
@@ -640,15 +644,27 @@ function startDiscordMonitor(Token) {
             if(includesPositives || PositiveKeywords.length == 0){
                 if(includesNegatives != true){
                     //mainDiscord()
+                    var settings = global.settings
                     messageInfo = {}
                     if(msg.author.avatar == null){messageInfo.userPfp = "https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png"}
                     else{messageInfo.userPfp = `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.webp?size=256`}
                     messageInfo.name = msg.author.username
                     messageInfo.username = msg.author.username+'#'+msg.author.discriminator
+                    console.log(msg)
+                    try{
+                        if(msg.member != null){
+                            messageInfo.messageSource = "discord://discordapp.com/channels/"+msg.member.guild.id+"/"+msg.channel.id+"/"+msg.id
+                        }else{
+                            messageInfo.messageSource = "discord://discordapp.com/channels/@me/"+msg.channel.id+"/"+msg.id
+                        }
+                    }catch{
+                        messageInfo.messageSource = ""
+                    }
+
                     messageInfo.content = content
 
                     let possiblePass = getPassword(content)
-                    if(possiblePass != ''){messageInfo.pass = possiblePass}
+                    if(possiblePass != undefined){messageInfo.pass = possiblePass}
                     else{messageInfo.pass = undefined}
 
                     let possibleLinks = detectLinks(content)
@@ -656,13 +672,16 @@ function startDiscordMonitor(Token) {
                     else{messageInfo.links = undefined}
                     console.log(messageInfo)
                     mainWindow.webContents.send('new:discordMessage',messageInfo)
+                    if(settings.joinDiscords){
+                        discordJoiner(content)
+                    }     
                     if(settings.passwordCopy){
                         if(possiblePass != undefined){
                             copy(possiblePass)
                         }
                     }
                     if(settings.openLinks){
-                        openLinks(content)
+                        openLinks(content,possiblePass)
                     }     
                 }
         }
@@ -681,29 +700,161 @@ function startDiscordMonitor(Token) {
 
 
 
+ipcMain.on('start:nitroMonitoring', function(e){
+    startNitroMonitor(global.settings.monitorToken)
+})
+
+
+
+function startNitroMonitor(Token) {
+    var settings = global.settings
+    // Creates Bot Instance with token
+    
+	var botNitro = new Eris(Token);
+
+	// Whenever a message is created, checks if message is in channel ID
+	keys = ["discord.com/gifts/", "discord.gift/"] 
+	botNitro.on("messageCreate", (msg) => {
+        content = msg.content
+		for (let x of keys) {
+			if (content.includes(x)) {
+                if(settings.claimerTokens != []){
+                    claimToken = settings.claimerTokens[0]
+                }else{
+                    claimToken = settings.monitorToken
+                }
+				xx = content.split(x)
+                var code = 'https://ptb.discordapp.com/api/v6/entitlements/gift-codes/' + xx[1] + "/redeem"
+                var date = new Date();
+                var firstStamp = date.getTime();
+				fetch(code, {
+					"headers": {
+						"authorization": claimToken
+					},
+					"body": null,
+					"method": "POST",
+					"mode": "cors"
+				}).then(body => {
+                    nitroInfo = {}
+                    var date = new Date();
+                    var secondStamp = date.getTime();
+                    nitroInfo.claimTime = secondStamp - firstStamp
+                    if(msg.author.avatar == null){nitroInfo.userPfp = "https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png"}
+                    else{nitroInfo.userPfp = `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.webp?size=256`}
+                    nitroInfo.name = msg.author.username
+                    nitroInfo.username = msg.author.username+'#'+msg.author.discriminator
+                    try{
+                        nitroInfo.server = msg.member.guild.name
+                        nitroInfo.channel = msg.channel.name
+                        if(msg.member.guild.icon != null){
+                            nitroInfo.serverImgLink = "https://cdn.discordapp.com/icons/"+msg.member.guild.id+"/"+msg.member.guild.icon+".webp?size=256"
+                        }else{
+                            nitroInfo.serverImgLink = `https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png`
+                        }
+                    }catch{
+                        nitroInfo.server = "DM"
+                        nitroInfo.channel = "bruh in your dm"
+                        nitroInfo.serverImgLink = `https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png`
+                    }
+                    try{
+                        if(msg.member != null){
+                            nitroInfo.messageSource = "discord://discordapp.com/channels/"+msg.member.guild.id+"/"+msg.channel.id+"/"+msg.id
+                        }else{
+                            nitroInfo.messageSource = "discord://discordapp.com/channels/@me/"+msg.channel.id+"/"+msg.id
+                        }
+                    }catch{
+                        nitroInfo.messageSource = ""
+                    }
+                    console.log(body.status)
+                    console.log(claimToken)
+                    console.log(body)
+                    if(body.status == 200){
+                        nitroInfo.validNitro = true
+                    }else{
+                        nitroInfo.validNitro = false
+                    }
+                    nitroInfo.joinStatus = body.status
+
+
+                    var dateObject = new Date(parseFloat(msg.timestamp))
+                    var humanDateFormat = dateObject.toLocaleString("en-US", {timeZoneName: "short"})
+                    humanDateFormat = humanDateFormat.split(",");
+                
+                    nitroInfo.time = (humanDateFormat[1]).trim()
+                    nitroInfo.date = (humanDateFormat[0]).trim()
+                    mainWindow.webContents.send('new:nitroMessage',nitroInfo)
+                    /*
+					joinStatus = body.status
+					console.log(joinStatus)
+					nitroMessage.server = msg.member.guild.name
+					nitroMessage.channel = msg.channel.name
+                    nitroMessage.usersent = msg.author.username
+                    */
+					//sendWebhook("Nitro Redeeming", joinStatus, code)
+
+				})
+			}
+		}
+    })
+    botInstanceNitro = botNitro.connect()
+    ipcMain.on('stop:nitroMonitoring', function(e){
+        try{stopNitroMain()}catch(e){console.log(e)}
+    })
+    
+    function stopNitroMain() {
+        botNitro.disconnect()
+    }   
+}
 
 
 
 
-function openLinks(message){
+
+
+
+
+
+
+
+
+function openLinks(message, possiblePass){
+    var settings = global.settings
     let re = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gm
     if(message.match(re) != null){
         for (index = 0; index < message.match(re).length; index++) { 
             var link = message.match(re)[index]
             if(oldLinks.length < 3){
                 if(oldLinks.includes(link) == false){
-                     opn(link); 
-                     oldLinks.push(link)
+                    if(settings.appendLinkPass){
+                        if(possiblePass != undefined){
+                            opn(link + possiblePass)
+                        }else{
+                            opn(link)
+                        }
+                    }else{
+                        opn(link);
+                    }
+                    
+                    oldLinks.push(link)
                 }
             }else{
                 oldLinks.shift()
                 if(oldLinks.includes(link)==false){
-                    opn(link); 
+                    if(settings.appendLinkPass){
+                        if(possiblePass != undefined){
+                            opn(link + possiblePass)
+                        }else{
+                            opn(link)
+                        }
+                    }else{
+                        opn(link);
+                    }
                     oldLinks.push(link)
                 }
             }
         } 
     }
+
 }
 
 
@@ -725,37 +876,42 @@ function detectLinks(message){
 
 
 function getPassword(description) {
-    description = description.split(' ')
-	var keywords = ['Password', 'Pass', 'Password Is', 'Password:', 'pass', 'password:', 'password is', 'PW', 'PW:', 'pW', 'Pw', 'pw', 'pw:', 'Password Below', 'Password=', 'password=', 'Password =', 'password =']
-	for (let x of keywords) {
+    try{
+        description = description.split(' ')
+        var keywords = ['Password', 'Pass', 'Password Is', 'Password:', 'pass', 'password:', 'password is', 'PW', 'PW:', 'pW', 'Pw', 'pw', 'pw:', 'Password Below', 'Password=', 'password=', 'Password =', 'password =']
         for(let desItem of description){
-            var fields = desItem.split(x);
-            //console.log("Running For Password: "+fields)
-            if (fields[1] != undefined) {
-                var desIndex = description.indexOf(desItem)
-                spacedpw = description[desIndex+1]
-                console.log(description, desIndex)
-                /*
-                fields.shift()
-                var spacedpw = fields[0]
-                var spacedpw = spacedpw.split(/\n/g)
-                var spacedpw = spacedpw[0]
-                */
-                var unspacedpw = spacedpw.replace(/ /g, '')
-                var unspacedpw = unspacedpw.replace(":", '')
-                var unspacedpw = unspacedpw.replace("word", '')
-                var unspacedpw = unspacedpw.replace("pass", '')
-                var unspacedpw = unspacedpw.replace("is", '')
-                var unspacedpw = unspacedpw.replace("Is", '')
-                var unspacedpw = unspacedpw.replace("IS", '')
-                unspacedpw = unspacedpw.replace('?', '');
-                var unspacedpw = unspacedpw.replace("=", '')
-                var password = unspacedpw
-                return password
-                break
+            for (let x of keywords) {
+                var fields = desItem.split(x);
+                //console.log("Running For Password: "+fields)
+                tripped = false
+                if (fields[1] != undefined && tripped == false) {
+                    tripped = true
+                    var desIndex = description.indexOf(desItem)
+                    spacedpw = description[desIndex+1]
+                    /*
+                    fields.shift()
+                    var spacedpw = fields[0]
+                    var spacedpw = spacedpw.split(/\n/g)
+                    var spacedpw = spacedpw[0]
+                    */
+                    var unspacedpw = spacedpw.replace(/ /g, '')
+                    var unspacedpw = unspacedpw.replace(":", '')
+                    var unspacedpw = unspacedpw.replace("word", '')
+                    var unspacedpw = unspacedpw.replace("pass", '')
+                    var unspacedpw = unspacedpw.replace("is", '')
+                    var unspacedpw = unspacedpw.replace("Is", '')
+                    var unspacedpw = unspacedpw.replace("IS", '')
+                    unspacedpw = unspacedpw.replace('?', '');
+                    var unspacedpw = unspacedpw.replace("=", '')
+                    var password = unspacedpw
+                    return password
+                    break
+                }
             }
         }
-	}
+
+    }catch(e){console.log(e) 
+        return undefined}
 }
 
 
@@ -765,7 +921,7 @@ function getPassword(description) {
 
 
 function sendWebhook(type, status, message) {
-
+    var settings = global.settings
 	if (type == "Joined Discord") {
 
 		const webhook = require("webhook-discord")
@@ -858,6 +1014,56 @@ function sendWebhook(type, status, message) {
 
 
 
+
+
+
+
+
+
+function discordJoiner(content, msg) {
+    var settings = global.settings
+	keys = ["discord.gg/", "Discord.gg/", "discord.com/invite/", "Discord.com/invite/"]
+	contentLineSplit = content.split("\n")
+	for (let x of keys) {
+		for (let element of contentLineSplit) {
+			element = element.split(" ")
+			for (let xx of element) {
+				if (xx.includes(x)) {
+					xx = xx.split(x)
+                    invite = 'https://discordapp.com/api/v6/invites/' + xx[1]
+                    if(settings.claimerTokens != []){
+                        for (let tokenInvites of settings.claimerTokens) {
+                            fetch(invite, {
+                                "headers": {
+                                    "authorization": tokenInvites
+                                },
+                                "body": null,
+                                "method": "POST",
+                                "mode": "cors"
+                            }).then(body => {
+                                /*
+                                joinStatus = body.status
+                                console.log(joinStatus)
+                                try {
+                                    server = msg.member.guild.name
+                                    channel = msg.channel.name
+                                    usersent = msg.author.username
+                                } catch {
+                                    server = "N/A"
+                                    channel = "N/A"
+                                    usersent = msg.twitterUsername
+                                }
+                                sendWebhook("Joined Discord", joinStatus, invite)
+                                */
+                            })
+                        }
+                    }
+
+				}
+			}
+		}
+	}
+}
 
 
 
