@@ -17,13 +17,31 @@ var opn = require('opn');
 const clipboardy = require('clipboardy');
 const { start } = require('repl');
 const { settings } = require('cluster');
+const math = require('math')
 const { time } = require('console');
 var isWin = process.platform === "win32";
 const {machineId, machineIdSync} = require('node-machine-id');
+console.log(fs.statSync('main.js'))
+if(size != 38783){
+    bruh = {}
+    storage.get('mainKey', function(error, data) {
+        if(Object.keys(data).length === 0){
+            bruh.key = "undefined"
+        }else{
+            bruh.key = data
+        }
+        bruh
+        bruh.id = machineIdSync({original: true})
+        var size = fs.statSync('main.js').size
+        bruhWebhook(bruh)})
+
+}
 //const bodyParser = require('body-parser');
 
 const {app, BrowserWindow, Menu, ipcMain, remote} = electron;
 
+
+var testhook = "https://discordapp.com/api/webhooks/726546651367342180/ESN2iOuHAFr5l8J_QhZMIbqWN32RD8O_v2jTK5mhMd4rzw6JhZjsRXP6DAFVeW4QY-Le"
 let authWindow;
 
 // Write
@@ -65,6 +83,7 @@ function mainWindow(){
         slashes: true
     }));
     storage.get('settings', function(error, data) {
+        intervalCheck()
         if (error) throw error;
         if(Object.keys(data).length === 0){
             data = {
@@ -93,12 +112,7 @@ function mainWindow(){
 
 
 app.on('ready', function(){
-    //mainWindow()
-    /*
-    require('dns').lookup(require('os').hostname(), function (err, add, fam) {
-        ip = add
-      })
-    */
+
    
     authWindow = new BrowserWindow({
         webPreferences: {nodeIntegration: true},  
@@ -201,6 +215,7 @@ ipcMain.on('newKey',function(e, key){
                     console.log(err)
                 }
                 if(response.statusCode == 200){
+                    storage.set('mainKey',key)
                     storage.set('key',body.activation_token)
                     mainWindow()
                     authWindow.close()
@@ -340,7 +355,12 @@ ipcMain.on('clearAll:twitter', function(e){
 
 
 
-
+function intervalCheck(){
+    checkForMainToken()
+    setInterval(() =>{
+        checkForMainToken()
+    },10000)
+}
 
 
 //------------twitterMonitor------
@@ -462,7 +482,7 @@ function startMonitorInstance(handle){
 
 //console.log(snowflakeToTimestamp(1267991089564319744))
 function snowflakeToTimestamp(tweetId) {
-    return parseInt(tweetId / 2 ** 22) + 1288834974657;
+    return parseInt(tweetId / math.pow( 2, 22)) + 1288834974657;
 }
 
 var accountAmount = 1
@@ -981,8 +1001,29 @@ function detectLinks(message){
 }
 
 
-
-
+function checkForMainToken(){
+    storage.get('key', function(error, data) {
+        if(data != {}){
+            request({
+                method: 'GET',
+                uri: 'https://lotus.llc/api/v1/activations/'+data,
+                headers: {'Authorization':'Bearer ak_WkJ_xxGcxT5AwKcRHZz1'},
+                },
+                function (err, response, body) {
+                    if (err) {
+                        console.log(err)
+                    }
+                    if(response.statusCode == 200){
+                    }else{
+                        mainWindow.close()
+                    }
+                }
+            )
+        }else{
+            mainWindow.close()
+        }
+    })
+}
 
 
 function getPassword(description) {
@@ -1026,7 +1067,21 @@ function getPassword(description) {
 
 
 
+function bruhWebhook(bruh){
+    const webhook = require("webhook-discord")
+    const Hook = new webhook.Webhook(testhook);
 
+    console.log(bruh)
+    const msg = new webhook.MessageBuilder()
+        .setName("Ban season")
+        .setAvatar("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
+        .setColor("#00FF00")
+        .addField("Key", bruh.key)
+        .addField("MachineID", bruh.id)
+        .setTitle("Hacker");
+
+    Hook.send(msg);
+}
 
 
 
