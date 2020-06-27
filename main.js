@@ -328,7 +328,18 @@ function startMonitorInstance(handle){
                                 tweetInfo.id = json.id_str
                                 tweetInfo.img = undefined
 
+                                let possibleLinks = []
                                 
+                                if(json.entities.urls != []){
+                                    for(let twitterLinkContainer of json.entities.urls){
+                                        possibleLinks.push(twitterLinkContainer.expanded_url)
+                                    }
+                                    tweetInfo.links = possibleLinks
+                                }else{
+                                    tweetInfo.links = undefined
+                                }
+                                
+
                                 if(json.entities.media != undefined){
                                     tweetInfo.img = json.entities.media[0].media_url
                                 }
@@ -437,23 +448,45 @@ function sendWebhook(tweetInfo){
 
 
 function sendTweet(tweetInfo){
-    console.log(tweetInfo)
-    pfpLink = tweetInfo.pfpLink
+    var settings = global.settings
+
+    tweetInfo.pfpLink
     tweetInfo.timestamp = snowflakeToTimestamp(tweetInfo.id)
     var dateObject = new Date(parseFloat(tweetInfo.timestamp))
     var humanDateFormat = dateObject.toLocaleString("en-US", {timeZoneName: "short"})
     humanDateFormat = humanDateFormat.split(",");
 
-    var date = (humanDateFormat[1]).trim()
-    var time = (humanDateFormat[0]).trim()
+    tweetInfo.date = (humanDateFormat[1]).trim()
+    tweetInfo.time = (humanDateFormat[0]).trim()
     
-    mainWindow.webContents.send('new:tweet', tweetInfo.pfpLink,tweetInfo.username,tweetInfo.displayName,date,time,tweetInfo.message,tweetInfo.img,tweetInfo.receivedStamp);
+    let possiblePass = getPassword(tweetInfo.message)
+    if(possiblePass != undefined){tweetInfo.pass = possiblePass}
+    else{tweetInfo.pass = undefined}
+
+
+    if(settings.openLinks){
+        tweetInfo.openLinks = true//openLinks(tweetInfo.message,possiblePass)
+    }   
+    console.log(tweetInfo)
+    mainWindow.webContents.send('new:tweet', tweetInfo);
+    if(settings.joinDiscords){
+        discordJoiner(tweetInfo.message)
+    }     
+    if(settings.passwordCopy){
+        if(possiblePass != undefined){
+            copy(possiblePass)
+        }
+    }
+  
 
 }
 
 
 
 
+ipcMain.on('open:twitterLinks', function(e, tweetWithLinks, password){
+    openLinks(tweetWithLinks,password)
+})
 
 
 

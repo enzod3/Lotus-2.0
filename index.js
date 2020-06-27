@@ -194,7 +194,7 @@ ipcRenderer.on('new:accountRow', function(e, pfpLink, handle){
     var usernameCell = tr.insertCell();
 
     var p = document.createElement('p');
-    p.innerText='@' + handle;
+    p.innerHTML='&nbsp;&nbsp;&nbsp;&nbsp;@' + handle;
     var a = document.createElement('a');
     a.classList.add('twitterLink');
     a.onclick = function() {openAccountLink(this)};
@@ -282,8 +282,8 @@ function startAllTwitter(e){
 
 
 
-ipcRenderer.on('new:tweet', function(e, pfpLink, handle, twitterName, timestampDate,timestampTime, message, tweetImage,recievedStamp, detectedPass, detectedLink){
-
+ipcRenderer.on('new:tweet', function(e, tweetInfo){
+    console.log(tweetInfo)
     var tweetsTable = document.getElementsByClassName("tweetTable")[0].getElementsByTagName('tbody')[0];
     var tr  = tweetsTable.insertRow(0);
 
@@ -302,16 +302,16 @@ ipcRenderer.on('new:tweet', function(e, pfpLink, handle, twitterName, timestampD
     
     var pfpimg = document.createElement('img');
     pfpimg.classList.add('twitterImage');
-    pfpimg.src = pfpLink;
+    pfpimg.src = tweetInfo.pfpLink;
     userInfoDiv.appendChild(pfpimg)
 
     var innerInfoDiv = document.createElement('div');
     var displayName = document.createElement('p');
-    displayName.innerText = twitterName
+    displayName.innerText = tweetInfo.displayName
     displayName.id = "shownUsername"
     innerInfoDiv.appendChild(displayName)
     var shownHandle = document.createElement('p');
-    shownHandle.innerText='@' + handle;
+    shownHandle.innerText='@' + tweetInfo.username;
     var accountLink = document.createElement('a');
     accountLink.classList.add('twitterLink');
     accountLink.onclick = function() {openAccountLink(this)};
@@ -324,13 +324,13 @@ ipcRenderer.on('new:tweet', function(e, pfpLink, handle, twitterName, timestampD
     timestampDiv.classList.add('tweetTimestampContainer');
     var timestamp = document.createElement('p');
     timestamp.id = "tweetStamp"
-    timestamp.innerText = recievedStamp
+    timestamp.innerText = tweetInfo.receivedStamp
     timestampDiv.appendChild(timestamp)
     var firstTime = document.createElement('p')
-    firstTime.innerText = timestampTime
+    firstTime.innerText = tweetInfo.time
     timestampDiv.appendChild(firstTime)
     var secondTime = document.createElement('p')
-    secondTime.innerText = timestampDate
+    secondTime.innerText = tweetInfo.date
     timestampDiv.appendChild(secondTime)
     
     infoDiv.appendChild(userInfoDiv)
@@ -350,13 +350,27 @@ ipcRenderer.on('new:tweet', function(e, pfpLink, handle, twitterName, timestampD
 
     var messageText = document.createElement('p');
     messageText.classList.add('tweetMessage')
-    messageText.innerText = message;
+    try{
+        var tweetWithLinks = twitterUrlify(tweetInfo.message, tweetInfo.links)
+        messageText.innerHTML = urlify(tweetWithLinks);
+    }catch{
+        var tweetWithLinks = urlify(tweetInfo.message, tweetInfo.links)
+        messageText.innerHTML = tweetWithLinks;
+    }
+    if(tweetInfo.openLinks){
+        try{
+            ipcRenderer.send('open:twitterLinks',tweetWithLinks,tweetInfo.pass)
+        }catch(e){
+            console.log(e)
+        }
+        
+    }
     messageCell.appendChild(messageText)
 
-    if(tweetImage != undefined){
+    if(tweetInfo.tweetImage != undefined){
         var messageImage = document.createElement('img');
         messageImage.classList.add('tweetImage');
-        messageImage.src = tweetImage
+        messageImage.src = tweetInfo.tweetImage
         messageCell.appendChild(messageImage)
     }
 
@@ -371,35 +385,48 @@ ipcRenderer.on('new:tweet', function(e, pfpLink, handle, twitterName, timestampD
     var detectedCell = tr.insertCell();
 
     var detectedDiv = document.createElement('div');
+    var passDiv = document.createElement('div');
     detectedDiv.classList.add('detectedTweet')
 
     var passTitle = document.createElement('h5')
     passTitle.innerText = 'Detected Passwords:'
-    detectedDiv.appendChild(passTitle)
+    passDiv.appendChild(passTitle)
     var pass = document.createElement('p');
-    if(detectedPass != undefined){
-        pass.innerText = detectedPass;
+    if(tweetInfo.pass != undefined){
+        pass.innerText = tweetInfo.pass;
+        pass.id = "clickableWord"
+        pass.onclick = function() {copyToClip(this)};
+        passDiv.appendChild(pass)
+
     }else{
         pass.innerText = 'NONE';
+        passDiv.appendChild(pass)
     }
-    detectedDiv.appendChild(pass)
     
+    detectedDiv.appendChild(passDiv)
+    
+    var linkDiv = document.createElement('div');
     var linkTitle = document.createElement('h5')
     linkTitle.innerText = 'Detected Links:'
-    detectedDiv.appendChild(linkTitle)
-    if(detectedLink != undefined){
-        var link = document.createElement('p');
-        var linkWrap = document.createElement('a');
-        linkWrap.classList.add('detectedLink')
-        linkWrap.onclick = function() {openNormalLink(this)};
-        link = detectedLink
-        linkWrap.appendChild(link)
-        detectedDiv.appendChild(linkWrap)
+    linkDiv.appendChild(linkTitle)
+    console.log(tweetInfo.links)
+    if(tweetInfo.links != undefined && tweetInfo.links.length != 0){
+        for (i = 0; i < tweetInfo.links.length; i++) {
+            var link = document.createElement('p');
+            var linkWrap = document.createElement('a');
+            linkWrap.classList.add('detectedLink')
+            linkWrap.onclick = function() {openNormalLink(this)};
+            link.innerHTML = tweetInfo.links[i]
+            linkWrap.appendChild(link)
+            linkDiv.appendChild(linkWrap)
+          }
     }else{
         var link = document.createElement('p');
         link.innerText = 'NONE';
-        detectedDiv.appendChild(link)
+        linkDiv.appendChild(link)
     }
+    detectedDiv.appendChild(linkDiv)
+
     detectedCell.appendChild(detectedDiv)
     /*-----------------------------------------*/
 
@@ -618,10 +645,36 @@ function urlify(text) {
 
 
 
+function detectLinks(message){
+    let re = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gm
+    if(message.match(re) != null){
+        return message.match(re)
+    }else{
+        return null
+    }
+}
+
+
+
+
+function twitterUrlify(text,linkArray) {
+    findArray = detectLinks(text)
+    replaceArray = linkArray
+    var replaceString = text;
+    for (var i = 0; i < findArray.length; i++) {
+      replaceString = replaceString.replace(findArray[i], replaceArray[i]);
+    }
+    return replaceString;
+    // or alternatively
+    // return text.replace(urlRegex, '<a href="$1">$1</a>')
+}
+
+
+
 
 function twitterToggle(e){
     currentRow = e.parentNode.parentNode.parentNode
-    var handle = currentRow.querySelector('p').innerText.substring(1);
+    var handle = currentRow.querySelector('p').innerText.trim().substring(1);
     if(e.checked) {
         //console.log('start ' + handle)
         ipcRenderer.send('start:twitter',handle)
