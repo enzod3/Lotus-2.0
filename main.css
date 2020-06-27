@@ -7,6 +7,15 @@
     list-style: none;
     text-decoration: none;
     font-family:  open-sans;
+    -webkit-user-select: none; /* Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
 }
 
 ::-webkit-scrollbar {     
@@ -34,6 +43,12 @@
     font-family: open-sans;
     src: url('fonts/OpenSans-Bold.ttf') format("truetype");
 }
+
+@font-face{
+    font-family: open-sans-regular;
+    src: url('fonts/OpenSans-Regular.ttf') format("truetype");
+}
+
 
 
 body{
@@ -190,6 +205,19 @@ transform: translateX(17px);
     bottom: -420px;
     left: 210px;
     transition: 0.5s;
+}
+
+
+
+
+#versionNumber{
+    color: #AAAAAA;
+    font-family: open-sans-regular;
+    font-size: 10px;
+    position: absolute;
+    bottom: 22px;
+    left: 22px;
+    z-index: 120;
 }
 
 
@@ -1276,9 +1304,26 @@ h3{
 
 
 #tweetsLabel{
-    margin-top: 16px;
+    margin-top: 14px;
     margin-left: 16px;
+    display: inline-block;
 }
+
+#tweetClear{
+    vertical-align: top;
+    margin-top: 18px;
+    margin-right:16px;
+    float: right;
+    display: inline-block;
+    cursor: pointer;
+}
+
+
+#tweetClear:hover{
+    opacity: .8;
+}
+
+
 
 
 #tweetsLabel h3{
@@ -2806,9 +2851,9 @@ h3{
 
 .nitroContainer{
     height: 782px;
-    width: 95%;
+    width: 95.3%;
     position: relative;
-    margin-left: 2.5%;
+    margin-left: 2.35%;
     margin-top: 86px;
 }
 

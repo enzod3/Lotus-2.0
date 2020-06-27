@@ -1,4 +1,5 @@
 
+
 *{
     margin: 0;
     padding: 0;
@@ -6,7 +7,15 @@
     list-style: none;
     text-decoration: none;
     font-family:  open-sans;
-    
+    -webkit-user-select: none; /* Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
 }
 
 ::-webkit-scrollbar {     
@@ -34,6 +43,12 @@
     font-family: open-sans;
     src: url('fonts/OpenSans-Bold.ttf') format("truetype");
 }
+
+@font-face{
+    font-family: open-sans-regular;
+    src: url('fonts/OpenSans-Regular.ttf') format("truetype");
+}
+
 
 
 
@@ -152,7 +167,7 @@ h3{
     justify-content: space-between;
     margin-left: calc((100% - 300px)/2);
     margin-top: 90px;
-
+    text-align: center;
 }
 
 .keyInputBox{
@@ -179,7 +194,14 @@ h3{
 
 
 
-
+#errorMessage{
+    position: absolute;
+    color: #FF5A52;
+    margin-top: 200px;
+    text-align: center;
+    left: 0px;
+    width: 100%;
+}
 
 
 .buttonStylingSubmitKey{
@@ -192,7 +214,7 @@ h3{
 
 #keySubmit{
     position: absolute;
-    z-index: 42;
+    z-index: 60;
     outline: none;
     border: none;
     background-color: transparent;
@@ -201,7 +223,23 @@ h3{
     width: 152px;
     height: 33px;
     border-radius: 17px;
+    cursor: pointer;
 }
+
+#keySubmit span{
+    cursor: pointer;
+}
+
+#keySubmit p{
+    cursor: pointer;
+}
+
+#keySubmit img{
+    cursor: pointer;
+}
+
+
+
 
 
 #keySubmit:active{
@@ -219,6 +257,16 @@ h3{
     border-radius: 17px;
 }
 
+#versionNumber{
+    color: #AAAAAA;
+    font-family: open-sans-regular;
+    font-size: 10px;
+    position: absolute;
+    bottom: 32px;
+    left: 32px;
+    line-height: 12px;
+    letter-spacing: 2px;
+}
 
 
 

@@ -8,6 +8,7 @@
 </head>
 <body>
     <div class="container">
+        <p id="versionNumber">v 2.0.0</p>
         <img id="backImg" src="images/lotusBack.png">
         <div class="topBar">
         </div>
@@ -25,14 +26,16 @@
                 <h3>Welcome to LotusAIO™</h3>
                 <p>Please provide your authentication credentials.</p>
                 <input type="text" class="keyInputBox" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" spellcheck="false">
+                <p id="errorMessage"></p>
                 <div class="buttonStylingSubmitKey">
-                    <button id="keySubmit" type="button" onclick="processKey()"><img src="images/keyIcon.png"><p>Activate</p></button>
+                    <button id="keySubmit" type="button" onclick="processKey()"><span><img src="images/keyIcon.png"><p>Activate</p></span></button>
                     <div id="keySubmitBackground"></div>
                     <div id="keySubmitDark"></div>
                     <div id="keySubmitLight"></div>
                 </div>
             </div>
         </div>
+       
         <script src="plugins/jquery.js"></script>
         <script src="plugins/vanilla-tilt.js"></script>
         

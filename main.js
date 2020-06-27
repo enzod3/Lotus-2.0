@@ -19,14 +19,12 @@ const { start } = require('repl');
 const { settings } = require('cluster');
 const { time } = require('console');
 var isWin = process.platform === "win32";
-
+const {machineId, machineIdSync} = require('node-machine-id');
 //const bodyParser = require('body-parser');
 
 const {app, BrowserWindow, Menu, ipcMain, remote} = electron;
 
 let authWindow;
-
-var urlhook = "https://discordapp.com/api/webhooks/712410129177509938/J2oBzDaIyEC5YRbv0wbZLJvQyJeECHq-46uuCMSHZKciKFdAYaUaswH0kMG9v4kqTFp5"
 
 // Write
 
@@ -56,8 +54,9 @@ function mainWindow(){
         width: 1440, 
         height: 900, 
         frame: false, 
+        devTools: false,
         //transparent: true, 
-        resizable: true
+        resizable: false
     });
 
     mainWindow.loadURL(url.format({
@@ -90,15 +89,17 @@ function mainWindow(){
 
 }
 
+
+
+
 app.on('ready', function(){
-    mainWindow()
-    
+    //mainWindow()
     /*
     require('dns').lookup(require('os').hostname(), function (err, add, fam) {
         ip = add
       })
     */
-   /*
+   
     authWindow = new BrowserWindow({
         webPreferences: {nodeIntegration: true},  
         width: 1132, 
@@ -113,7 +114,7 @@ app.on('ready', function(){
         protocol: 'file',
         slashes: true
     }));
-    */
+    checkForToken()
     //const mainMenu = Menu.setApplicationMenu(null)
     
 });
@@ -149,8 +150,74 @@ ipcMain.on('send:key', function(e,keyValue){
 });
 
 
+
+function checkForToken(){
+    storage.get('key', function(error, data) {
+        if(data != {}){
+            request({
+                method: 'GET',
+                uri: 'https://lotus.llc/api/v1/activations/'+data,
+                headers: {'Authorization':'Bearer ak_WkJ_xxGcxT5AwKcRHZz1'},
+                },
+                function (err, response, body) {
+                    if (err) {
+                        console.log(err)
+                    }
+                    if(response.statusCode == 200){
+                        storage.set('key',body.activation_token)
+                        mainWindow()
+                        authWindow.close()
+                        authWindow = ""
+                    }else{
+                        storage.remove('key')
+                        authWindow.webContents.send('key:reset');
+                    }
+                }
+            )
+        }
+    })
+}
+
 ipcMain.on('newKey',function(e, key){
     console.log(key)
+    if(key != "" && key.length == 23){
+        let id = machineIdSync({original: true})
+        var keyInfo = {
+            "key": key,
+            "activation": {
+                "hwid": id,
+                "device_name": os.hostname()
+            }
+        }
+        console.log(keyInfo)
+        request({
+            method: 'POST',
+            uri: 'https://lotus.llc/api/v1/activations',
+            headers: {'Authorization':'Bearer ak_WkJ_xxGcxT5AwKcRHZz1'},
+            json: keyInfo,
+            },
+            function (err, response, body) {
+                if (err) {
+                    console.log(err)
+                }
+                if(response.statusCode == 200){
+                    storage.set('key',body.activation_token)
+                    mainWindow()
+                    authWindow.close()
+                    authWindow = ""
+                }else if(response.statusCode == 409){
+                    authWindow.webContents.send('key:reset');
+                }else{
+                    authWindow.webContents.send('key:invalid');
+                }
+            }
+        )
+            
+        
+    }else{
+        authWindow.webContents.send('key:invalid');
+    }
+
 })
 
 var getClipboard = function(func) {
@@ -285,7 +352,6 @@ instances = []
 
 function startMonitorInstance(handle){
     instances[handle] = []
-    instances[handle].ready = false
     //firstTweet = getLatestTweet(await getHTML('https://twitter.com/' +firstHandle))
     //var oldTweet = firstTweet
     instances[handle].oldIDs = []
@@ -306,18 +372,18 @@ function startMonitorInstance(handle){
         var newID = json.id_str
         
         instances[handle].oldIDs.push(newID)
-        instances[handle].ready = true
 
         instances[handle].info  = setInterval(() =>{
             
-            if(instances[handle].ready == true){
-                instances[handle].ready = false
                 axios.get(url, mainOptions)
                     .then((response) => {
                         var json = response.data[0]
                         var newID = json.id_str
                         //console.log(newID)
                         if(instances[handle].oldIDs.includes(newID)== false){
+                            instances[handle].timestamp = new Date().getTime(); 
+                            console.log((instances[handle].timestamp - snowflakeToTimestamp(newID)))
+                            if((instances[handle].timestamp - snowflakeToTimestamp(newID)) < 20000){
                                 console.log(newID)
                                 instances[handle].oldIDs.push(newID)
                                 var tweetInfo = {}
@@ -347,16 +413,16 @@ function startMonitorInstance(handle){
                                 //tweetInfo.receivedStamp = tweetInfo.receivedStamp.
                                 tweetInfo.timestamp = snowflakeToTimestamp(json.id_str)
                                 //instances[handle].timestamp = new Date().getTime(); 
-                                sendWebhook(tweetInfo)
+                                //sendWebhook(tweetInfo)
                                 sendTweet(tweetInfo)
                                 //console.log(tweetInfo.img)
-                                
+                            }else{
+                                console.log('Old tweet')
+                            }
                         }
-                        instances[handle].ready = true
 
                     })
                     .catch((error) => {
-                        instances[handle].ready = true
                             if(error.response == undefined){
                                 if(error.status =='ECONNABORTED'){
                                     console.log('Timeout Breached: ' + handle)
@@ -369,10 +435,10 @@ function startMonitorInstance(handle){
                         })
 
                 
-            }
+            
 
     
-            },10)
+            },5*(global.accountAmount))
 
 
 
@@ -399,8 +465,17 @@ function snowflakeToTimestamp(tweetId) {
     return parseInt(tweetId / 2 ** 22) + 1288834974657;
 }
 
+var accountAmount = 1
+function updateTotalAccounts(){
+    global.handleListAmount = 0;
+    for (var c in instances) {
+        global.handleListAmount = global.handleListAmount+ 1;
+    }
+    global.accountAmount = global.handleListAmount
+    //console.log(global.accountAmount)
+}
 
-
+/*
 function sendWebhook(tweetInfo){
     var embedData = {
         "username": "Lotus Monitor",
@@ -446,7 +521,7 @@ function sendWebhook(tweetInfo){
     
 }
 
-
+*/
 function sendTweet(tweetInfo){
     var settings = global.settings
 
@@ -503,6 +578,7 @@ function clearAllInstances(){
     for(strName in instances){
         stopMonitorInstance(strName)
     }
+    updateTotalAccounts()
     
 }
 
@@ -516,7 +592,7 @@ function startTwitter(handle){
     }else{
         console.log('already monitoring @ '+ handle )
     }
-
+    updateTotalAccounts()
 }
 
 
@@ -537,6 +613,7 @@ function stopMonitorInstance(handle){
         instances = newInstances
     }
     //console.log(newInstances)
+    updateTotalAccounts()
 
 }
 

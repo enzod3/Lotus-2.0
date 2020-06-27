@@ -1163,6 +1163,9 @@ ipcRenderer.on('new:discordMessage', function(e, messageInfo){
 function clearMessageTable(){
     $('.messageRowBackground').remove()
 }
+function clearTweetsTable(){
+    $('.tweetRowBackground').remove()
+}
 
 
 
