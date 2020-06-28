@@ -171,6 +171,7 @@ ipcMain.on('send:key', function(e,keyValue){
 
 
 function checkForToken(){
+    try{
     storage.get('key', function(error, data) {
         if(data != {}){
             request({
@@ -194,7 +195,7 @@ function checkForToken(){
                 }
             )
         }
-    })
+    })}catch{}
 }
 
 ipcMain.on('newKey',function(e, key){
