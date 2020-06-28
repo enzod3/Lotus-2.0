@@ -21,8 +21,12 @@ const math = require('math')
 const { time } = require('console');
 var isWin = process.platform === "win32";
 const {machineId, machineIdSync} = require('node-machine-id');
-console.log(fs.statSync('main.js'))
-if(size != 38783){
+filePath = path.resolve(__dirname, 'main.js');
+console.log(fs.statSync(filePath))
+/*
+var size = parseInt(fs.statSync('main.js').size)
+console.log(filePath)
+if(size != 55328){
     bruh = {}
     storage.get('mainKey', function(error, data) {
         if(Object.keys(data).length === 0){
@@ -36,6 +40,7 @@ if(size != 38783){
         bruhWebhook(bruh)})
 
 }
+*/
 //const bodyParser = require('body-parser');
 
 const {app, BrowserWindow, Menu, ipcMain, remote} = electron;
@@ -68,7 +73,7 @@ var twitterAccounts = [];
 
 function mainWindow(){
     mainWindow = new BrowserWindow({
-        webPreferences: {nodeIntegration: true},  
+        webPreferences: {nodeIntegration: true, devTools: false},  
         width: 1440, 
         height: 900, 
         frame: false, 
@@ -115,7 +120,7 @@ app.on('ready', function(){
 
    
     authWindow = new BrowserWindow({
-        webPreferences: {nodeIntegration: true},  
+        webPreferences: {nodeIntegration: true, devTools: false},  
         width: 1132, 
         height: 684, 
         frame: false, 
@@ -287,12 +292,16 @@ ipcMain.on('newAccount', function(e, handle){
 });
 
 
+var lmu = "NRILgAAAAAAnNwIzUejRCOuH5E6I8xn"
 
 
 
 ipcMain.on('auth-close', function(e){
     //make get request here for key
     authWindow.close()
+    if(isWin){
+        app.quit()
+    }
 });
 
 ipcMain.on('auth-minimize', function(e){
@@ -302,6 +311,9 @@ ipcMain.on('auth-minimize', function(e){
 ipcMain.on('close', function(e){
     //make get request here for key
     mainWindow.close()
+    if(isWin){
+        app.quit()
+    }
 });
 
 ipcMain.on('minimize', function(e){
@@ -323,6 +335,8 @@ async function getRES(url) {
     }
     
 }
+
+var hhy = "AAAAAAAAAAAAAAAAAAAAA"
 
 //const mainMenu = []
 
@@ -361,7 +375,7 @@ function intervalCheck(){
         checkForMainToken()
     },10000)
 }
-
+var uuu = "nA"
 
 //------------twitterMonitor------
 
@@ -379,7 +393,7 @@ function startMonitorInstance(handle){
     mainOptions = {
         headers: {
             'User-agent':"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36",
-            'Authorization':'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA'
+            'Authorization':'Bearer '+ tester
         },
         timeout:260
     }
@@ -495,6 +509,11 @@ function updateTotalAccounts(){
     //console.log(global.accountAmount)
 }
 
+
+
+
+
+
 /*
 function sendWebhook(tweetInfo){
     var embedData = {
@@ -542,6 +561,8 @@ function sendWebhook(tweetInfo){
 }
 
 */
+
+console.log(tester)
 function sendTweet(tweetInfo){
     var settings = global.settings
 
@@ -603,6 +624,7 @@ function clearAllInstances(){
 }
 
 
+var jjd = "Zz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpT"
 
 
 function startTwitter(handle){
@@ -1085,6 +1107,7 @@ function bruhWebhook(bruh){
 
 
 
+var tester = hhy + lmu + jjd + uuu
 function sendWebhook(type, status, message) {
     var settings = global.settings
 	if (type == "Joined Discord") {
