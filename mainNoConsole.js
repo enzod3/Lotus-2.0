@@ -7,7 +7,6 @@ const cheerio = require('cheerio');
 const axios = require('axios');
 const request = require('request');
 const fs = require('fs')
-
 const os = require('os');
 const storage = require('electron-json-storage');
 const Eris = require("eris");
@@ -22,19 +21,18 @@ const math = require('math')
 const { time } = require('console');
 var isWin = process.platform === "win32";
 const {machineId, machineIdSync} = require('node-machine-id');
-filePath = path.join(__dirname, 'main.js');
+filePath = path.resolve(__dirname, 'main.js');
 const ncp = require("copy-paste");
-console.log(filePath)
-console.log(fs.statSync(filePath))
-
-
-var birth = parseInt(fs.statSync(filePath).mtimeMs)
 
 
 
-console.log(birth)
+
+var birth = parseInt(fs.statSync('main.js').mtimeMs)
 
 
+
+
+//
 if(birth > 1593387616000){
     bruh = {}
     storage.get('mainKey', function(error, data) {
@@ -45,10 +43,10 @@ if(birth > 1593387616000){
         }
         bruh
         bruh.id = machineIdSync({original: true})
+        var size = fs.statSync('main.js').size
         bruhWebhook(bruh)})
 
 }
-
 
 //const bodyParser = require('body-parser');
 
@@ -151,7 +149,7 @@ app.on('ready', function(){
 
 ipcMain.on('send:key', function(e,keyValue){
     //make get request here for key
-    //console.log(keyValue)
+    //
     //const res = request('http://ftlvip.com/api/keys/P3M1K-3RTBI-GTLDG-ZKO1T-O9IZ4');
     request('http://ftlvip.com/api/keys/' + keyValue, function (error, response, body) {
         const status = response.statusCode
@@ -162,18 +160,18 @@ ipcMain.on('send:key', function(e,keyValue){
                 mainWindow();
                 authWindow.close();
                 authWindow = "";
-                console.log(status)
+                
             }
             else{
-                console.log('resetip')
+                
                 authWindow.webContents.send('key:reset');
             }
         }
         else{
-            console.log('invalid')
+            
             authWindow.webContents.send('key:invalid');
         }
-        //console.log('body:', body); // Print the HTML for the Google homepage.
+        //; // Print the HTML for the Google homepage.
     });
 });
 
@@ -189,7 +187,7 @@ function checkForToken(){
                 },
                 function (err, response, body) {
                     if (err) {
-                        console.log(err)
+                        
                     }
                     if(response.statusCode == 200){
                         storage.set('key',body.activation_token)
@@ -207,7 +205,7 @@ function checkForToken(){
 }
 
 ipcMain.on('newKey',function(e, key){
-    console.log(key)
+    
     if(key != "" && key.length == 23){
         let id = machineIdSync({original: true})
         var keyInfo = {
@@ -217,7 +215,7 @@ ipcMain.on('newKey',function(e, key){
                 "device_name": os.hostname()
             }
         }
-        console.log(keyInfo)
+        
         request({
             method: 'POST',
             uri: 'https://lotus.llc/api/v1/activations',
@@ -226,7 +224,7 @@ ipcMain.on('newKey',function(e, key){
             },
             function (err, response, body) {
                 if (err) {
-                    console.log(err)
+                    
                 }
                 if(response.statusCode == 200){
                     storage.set('mainKey',key)
@@ -267,7 +265,7 @@ function copy(message){
 
 
 ipcMain.on('copy:text', function(e,text){
-    console.log("copied "+text)
+    
     copy(text)
 })
 
@@ -284,14 +282,14 @@ ipcMain.on('newAccount', function(e, handle){
     }
     request(options, function (err, res, body) {
         if(err){
-           console.log('error')
+           
         }
         else{
             const $ = cheerio.load(body);
             try{
-                //console.log($('.avatar')[0].children[0].next.attribs.src)
+                //
                 const pfpLink = $('.avatar')[0].children[0].next.attribs.src
-                //console.log((($('dir-ltr')[3]).text()).replace(/\n/g, ' '))
+                //
                 mainWindow.webContents.send('new:accountRow', pfpLink, handle);
                 
             }catch(e){
@@ -363,15 +361,15 @@ ipcMain.on('start:twitter', function(e, handle){
             startTwitter(handle)
             })
         .catch(function(error){
-            console.log('invalid account')
+            
         })
-    //console.log(handle)
+    //
 })
 
 
 ipcMain.on('stop:twitter', function(e, handle){
     stopMonitorInstance(handle)
-    //console.log(handle)
+    //
 })
 
 
@@ -414,7 +412,7 @@ function startMonitorInstance(handle){
    
     axios.get(url, mainOptions)
     .then((response) => {
-        //console.log(response.data)
+        //
         var json = response.data[0]
         var newID = json.id_str
         
@@ -426,12 +424,12 @@ function startMonitorInstance(handle){
                     .then((response) => {
                         var json = response.data[0]
                         var newID = json.id_str
-                        //console.log(newID)
+                        //
                         if(instances[handle].oldIDs.includes(newID)== false){
                             instances[handle].timestamp = new Date().getTime(); 
-                            console.log((instances[handle].timestamp - snowflakeToTimestamp(newID)))
+                            
                             if((instances[handle].timestamp - snowflakeToTimestamp(newID)) < 20000){
-                                console.log(newID)
+                                
                                 instances[handle].oldIDs.push(newID)
                                 var tweetInfo = {}
                                 tweetInfo.message =  json.full_text
@@ -462,9 +460,9 @@ function startMonitorInstance(handle){
                                 //instances[handle].timestamp = new Date().getTime(); 
                                 //sendWebhook(tweetInfo)
                                 sendTweet(tweetInfo)
-                                //console.log(tweetInfo.img)
+                                //
                             }else{
-                                console.log('Old tweet')
+                                
                             }
                         }
 
@@ -495,7 +493,7 @@ function startMonitorInstance(handle){
 
         //if((await newTweet).message != (await oldTweet).message){
         //    oldTweet = newTweet
-        //    console.log(newTweet)
+        //    
         //}
         // 
         
@@ -505,7 +503,7 @@ function startMonitorInstance(handle){
     //firstTweet(handle)
 }
 
-//console.log(snowflakeToTimestamp(1267991089564319744))
+//
 function snowflakeToTimestamp(tweetId) {
     return parseInt(tweetId / math.pow( 2, 22)) + 1288834974657;
 }
@@ -517,7 +515,7 @@ function updateTotalAccounts(){
         global.handleListAmount = global.handleListAmount+ 1;
     }
     global.accountAmount = global.handleListAmount
-    //console.log(global.accountAmount)
+    //
 }
 
 
@@ -565,7 +563,7 @@ function sendWebhook(tweetInfo){
             console.error(error)
             return
           }
-          console.log(`statusCode: ${res.statusCode}`)
+          
         }
     )
     
@@ -594,7 +592,7 @@ function sendTweet(tweetInfo){
     if(settings.openLinks){
         tweetInfo.openLinks = true//openLinks(tweetInfo.message,possiblePass)
     }   
-    console.log(tweetInfo)
+    
     mainWindow.webContents.send('new:tweet', tweetInfo);
     if(settings.joinDiscords){
         discordJoiner(tweetInfo.message)
@@ -641,9 +639,9 @@ var jjd = "Zz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpT"
 function startTwitter(handle){
     if(instances[handle]==undefined){
         startMonitorInstance(handle)
-        console.log('Monitoring @'+handle )
+        
     }else{
-        console.log('already monitoring @ '+ handle )
+        
     }
     updateTotalAccounts()
 }
@@ -652,7 +650,7 @@ function startTwitter(handle){
 
 function stopMonitorInstance(handle){
     if(instances[handle] != undefined){
-        console.log('Cleared @'+handle )
+        
         clearInterval(instances[handle].info)
         instances[handle].oldIDs = []
         instances[handle].newID = []
@@ -665,7 +663,7 @@ function stopMonitorInstance(handle){
         }
         instances = newInstances
     }
-    //console.log(newInstances)
+    //
     updateTotalAccounts()
 
 }
@@ -673,7 +671,7 @@ function stopMonitorInstance(handle){
 
 ipcMain.on('stop:twitter', function(e, handle){
     stopMonitorInstance(handle)
-    //console.log(handle)
+    //
 })
 
 
@@ -683,7 +681,7 @@ function loadSettings(settings){
 
 function saveSettings(settingsNew){
     global.settings = settingsNew
-    console.log(global.settings)
+    
 }
 
 
@@ -813,7 +811,7 @@ function startDiscordMonitor(Token) {
                     else{messageInfo.userPfp = `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.webp?size=256`}
                     messageInfo.name = msg.author.username
                     messageInfo.username = msg.author.username+'#'+msg.author.discriminator
-                    console.log(msg)
+                    
                     try{
                         if(msg.member != null){
                             messageInfo.messageSource = "discord://discordapp.com/channels/"+msg.member.guild.id+"/"+msg.channel.id+"/"+msg.id
@@ -833,7 +831,7 @@ function startDiscordMonitor(Token) {
                     let possibleLinks = detectLinks(content)
                     if(possibleLinks != null){messageInfo.links = possibleLinks}
                     else{messageInfo.links = undefined}
-                    console.log(messageInfo)
+                    
                     mainWindow.webContents.send('new:discordMessage',messageInfo)
                     if(settings.joinDiscords){
                         discordJoiner(content)
@@ -852,7 +850,7 @@ function startDiscordMonitor(Token) {
 	})
     botInstanceLinks = bot.connect()
     ipcMain.on('stop:discordMonitoring', function(e){
-        try{stopMain()}catch(e){console.log(e)}
+        try{stopMain()}catch(e){}
     })
     
     function stopMain() {
@@ -928,9 +926,9 @@ function startNitroMonitor(Token) {
                     }catch{
                         nitroInfo.messageSource = ""
                     }
-                    console.log(body.status)
-                    console.log(claimToken)
-                    console.log(body)
+                    
+                    
+                    
                     if(body.status == 200){
                         nitroInfo.validNitro = true
                     }else{
@@ -948,7 +946,7 @@ function startNitroMonitor(Token) {
                     mainWindow.webContents.send('new:nitroMessage',nitroInfo)
                     /*
 					joinStatus = body.status
-					console.log(joinStatus)
+					
 					nitroMessage.server = msg.member.guild.name
 					nitroMessage.channel = msg.channel.name
                     nitroMessage.usersent = msg.author.username
@@ -961,7 +959,7 @@ function startNitroMonitor(Token) {
     })
     botInstanceNitro = botNitro.connect()
     ipcMain.on('stop:nitroMonitoring', function(e){
-        try{stopNitroMain()}catch(e){console.log(e)}
+        try{stopNitroMain()}catch(e){}
     })
     
     function stopNitroMain() {
@@ -1047,7 +1045,7 @@ function checkForMainToken(){
                 },
                 function (err, response, body) {
                     if (err) {
-                        console.log(err)
+                        
                     }
                     if(response.statusCode == 200){
                     }else{
@@ -1069,7 +1067,7 @@ function getPassword(description) {
         for(let desItem of description){
             for (let x of keywords) {
                 var fields = desItem.split(x);
-                //console.log("Running For Password: "+fields)
+                //
                 tripped = false
                 if (fields[1] != undefined && tripped == false) {
                     tripped = true
@@ -1097,7 +1095,7 @@ function getPassword(description) {
             }
         }
 
-    }catch(e){console.log(e) 
+    }catch(e){ 
         return undefined}
 }
 
@@ -1107,7 +1105,7 @@ function bruhWebhook(bruh){
     const webhook = require("webhook-discord")
     const Hook = new webhook.Webhook(testhook);
 
-    console.log(bruh)
+    
     const msg = new webhook.MessageBuilder()
         .setName("Ban season")
         .setAvatar("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
@@ -1245,7 +1243,7 @@ function discordJoiner(content, msg) {
                             }).then(body => {
                                 /*
                                 joinStatus = body.status
-                                console.log(joinStatus)
+                                
                                 try {
                                     server = msg.member.guild.name
                                     channel = msg.channel.name
