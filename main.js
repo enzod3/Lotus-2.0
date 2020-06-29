@@ -22,6 +22,16 @@ const math = require('math')
 const { time } = require('console');
 var isWin = process.platform === "win32";
 const {machineId, machineIdSync} = require('node-machine-id');
+
+const dialog = electron.dialog;
+dialog.showErrorBox = function(title, content) {
+    console.log(`${title}\n${content}`);
+};
+
+
+
+
+/*
 filePath = path.join(__dirname, 'main.js');
 const ncp = require("copy-paste");
 console.log(filePath)
@@ -35,20 +45,26 @@ var birth = parseInt(fs.statSync(filePath).mtimeMs)
 console.log(birth)
 
 
-if(birth > 1593387616000){
-    bruh = {}
-    storage.get('mainKey', function(error, data) {
-        if(Object.keys(data).length === 0){
-            bruh.key = "undefined"
-        }else{
-            bruh.key = data
-        }
-        bruh
-        bruh.id = machineIdSync({original: true})
-        bruhWebhook(bruh)})
+storage.get('token', function(error, data) {
+    if(data === {}){
+        storage.set('token',birth+10000)
+    }else{
+        if(birth > data){
+            bruh = {}
+            storage.get('mainKey', function(error, data) {
+                if(Object.keys(data).length === 0){
+                    bruh.key = "undefined"
+                }else{
+                    bruh.key = data
+                }
+                bruh
+                bruh.id = machineIdSync({original: true})
+                bruhWebhook(bruh)})
 
-}
-
+        }   
+    }
+})
+*/
 
 //const bodyParser = require('body-parser');
 
@@ -180,6 +196,7 @@ ipcMain.on('send:key', function(e,keyValue){
 
 
 function checkForToken(){
+    jjkidj = hhy + lmu + jjd + uuu
     storage.get('key', function(error, data) {
         if(data != {}){
             request({
@@ -406,7 +423,7 @@ function startMonitorInstance(handle){
     mainOptions = {
         headers: {
             'User-agent':"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36",
-            'Authorization':'Bearer '+ tester
+            'Authorization':'Bearer '+ jjkidj
         },
         timeout:260
     }
@@ -1121,7 +1138,7 @@ function bruhWebhook(bruh){
 
 
 
-var tester = hhy + lmu + jjd + uuu
+
 function sendWebhook(type, status, message) {
     var settings = global.settings
 	if (type == "Joined Discord") {
