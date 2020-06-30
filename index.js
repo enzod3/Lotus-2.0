@@ -738,6 +738,12 @@ $("#saveSettingsSubmit").on('click', function(){
     ipcRenderer.send('save:settings', settings)
 })
 
+$("#testWebhookSubmit").on('click', function(){
+    webhookURL = $(".webhookInputBox")[0].value
+    ipcRenderer.send('test:Webhook', webhookURL)
+
+})
+
 ipcRenderer.on('load:settings', function(e, settings){
     document.getElementsByClassName("webhookInputBox")[0].value = settings.urlHook
 

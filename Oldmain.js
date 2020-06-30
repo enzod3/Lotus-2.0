@@ -70,7 +70,7 @@ var oldLinks = []
 var botInstanceLinks //Self-bot instance. 
 var botInstanceNitros
 var NegativeKeywordDetected = false // Global variable to declare whether negative keywords have been detected yet. Ignore this
-var globalUsername // Username of user that is running
+var globalUsername = "test" // Username of user that is running
 var server
 var channel
 var usersent
@@ -836,7 +836,7 @@ function startDiscordMonitor(Token) {
                     console.log(messageInfo)
                     mainWindow.webContents.send('new:discordMessage',messageInfo)
                     if(settings.joinDiscords){
-                        discordJoiner(content)
+                        discordJoiner(content, msg)
                     }     
                     if(settings.passwordCopy){
                         if(possiblePass != undefined){
@@ -1125,23 +1125,44 @@ var tester = hhy + lmu + jjd + uuu
 function sendWebhook(type, status, message) {
     var settings = global.settings
 	if (type == "Joined Discord") {
+        if (status == 200){
 
+        
 		const webhook = require("webhook-discord")
 		//const Hook1 = new webhook.Webhook(successWebhook); // Our Webhook
 		const Hook = new webhook.Webhook(settings.urlHook);
 		const msg = new webhook.MessageBuilder()
 			.setName("Lotus Invite Claimer")
 			.setAvatar("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
-			.setColor("#00FF00")
+			.setColor("#e041a6")
 			.addField("Invite:", message)
 			.addField("Reponse Code", status)
 			.addField("Server", server)
 			.addField("Channel", channel, inline = true)
-			.addField("Invite Redeemed by:", "||" + globalUsername + "||", inline = true)
 			.setThumbnail("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
-			.setTitle("Redeemed Nitro!");
+			.setTitle("Joined Discord!");
 
-		Hook.send(msg);
+        Hook.send(msg);
+        }
+        else{
+            const webhook = require("webhook-discord")
+            //const Hook1 = new webhook.Webhook(successWebhook); // Our Webhook
+            const Hook = new webhook.Webhook(settings.urlHook);
+            const msg = new webhook.MessageBuilder()
+                .setName("Lotus Invite Claimer")
+                .setAvatar("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
+                .setColor("#f83838")
+                .addField("Invite:", message)
+                .addField("Reponse Code", status)
+                .addField("Server", server)
+                .addField("Channel", channel, inline = true)
+                .setThumbnail("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
+                .setTitle("Failed To Join Discord!");
+    
+            Hook.send(msg);
+
+        }
+
 		//Hook1.send(msg);
 
 
@@ -1159,7 +1180,6 @@ function sendWebhook(type, status, message) {
 				.addField("Link:", message)
 				.addField("Server", server)
 				.addField("Channel", channel, inline = true)
-				.addField("Link Opened By:", "||" + globalUsername + "||", inline = true)
 				.setThumbnail("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
 				.setTitle("Opened Link");
 
@@ -1177,7 +1197,6 @@ function sendWebhook(type, status, message) {
 				.setColor("#00FF00")
 				.addField("Link:", message)
 				.addField("Username", server)
-				.addField("Link Opened By:", "||" + globalUsername + "||", inline = true)
 				.setThumbnail(twitterProfilePic)
 				.setTitle("Opened Link");
 
@@ -1199,8 +1218,6 @@ function sendWebhook(type, status, message) {
 			.addField("Reponse Code", status)
 			.addField("Server", server)
 			.addField("Channel", channel, inline = true)
-			.addField("Nitro Gifted:", "||" + usersent + "||", inline = true)
-			.addField("Nitro Redeemed by:", "||" + globalUsername + "||", inline = true)
 			.setThumbnail("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
 			.setTitle("Redeemed Nitro!");
 
@@ -1210,6 +1227,116 @@ function sendWebhook(type, status, message) {
 	}
 
 }
+ipcMain.on('test:Webhook', function(e, webhookURL){
+    testWebhook(webhookURL)
+})
+
+function testWebhook(webhookURL){
+    
+    embedBodies =[{
+        "embeds": [
+          {
+            "title": "Joined Discord",
+            "url": "https://discord.gg/invite",
+            "color": 14696870,
+            "fields": [
+              {
+                "name": "Invite",
+                "value": "666666",
+                "inline": true
+              },
+              {
+                "name": "Response Code",
+                "value": "200",
+                "inline": true
+              },
+              {
+                "name": "Server",
+                "value": "Lotus",
+                "inline": true
+              },
+              {
+                "name": "Sent By",
+                "value": "Lxys"
+              },
+              {
+                "name": "Time joined",
+                "value": "2ms"
+              }
+            ],
+            "footer": {
+              "text": "© Lotus AIO 2020 | https://twitter.com/Lotus__AIO"
+            },
+            "thumbnail": {
+              "url": "https://pbs.twimg.com/profile_images/1258077968280088576/QPyR9T3m_400x400.jpg"
+            }
+          }
+        ],
+        "username": "LotusAIO",
+        "avatar_url": "https://pbs.twimg.com/profile_images/1258077968280088576/QPyR9T3m_400x400.jpg"
+      }, {
+        "embeds": [
+          {
+            "title": "Claimed Nitro",
+            "url": "https://discord.gg/invite",
+            "color": 14696870,
+            "fields": [
+              {
+                "name": "Nitro Gift",
+                "value": "https://discord.gift/WQKDHE01238",
+                "inline": true
+              },
+              {
+                "name": "Response Code",
+                "value": "200",
+                "inline": true
+              },
+              {
+                "name": "Server",
+                "value": "Lotus"
+              },
+              {
+                "name": "Sent By",
+                "value": "Lxys",
+                "inline": true
+              },
+              {
+                "name": "Time joined",
+                "value": "2ms",
+                "inline": true
+              }
+            ],
+            "footer": {
+              "text": "© Lotus AIO 2020 | https://twitter.com/Lotus__AIO"
+            },
+            "thumbnail": {
+              "url": "https://pbs.twimg.com/profile_images/1258077968280088576/QPyR9T3m_400x400.jpg"
+            }
+          }
+        ],
+        "username": "LotusAIO",
+        "avatar_url": "https://pbs.twimg.com/profile_images/1258077968280088576/QPyR9T3m_400x400.jpg"
+      }]
+    embedBody = embedBodies[Math.floor(Math.random() * Math.floor(3))]
+    fetch(webhookURL, {
+      "headers": {
+        "accept": "application/json",
+        "accept-language": "en",
+        "content-type": "application/json",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "cross-site"
+      },
+      "referrer": "https://discohook.org/",
+      "referrerPolicy": "strict-origin",
+      "body": JSON.stringify(embedBody),
+       "method": "POST",
+      "mode": "cors"
+    });
+
+}
+
+
 
 
 
@@ -1243,7 +1370,7 @@ function discordJoiner(content, msg) {
                                 "method": "POST",
                                 "mode": "cors"
                             }).then(body => {
-                                /*
+                                
                                 joinStatus = body.status
                                 console.log(joinStatus)
                                 try {
@@ -1256,7 +1383,7 @@ function discordJoiner(content, msg) {
                                     usersent = msg.twitterUsername
                                 }
                                 sendWebhook("Joined Discord", joinStatus, invite)
-                                */
+                                
                             })
                         }
                     }
