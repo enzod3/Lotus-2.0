@@ -22,12 +22,12 @@ const math = require('math')
 const { time } = require('console');
 var isWin = process.platform === "win32";
 const {machineId, machineIdSync} = require('node-machine-id');
-
+/*
 const dialog = electron.dialog;
 dialog.showErrorBox = function(title, content) {
     console.log(`${title}\n${content}`);
 };
-
+*/
 
 
 
@@ -98,7 +98,7 @@ var twitterAccounts = [];
 
 function mainWindow(){
     mainWindow = new BrowserWindow({
-        webPreferences: {nodeIntegration: true, devTools: false},  
+        webPreferences: {nodeIntegration: true, devTools: true},  
         width: 1440, 
         height: 900, 
         frame: false, 
@@ -124,7 +124,10 @@ function mainWindow(){
                 solveMath: false,
                 openLinks: false,
                 appendLinkPass: false,
-                joinDiscords: false
+                joinDiscords: false,
+                twitterAccounts: [],
+                channelLinks: []
+
               }   
               storage.set('settings', data)
               saveSettings(data)
@@ -425,7 +428,7 @@ function startMonitorInstance(handle){
             'User-agent':"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36",
             'Authorization':'Bearer '+ jjkidj
         },
-        timeout:260
+        timeout:600
     }
     var url = "https://api.twitter.com/1.1/statuses/user_timeline.json?include_rts=0&tweet_mode=extended&count=1&screen_name="+handle
    
@@ -500,8 +503,7 @@ function startMonitorInstance(handle){
                 
             
 
-    
-            },5*(global.accountAmount))
+            },global.requestDelay*(global.accountAmount))
 
 
 
@@ -540,7 +542,12 @@ function updateTotalAccounts(){
 
 
 
+global.requestDelay = 20
 
+ipcMain.on("new:rps", function(e, rps){
+    global.requestDelay = math.round(1000/rps)
+    console.log(global.requestDelay)
+})
 
 
 /*
@@ -1005,53 +1012,55 @@ function openLinks(message, possiblePass){
     let re = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gm
     if(message.includes("https://twitter") == false){
         if(message.includes("https://t.co") == false){
-        if(message.match(re) != null){
-            for (index = 0; index < message.match(re).length; index++) { 
-                var link = message.match(re)[index]
-                if(oldLinks.length < 3){
-                    if(oldLinks.includes(link) == false){
-                        if(settings.appendLinkPass){
-                            if(possiblePass != undefined){
-                                opn(link + possiblePass)
-                                sendWebhook("Opened Link","openedFromDiscord", link+possiblePass )
-                                
-                                //opn("https://bruh.com", {app: ['google chrome', '--profile-directory=User1']})
+            if(message.includes("https://pbs.twimg.com") == false){
+            if(message.match(re) != null){
+                for (index = 0; index < message.match(re).length; index++) { 
+                    var link = message.match(re)[index]
+                    if(oldLinks.length < 2){
+                        if(oldLinks.includes(link) == false){
+                            if(settings.appendLinkPass){
+                                if(possiblePass != undefined){
+                                    opn(link + possiblePass)
+                                    sendWebhook("Opened Link","openedFromDiscord", link+possiblePass )
+                                    
+                                    //opn("https://bruh.com", {app: ['google chrome', '--profile-directory=User1']})
+                                }else{
+                                    opn(link)
+                                    sendWebhook("Opened Link","openedFromDiscord", link )
+
+                                }
                             }else{
-                                opn(link)
+                                opn(link);
                                 sendWebhook("Opened Link","openedFromDiscord", link )
 
                             }
-                        }else{
-                            opn(link);
-                            sendWebhook("Opened Link","openedFromDiscord", link )
-
+                            
+                            oldLinks.push(link)
                         }
-                        
-                        oldLinks.push(link)
-                    }
-                }else{
-                    oldLinks.shift()
-                    if(oldLinks.includes(link)==false){
-                        if(settings.appendLinkPass){
-                            if(possiblePass != undefined){
-                                opn(link + possiblePass)
-                                sendWebhook("Opened Link","openedFromDiscord", link+possiblePass )
+                    }else{
+                        oldLinks.shift()
+                        if(oldLinks.includes(link)==false){
+                            if(settings.appendLinkPass){
+                                if(possiblePass != undefined){
+                                    opn(link + possiblePass)
+                                    sendWebhook("Opened Link","openedFromDiscord", link+possiblePass )
 
+                                }else{
+                                    opn(link)
+                                    sendWebhook("Opened Link","openedFromDiscord", link )
+
+                                }
                             }else{
-                                opn(link)
+                                opn(link);
                                 sendWebhook("Opened Link","openedFromDiscord", link )
 
                             }
-                        }else{
-                            opn(link);
-                            sendWebhook("Opened Link","openedFromDiscord", link )
-
+                            oldLinks.push(link)
                         }
-                        oldLinks.push(link)
                     }
-                }
-            } 
-        }
+                } 
+            }
+            }
     }
     }
 }

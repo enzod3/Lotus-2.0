@@ -113,7 +113,14 @@ function showSettingsPage(e){
 
 
 
+var rangeSlider = document.getElementById("myRange");
+var outputSlider = document.getElementById("outputOfSlider");
+outputSlider.innerHTML = rangeSlider.value;
 
+rangeSlider.oninput = function() {
+  outputSlider.innerHTML = this.value;
+  ipcRenderer.send('new:rps',this.value)
+}
 
 
 
@@ -172,6 +179,7 @@ function deleteAccount(e){
         console.log('already stopped')
     }
     
+    saveMainSettings()
 
 }
 
@@ -265,7 +273,7 @@ ipcRenderer.on('new:accountRow', function(e, pfpLink, handle){
     tr.insertCell()
     darkTable.appendChild(tr)
 
-
+    saveMainSettings()
     
 
 })
@@ -715,7 +723,12 @@ function testWebhook(){
     var urlHook = $(".webhookInputBox")[0].value
 }
 
+
 $("#saveSettingsSubmit").on('click', function(){
+    saveMainSettings()
+})
+
+function saveMainSettings(){
     console.log('save')
     var settings = {}
     settings.urlHook = $(".webhookInputBox")[0].value
@@ -734,9 +747,26 @@ $("#saveSettingsSubmit").on('click', function(){
     settings.openLinks = $(".linkSettingsOnSwitch")[2].children[0].checked
     settings.appendLinkPass = $(".linkSettingsOnSwitch")[3].children[0].checked
     settings.joinDiscords = $(".linkSettingsOnSwitch")[4].children[0].checked
+
+    accountArray = []
+    for(let twitAccount of document.getElementsByClassName("accountRowBackground")){
+        accountArray.push(twitAccount.querySelectorAll("p")[0].innerText.substring(5))
+        console.log(twitAccount.querySelectorAll("p")[0].innerText.substring(5))
+    }
+
+    
+    channelArray = []
+    for(let channel of document.getElementsByClassName("channelRowBackground")){
+        channelArray.push(channel.querySelectorAll("p")[0].innerText)
+        console.log(channel.querySelectorAll("p")[0].innerText)
+    }
+    settings.twitterAccounts = accountArray
+    settings.channelLinks = channelArray
     console.log(settings)
     ipcRenderer.send('save:settings', settings)
-})
+
+}
+
 
 $("#testWebhookSubmit").on('click', function(){
     webhookURL = $(".webhookInputBox")[0].value
@@ -763,6 +793,17 @@ ipcRenderer.on('load:settings', function(e, settings){
     document.getElementsByClassName("linkSettingsOnSwitch")[2].children[0].checked = settings.openLinks
     document.getElementsByClassName("linkSettingsOnSwitch")[3].children[0].checked = settings.appendLinkPass
     document.getElementsByClassName("linkSettingsOnSwitch")[4].children[0].checked = settings.joinDiscords
+
+    if(settings.twitterAccounts != []){
+        for(let account of settings.twitterAccounts){
+            ipcRenderer.send('newAccount',account)
+        }
+    }
+    if(settings.channelLinks != []){
+        for(let channel of settings.channelLinks){
+            createNewChannelRow(channel)
+        }
+    }
 
 })
 //document.getElementsByClassName("webhookInputBox")[0].value = 'dfdgsf'
@@ -867,6 +908,7 @@ function createNewChannelRow(channelID){
 
 
 
+    saveMainSettings()
 
 
 }
@@ -909,6 +951,7 @@ function deleteChannel(e){
     if(toggle.checked) {
         ipcRenderer.send('remove:channel',channel)
     }
+    saveMainSettings()
 
 }
 
