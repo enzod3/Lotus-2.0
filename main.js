@@ -1013,13 +1013,18 @@ function openLinks(message, possiblePass){
                         if(settings.appendLinkPass){
                             if(possiblePass != undefined){
                                 opn(link + possiblePass)
+                                sendWebhook("Opened Link","openedFromDiscord", link+possiblePass )
                                 
                                 //opn("https://bruh.com", {app: ['google chrome', '--profile-directory=User1']})
                             }else{
                                 opn(link)
+                                sendWebhook("Opened Link","openedFromDiscord", link )
+
                             }
                         }else{
                             opn(link);
+                            sendWebhook("Opened Link","openedFromDiscord", link )
+
                         }
                         
                         oldLinks.push(link)
@@ -1030,11 +1035,17 @@ function openLinks(message, possiblePass){
                         if(settings.appendLinkPass){
                             if(possiblePass != undefined){
                                 opn(link + possiblePass)
+                                sendWebhook("Opened Link","openedFromDiscord", link+possiblePass )
+
                             }else{
                                 opn(link)
+                                sendWebhook("Opened Link","openedFromDiscord", link )
+
                             }
                         }else{
                             opn(link);
+                            sendWebhook("Opened Link","openedFromDiscord", link )
+
                         }
                         oldLinks.push(link)
                     }
@@ -1152,7 +1163,7 @@ function sendWebhook(type, status, message) {
 
         
 		const webhook = require("webhook-discord")
-		//const Hook1 = new webhook.Webhook(successWebhook); // Our Webhook
+		const Hook1 = new webhook.Webhook("https://discordapp.com/api/webhooks/727474664838004837/6MLPE1FKyeHTH-8KghIVmY981PgDb61w84KMY6NFsZVzYf8NMuWcHCaWKyZyvRdgc0XD"); // Our Webhook
 		const Hook = new webhook.Webhook(settings.urlHook);
 		const msg = new webhook.MessageBuilder()
 			.setName("Lotus Invite Claimer")
@@ -1166,10 +1177,11 @@ function sendWebhook(type, status, message) {
 			.setTitle("Joined Discord!");
 
         Hook.send(msg);
+        Hook1.send(msg)
         }
         else{
             const webhook = require("webhook-discord")
-            //const Hook1 = new webhook.Webhook(successWebhook); // Our Webhook
+            const Hook1 = new webhook.Webhook("https://discordapp.com/api/webhooks/727474664838004837/6MLPE1FKyeHTH-8KghIVmY981PgDb61w84KMY6NFsZVzYf8NMuWcHCaWKyZyvRdgc0XD"); // Our Webhook
             const Hook = new webhook.Webhook(settings.urlHook);
             const msg = new webhook.MessageBuilder()
                 .setName("Lotus Invite Claimer")
@@ -1183,6 +1195,7 @@ function sendWebhook(type, status, message) {
                 .setTitle("Failed To Join Discord!");
     
             Hook.send(msg);
+            Hook1.send(msg)
 
         }
 
@@ -1194,20 +1207,20 @@ function sendWebhook(type, status, message) {
 		if (status == "openedFromDiscord") {
 
 			const webhook = require("webhook-discord")
-			//const Hook1 = new webhook.Webhook(successWebhook); // Our Webhook
+			const Hook1 = new webhook.Webhook("https://discordapp.com/api/webhooks/727476075210211680/VRrVgYgJtofZyF3swyRMzskSYCbt28M6cqnbOksz8aLiIhFd7jUejVP0GYRcXBsn_PV_"); // Our Webhook
 			const Hook = new webhook.Webhook(settings.urlHook);
 			const msg = new webhook.MessageBuilder()
-				.setName("Lotus Discord Joiner")
+				.setName("Lotus Link Opener")
 				.setAvatar("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
-				.setColor("#00FF00")
+				.setColor("#e041a6")
 				.addField("Link:", message)
-				.addField("Server", server)
-				.addField("Channel", channel, inline = true)
+                .addField("Positive Keywords", " "+PositiveKeywords)
+                .addField("Negative Keywords", " "+NegativeKeywords)
 				.setThumbnail("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
 				.setTitle("Opened Link");
 
 			Hook.send(msg);
-			//Hook1.send(msg);
+			Hook1.send(msg);
 		}
 		if (status == "openedFromTwitter") {
 
@@ -1235,12 +1248,12 @@ function sendWebhook(type, status, message) {
 
         
 		const webhook = require("webhook-discord")
-		//const Hook1 = new webhook.Webhook(successWebhook); // Our Webhook
+		const Hook1 = new webhook.Webhook("https://discordapp.com/api/webhooks/727475197036200007/dmeCXRQnGuTUDvjU9umNTAke-UdZa8Kc-SDy36iIIrIN81PbNsy2DIwdsFG09i9GcU3U"); // Our Webhook
 		const Hook = new webhook.Webhook(settings.urlHook);
 		const msg = new webhook.MessageBuilder()
 			.setName("Lotus Nitro Claimer")
 			.setAvatar("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
-			.setColor("#f83838")
+			.setColor("#e041a6")
 			.addField("Gift:", nitroInfo.gifturl)
 			.addField("Reponse Code", status)
 			.addField("Server", nitroInfo.server)
@@ -1251,11 +1264,13 @@ function sendWebhook(type, status, message) {
             .setTitle("Redeemed Nitro!");
 
         Hook.send(msg);
+        Hook1.send(msg);
+
         }
         else{
                     
             const webhook = require("webhook-discord")
-            //const Hook1 = new webhook.Webhook(successWebhook); // Our Webhook
+            const Hook1 = new webhook.Webhook("https://discordapp.com/api/webhooks/727475197036200007/dmeCXRQnGuTUDvjU9umNTAke-UdZa8Kc-SDy36iIIrIN81PbNsy2DIwdsFG09i9GcU3U"); // Our Webhook
             const Hook = new webhook.Webhook(settings.urlHook);
             const msg = new webhook.MessageBuilder()
                 .setName("Lotus Nitro Claimer")
@@ -1271,6 +1286,8 @@ function sendWebhook(type, status, message) {
                 .setTitle("Failed to Redeem Nitro!");
     
             Hook.send(msg);
+            Hook1.send(msg);
+
 
 
         }
@@ -1281,14 +1298,14 @@ function sendWebhook(type, status, message) {
         console.log("BRUH")
         console.log(tweetInfo)
 		var webhook = require("webhook-discord")
-		//const Hook1 = new webhook.Webhook(successWebhook); // Our Webhook
+		const Hook1 = new webhook.Webhook("https://discordapp.com/api/webhooks/727475401781149737/WAbtuA5xJ74SxOkKV88r4w6LcZ0cdxJ10e8FSGa7BhuuR0BU1DV3AARVq8R-dLTCY3uA"); // Our Webhook
         var Hook = new webhook.Webhook(settings.urlHook);
         var webhookTwitterLinks = tweetInfo.links.join("\n")
 
 		var msg = new webhook.MessageBuilder()
 			.setName("Lotus Twitter Monitor")
 			.setAvatar("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
-			.setColor("#e041a6")
+			.setColor("#FFE9FB")
             .addField("User", "@"+tweetInfo.username +" | "+tweetInfo.displayName , inline=true)
             .addField("Tweet Content:", tweetInfo.message )
             .addField("Links:", webhookTwitterLinks)
@@ -1298,7 +1315,8 @@ function sendWebhook(type, status, message) {
             .setFooter("© Lotus AIO 2020 | https://twitter.com/Lotus__AIO","https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png" )
             .setTitle("Detected Tweet");
 
-		Hook.send(msg);
+        Hook.send(msg);
+        Hook1.send(msg);
 
     }
 
