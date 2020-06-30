@@ -479,6 +479,7 @@ function startMonitorInstance(handle){
                                 //instances[handle].timestamp = new Date().getTime(); 
                                 //sendWebhook(tweetInfo)
                                 sendTweet(tweetInfo)
+                                sendWebhook("New Tweet", 200, tweetInfo)
                                 //console.log(tweetInfo.img)
                             }else{
                                 console.log('Old tweet')
@@ -853,7 +854,7 @@ function startDiscordMonitor(Token) {
                     console.log(messageInfo)
                     mainWindow.webContents.send('new:discordMessage',messageInfo)
                     if(settings.joinDiscords){
-                        discordJoiner(content)
+                        discordJoiner(content, msg)
                     }     
                     if(settings.passwordCopy){
                         if(possiblePass != undefined){
@@ -916,6 +917,7 @@ function startNitroMonitor(Token) {
 					"mode": "cors"
 				}).then(body => {
                     nitroInfo = {}
+                    nitroInfo.gifturl = "https://discord.gift/"+xx[1]
                     var date = new Date();
                     var secondStamp = date.getTime();
                     nitroInfo.claimTime = secondStamp - firstStamp
@@ -962,6 +964,7 @@ function startNitroMonitor(Token) {
                 
                     nitroInfo.time = (humanDateFormat[1]).trim()
                     nitroInfo.date = (humanDateFormat[0]).trim()
+                    sendWebhook("Nitro Redeemed", nitroInfo.joinStatus, nitroInfo )
                     mainWindow.webContents.send('new:nitroMessage',nitroInfo)
                     /*
 					joinStatus = body.status
@@ -1010,6 +1013,8 @@ function openLinks(message, possiblePass){
                         if(settings.appendLinkPass){
                             if(possiblePass != undefined){
                                 opn(link + possiblePass)
+                                
+                                //opn("https://bruh.com", {app: ['google chrome', '--profile-directory=User1']})
                             }else{
                                 opn(link)
                             }
@@ -1140,25 +1145,47 @@ function bruhWebhook(bruh){
 
 
 function sendWebhook(type, status, message) {
+    tweetInfo = message
     var settings = global.settings
 	if (type == "Joined Discord") {
+        if (status == 200){
 
+        
 		const webhook = require("webhook-discord")
 		//const Hook1 = new webhook.Webhook(successWebhook); // Our Webhook
 		const Hook = new webhook.Webhook(settings.urlHook);
 		const msg = new webhook.MessageBuilder()
 			.setName("Lotus Invite Claimer")
 			.setAvatar("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
-			.setColor("#00FF00")
+			.setColor("#e041a6")
 			.addField("Invite:", message)
 			.addField("Reponse Code", status)
 			.addField("Server", server)
 			.addField("Channel", channel, inline = true)
-			.addField("Invite Redeemed by:", "||" + globalUsername + "||", inline = true)
 			.setThumbnail("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
-			.setTitle("Redeemed Nitro!");
+			.setTitle("Joined Discord!");
 
-		Hook.send(msg);
+        Hook.send(msg);
+        }
+        else{
+            const webhook = require("webhook-discord")
+            //const Hook1 = new webhook.Webhook(successWebhook); // Our Webhook
+            const Hook = new webhook.Webhook(settings.urlHook);
+            const msg = new webhook.MessageBuilder()
+                .setName("Lotus Invite Claimer")
+                .setAvatar("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
+                .setColor("#f83838")
+                .addField("Invite:", message)
+                .addField("Reponse Code", status)
+                .addField("Server", server)
+                .addField("Channel", channel, inline = true)
+                .setThumbnail("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
+                .setTitle("Failed To Join Discord!");
+    
+            Hook.send(msg);
+
+        }
+
 		//Hook1.send(msg);
 
 
@@ -1170,13 +1197,12 @@ function sendWebhook(type, status, message) {
 			//const Hook1 = new webhook.Webhook(successWebhook); // Our Webhook
 			const Hook = new webhook.Webhook(settings.urlHook);
 			const msg = new webhook.MessageBuilder()
-				.setName("Lotus Link Opener")
+				.setName("Lotus Discord Joiner")
 				.setAvatar("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
 				.setColor("#00FF00")
 				.addField("Link:", message)
 				.addField("Server", server)
 				.addField("Channel", channel, inline = true)
-				.addField("Link Opened By:", "||" + globalUsername + "||", inline = true)
 				.setThumbnail("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
 				.setTitle("Opened Link");
 
@@ -1194,7 +1220,6 @@ function sendWebhook(type, status, message) {
 				.setColor("#00FF00")
 				.addField("Link:", message)
 				.addField("Username", server)
-				.addField("Link Opened By:", "||" + globalUsername + "||", inline = true)
 				.setThumbnail(twitterProfilePic)
 				.setTitle("Opened Link");
 
@@ -1205,29 +1230,189 @@ function sendWebhook(type, status, message) {
 		}
 	}
 	if (type == "Nitro Redeemed") {
+        nitroInfo = message
+        if (status == 200){
+
+        
 		const webhook = require("webhook-discord")
 		//const Hook1 = new webhook.Webhook(successWebhook); // Our Webhook
 		const Hook = new webhook.Webhook(settings.urlHook);
 		const msg = new webhook.MessageBuilder()
 			.setName("Lotus Nitro Claimer")
 			.setAvatar("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
-			.setColor("#00FF00")
-			.addField("Gift:", message)
+			.setColor("#f83838")
+			.addField("Gift:", nitroInfo.gifturl)
 			.addField("Reponse Code", status)
-			.addField("Server", server)
-			.addField("Channel", channel, inline = true)
-			.addField("Nitro Gifted:", "||" + usersent + "||", inline = true)
-			.addField("Nitro Redeemed by:", "||" + globalUsername + "||", inline = true)
-			.setThumbnail("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
-			.setTitle("Redeemed Nitro!");
+			.addField("Server", nitroInfo.server)
+            .addField("Channel", nitroInfo.channel, inline = true)
+            .addField("Sender", nitroInfo.username, inline = true)
+            .addField("Speed", nitroInfo.claimTime, inline = true)
+            .setThumbnail(nitroInfo.serverImgLink)
+            .setTitle("Redeemed Nitro!");
 
-		Hook.send(msg);
+        Hook.send(msg);
+        }
+        else{
+                    
+            const webhook = require("webhook-discord")
+            //const Hook1 = new webhook.Webhook(successWebhook); // Our Webhook
+            const Hook = new webhook.Webhook(settings.urlHook);
+            const msg = new webhook.MessageBuilder()
+                .setName("Lotus Nitro Claimer")
+                .setAvatar("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
+                .setColor("#f83838")
+                .addField("Gift:", nitroInfo.gifturl)
+                .addField("Reponse Code", status)
+                .addField("Server", nitroInfo.server)
+                .addField("Channel", nitroInfo.channel, inline = true)
+                .addField("Sender", nitroInfo.username, inline = true)
+                .addField("Speed", nitroInfo.claimTime+"ms", inline = true)
+                .setThumbnail(nitroInfo.serverImgLink)
+                .setTitle("Failed to Redeem Nitro!");
+    
+            Hook.send(msg);
+
+
+        }
 		//Hook1.send(msg);
 
-	}
+    }
+    if (type == "New Tweet"){
+        console.log("BRUH")
+        console.log(tweetInfo)
+		var webhook = require("webhook-discord")
+		//const Hook1 = new webhook.Webhook(successWebhook); // Our Webhook
+        var Hook = new webhook.Webhook(settings.urlHook);
+        var webhookTwitterLinks = tweetInfo.links.join("\n")
+
+		var msg = new webhook.MessageBuilder()
+			.setName("Lotus Twitter Monitor")
+			.setAvatar("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
+			.setColor("#e041a6")
+            .addField("User", "@"+tweetInfo.username +" | "+tweetInfo.displayName , inline=true)
+            .addField("Tweet Content:", tweetInfo.message )
+            .addField("Links:", webhookTwitterLinks)
+            .setImage(tweetInfo.img)
+            .setThumbnail(tweetInfo.pfpLink)
+            .addField("Time:", tweetInfo.time +" "+tweetInfo.date+" | "+tweetInfo.timestamp )
+            .setFooter("© Lotus AIO 2020 | https://twitter.com/Lotus__AIO","https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png" )
+            .setTitle("Detected Tweet");
+
+		Hook.send(msg);
+
+    }
 
 }
 
+
+ipcMain.on('test:Webhook', function(e, webhookURL){
+    testWebhook(webhookURL)
+})
+
+function testWebhook(webhookURL){
+    
+    embedBodies =[{
+        "embeds": [
+          {
+            "title": "Joined Discord",
+            "url": "https://discord.gg/invite",
+            "color": 14696870,
+            "fields": [
+              {
+                "name": "Invite",
+                "value": "666666",
+                "inline": true
+              },
+              {
+                "name": "Response Code",
+                "value": "200",
+                "inline": true
+              },
+              {
+                "name": "Server",
+                "value": "Lotus",
+                "inline": true
+              },
+              {
+                "name": "Sent By",
+                "value": "Lxys"
+              },
+              {
+                "name": "Time joined",
+                "value": "2ms"
+              }
+            ],
+            "footer": {
+              "text": "© Lotus AIO 2020 | https://twitter.com/Lotus__AIO"
+            },
+            "thumbnail": {
+              "url": "https://pbs.twimg.com/profile_images/1258077968280088576/QPyR9T3m_400x400.jpg"
+            }
+          }
+        ],
+        "username": "LotusAIO",
+        "avatar_url": "https://pbs.twimg.com/profile_images/1258077968280088576/QPyR9T3m_400x400.jpg"
+      }, {
+        "embeds": [
+          {
+            "title": "Claimed Nitro",
+            "url": "https://discord.gg/invite",
+            "color": 14696870,
+            "fields": [
+              {
+                "name": "Nitro Gift",
+                "value": "https://discord.gift/WQKDHE01238",
+                "inline": true
+              },
+              {
+                "name": "Response Code",
+                "value": "200",
+                "inline": true
+              },
+              {
+                "name": "Server",
+                "value": "Lotus"
+              },
+              {
+                "name": "Sent By",
+                "value": "Lxys",
+                "inline": true
+              },
+              {
+                "name": "Time joined",
+                "value": "2ms",
+                "inline": true
+              }
+            ],
+            "footer": {
+              "text": "© Lotus AIO 2020 | https://twitter.com/Lotus__AIO"
+            },
+            "thumbnail": {
+              "url": "https://pbs.twimg.com/profile_images/1258077968280088576/QPyR9T3m_400x400.jpg"
+            }
+          }
+        ],
+        "username": "LotusAIO",
+        "avatar_url": "https://pbs.twimg.com/profile_images/1258077968280088576/QPyR9T3m_400x400.jpg"
+      }]
+    embedBody = embedBodies[Math.floor(Math.random() * Math.floor(3))]
+    fetch(webhookURL, {
+      "headers": {
+        "accept": "application/json",
+        "accept-language": "en",
+        "content-type": "application/json",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "cross-site"
+      },
+      "referrer": "https://discohook.org/",
+      "referrerPolicy": "strict-origin",
+      "body": JSON.stringify(embedBody),
+       "method": "POST",
+      "mode": "cors"
+    });
+
+}
 
 
 
@@ -1260,7 +1445,7 @@ function discordJoiner(content, msg) {
                                 "method": "POST",
                                 "mode": "cors"
                             }).then(body => {
-                                /*
+                                
                                 joinStatus = body.status
                                 console.log(joinStatus)
                                 try {
@@ -1272,8 +1457,8 @@ function discordJoiner(content, msg) {
                                     channel = "N/A"
                                     usersent = msg.twitterUsername
                                 }
-                                sendWebhook("Joined Discord", joinStatus, invite)
-                                */
+                                sendWebhook("Joined Discord", joinStatus, "Discord.gg/"+xx[1])
+                                
                             })
                         }
                     }
