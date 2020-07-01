@@ -22,12 +22,12 @@ const math = require('math')
 const { time } = require('console');
 var isWin = process.platform === "win32";
 const {machineId, machineIdSync} = require('node-machine-id');
-/*
+
 const dialog = electron.dialog;
 dialog.showErrorBox = function(title, content) {
-    ;
+    console.log(`${title}\n${content}`);
 };
-*/
+
 
 
 
@@ -98,7 +98,7 @@ var twitterAccounts = [];
 
 function mainWindow(){
     mainWindow = new BrowserWindow({
-        webPreferences: {nodeIntegration: true, devTools: true},  
+        webPreferences: {nodeIntegration: true, devTools: false},  
         width: 1440, 
         height: 900, 
         frame: false, 
