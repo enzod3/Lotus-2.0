@@ -1515,11 +1515,10 @@ function discordJoiner(content, msg) {
 
                     var invite = invite.replace("Is ", '')
                     var invite = invite.replace("discordinvite is", '')
-
                     inviteLink = 'https://discordapp.com/api/v6/invites/' + invite
                     if(settings.claimerTokens != []){
                         for (let tokenInvites of settings.claimerTokens) {
-                            fetch(invite, {
+                            fetch(inviteLink, {
                                 "headers": {
                                     "authorization": tokenInvites
                                 },
