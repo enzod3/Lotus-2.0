@@ -464,6 +464,7 @@ function startMonitorInstance(handle){
                                 
                                 if(json.entities.urls != []){
                                     for(let twitterLinkContainer of json.entities.urls){
+                                        
                                         possibleLinks.push(twitterLinkContainer.expanded_url)
                                     }
                                     tweetInfo.links = possibleLinks
@@ -614,22 +615,40 @@ function sendTweet(tweetInfo){
     if(possiblePass != undefined){tweetInfo.pass = possiblePass}
     else{tweetInfo.pass = undefined}
 
+    mainWindow.webContents.send('new:tweet', tweetInfo);
+
+    console.log("SETTINGS: "+settings.joinDiscords)
+
+
+    try{
+
+    
+    if(settings.joinDiscords == true){
+        for (let link of tweetInfo.links){
+            console.log("LINK IS:"+link)
+            discordJoiner(link, tweetInfo)
+        }
+
+        discordJoiner(tweetInfo.message, tweetInfo)
+    }     
+}
+catch (error){
+    console.log(error)
+}
 
     if(settings.openLinks){
         tweetInfo.openLinks = true//openLinks(tweetInfo.message,possiblePass)
     }   
     console.log(tweetInfo)
-    mainWindow.webContents.send('new:tweet', tweetInfo);
-    if(settings.joinDiscords){
-        discordJoiner(tweetInfo.message)
-    }     
+    
+
     if(settings.passwordCopy){
         if(possiblePass != undefined){
             copy(possiblePass)
         }
+        
     }
-  
-
+   
 }
 
 
@@ -715,6 +734,7 @@ function saveSettings(settingsNew){
 
 ipcMain.on('save:settings', function(e, settings){
     saveSettings(settings)
+    console.log(settings)
     storage.set('settings', settings)
 })
 
@@ -1451,6 +1471,7 @@ function testWebhook(webhookURL){
 
 
 function discordJoiner(content, msg) {
+
     var settings = global.settings
 	keys = ["discord.gg/", "Discord.gg/", "discord.com/invite/", "Discord.com/invite/"]
 	contentLineSplit = content.split("\n")
@@ -1459,8 +1480,42 @@ function discordJoiner(content, msg) {
 			element = element.split(" ")
 			for (let xx of element) {
 				if (xx.includes(x)) {
-					xx = xx.split(x)
-                    invite = 'https://discordapp.com/api/v6/invites/' + xx[1]
+                    xx = xx.split(x)
+                    invite = xx[1]
+                    var invite = invite.replace(/ is/g, '')
+                    var invite = invite.replace(/word/g, '')
+                    var invite = invite.replace(/[^a-zA-Z0-9_-]+/g, '')
+
+                    var invite = invite.replace("REMOVETHIS", '')
+
+
+                    var invite = invite.replace(/-/g, '')
+
+
+
+                    var invite = invite.replace(/one/g, '1')
+                    var invite = invite.replace(/two/g, '2')
+                    var invite = invite.replace(/three/g, '3')
+                    var invite = invite.replace(/four/g, '4')
+                    var invite = invite.replace(/five/g, '5')
+
+                    var invite = invite.replace(/six/g, '6')
+                    var invite = invite.replace(/seven/g, '7')
+                    var invite = invite.replace(/eight/g, '8')
+                    var invite = invite.replace(/nine/g, '9')
+                    var invite = invite.replace(/ten/g, '10')
+
+
+                    var invite = invite.replace("/invite/", '')
+                    var invite = invite.replace("discord invite Below", '')
+                    var invite = invite.replace("Below", '')
+                    var invite = invite.replace("below", '')
+                    var invite = invite.replace(" Is", '')
+
+                    var invite = invite.replace("Is ", '')
+                    var invite = invite.replace("discordinvite is", '')
+
+                    inviteLink = 'https://discordapp.com/api/v6/invites/' + invite
                     if(settings.claimerTokens != []){
                         for (let tokenInvites of settings.claimerTokens) {
                             fetch(invite, {
@@ -1481,9 +1536,10 @@ function discordJoiner(content, msg) {
                                 } catch {
                                     server = "N/A"
                                     channel = "N/A"
+
                                     usersent = msg.twitterUsername
                                 }
-                                sendWebhook("Joined Discord", joinStatus, "Discord.gg/"+xx[1])
+                                sendWebhook("Joined Discord", joinStatus, "https://discord.gg/"+invite)
                                 
                             })
                         }
