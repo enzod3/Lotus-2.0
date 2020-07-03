@@ -22,7 +22,7 @@ const math = require('math')
 const { time } = require('console');
 var isWin = process.platform === "win32";
 const {machineId, machineIdSync} = require('node-machine-id');
-
+const ncp = require("copy-paste");
 const dialog = electron.dialog;
 dialog.showErrorBox = function(title, content) {
     console.log(`${title}\n${content}`);
@@ -32,7 +32,6 @@ dialog.showErrorBox = function(title, content) {
 
 /*
 filePath = path.join(__dirname, 'main.js');
-const ncp = require("copy-paste");
 console.log(filePath)
 console.log(fs.statSync(filePath))
 
@@ -1035,48 +1034,8 @@ function openLinks(message, possiblePass){
             if(message.match(re) != null){
                 for (index = 0; index < message.match(re).length; index++) { 
                     var link = message.match(re)[index]
-                    if(oldLinks.length < 2){
-                        if(oldLinks.includes(link) == false){
-                            if(settings.appendLinkPass){
-                                if(possiblePass != undefined){
-                                    opn(link + possiblePass)
-                                    sendWebhook("Opened Link","openedFromDiscord", link+possiblePass )
-                                    
-                                    //opn("https://bruh.com", {app: ['google chrome', '--profile-directory=User1']})
-                                }else{
-                                    opn(link)
-                                    sendWebhook("Opened Link","openedFromDiscord", link )
-
-                                }
-                            }else{
-                                opn(link);
-                                sendWebhook("Opened Link","openedFromDiscord", link )
-
-                            }
-                            
-                            oldLinks.push(link)
-                        }
-                    }else{
-                        oldLinks.shift()
-                        if(oldLinks.includes(link)==false){
-                            if(settings.appendLinkPass){
-                                if(possiblePass != undefined){
-                                    opn(link + possiblePass)
-                                    sendWebhook("Opened Link","openedFromDiscord", link+possiblePass )
-
-                                }else{
-                                    opn(link)
-                                    sendWebhook("Opened Link","openedFromDiscord", link )
-
-                                }
-                            }else{
-                                opn(link);
-                                sendWebhook("Opened Link","openedFromDiscord", link )
-
-                            }
-                            oldLinks.push(link)
-                        }
-                    }
+                    
+                    //rewrite
                 } 
             }
             }
