@@ -592,7 +592,7 @@ checkboxAll.addEventListener( 'change', function() {
 
         for (var i=0; i < accountSwitches.length; i++) {
             if(accountSwitches[i].querySelectorAll("input[name=accountSwitch]")[0].checked == false){
-                ipcRenderer.send('start:twitter',accountSwitches[i].querySelectorAll("p")[0].innerText.substring(1))
+                ipcRenderer.send('start:twitter',accountSwitches[i].querySelectorAll("p")[0].innerText.trim().substring(1))
             }
             accountSwitches[i].querySelectorAll("input[name=accountSwitch]")[0].checked = true
           }
@@ -747,7 +747,15 @@ function saveMainSettings(){
     settings.openLinks = $(".linkSettingsOnSwitch")[2].children[0].checked
     settings.appendLinkPass = $(".linkSettingsOnSwitch")[3].children[0].checked
     settings.joinDiscords = $(".linkSettingsOnSwitch")[4].children[0].checked
-
+    if(settings.secondsAmount != $(".secondsInputBox")[0].value){
+        ipcRenderer.send('clear:links')
+    }
+    settings.secondsAmount = $(".secondsInputBox")[0].value
+    if(settings.secondsAmount < 0 || isNaN(settings.secondsAmount)){
+        settings.secondsAmount = 0
+    }else if(settings.secondsAmount > 100){
+        settings.secondsAmount = 100
+    }
     accountArray = []
     for(let twitAccount of document.getElementsByClassName("accountRowBackground")){
         accountArray.push(twitAccount.querySelectorAll("p")[0].innerText.substring(5))
@@ -793,6 +801,10 @@ ipcRenderer.on('load:settings', function(e, settings){
     document.getElementsByClassName("linkSettingsOnSwitch")[2].children[0].checked = settings.openLinks
     document.getElementsByClassName("linkSettingsOnSwitch")[3].children[0].checked = settings.appendLinkPass
     document.getElementsByClassName("linkSettingsOnSwitch")[4].children[0].checked = settings.joinDiscords
+    if(settings.secondsAmount == undefined){
+        settings.secondsAmount = 0
+    }
+    document.getElementsByClassName("secondsInputBox")[0].value = settings.secondsAmount
 
     if(settings.twitterAccounts != []){
         for(let account of settings.twitterAccounts){

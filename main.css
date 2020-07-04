@@ -3734,7 +3734,7 @@ h3{
 
 .linkSettingsContainer{
     margin-top: 90px;
-    grid-row: 1 / 21;
+    grid-row: 1 / 24;
     grid-column: 27 /41;
     position: relative;
 }
@@ -3807,10 +3807,47 @@ h3{
 
 
 
+.secondsInputBox{
+    z-index: 5;
+    width: 40px;
+    height: 30px;
+    background-color: #243442;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    box-shadow: inset -3px -3px 3px 0px rgba(255,255,255,0.1), inset 3px 3px 3px 0px rgba(0,0,0,0.15);
+    padding-left: 12px;
+    padding-right: 8px;
+    caret-color: #5E7689;
+    color: #5E7689;
+    font-size: 12px;
+
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 16px;
+    margin-left: 15px;
+}
+
+
+.secondsLabel{
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 24px;
+}
+
+#secondsInputBox::-webkit-input-placeholder{
+    color:#5E7689;
+    font-size: 12px;
+}
+
+
+
+
+
 
 
 .buttonStylingSaveSettings{
-    margin-top: 196px;
+    margin-top: 292px;
     margin-left: 960px;
     position: absolute;
     align-content: center;

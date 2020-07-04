@@ -14,7 +14,6 @@ const Eris = require("eris");
 var opn = require('opn');
 const console = require("console");
 const fetch = require("node-fetch");
-var opn = require('opn');
 const clipboardy = require('clipboardy');
 const { start } = require('repl');
 const { settings } = require('cluster');
@@ -123,6 +122,7 @@ function mainWindow(){
                 openLinks: false,
                 appendLinkPass: false,
                 joinDiscords: false,
+                urlHook: 0,
                 twitterAccounts: [],
                 channelLinks: []
 
@@ -426,7 +426,7 @@ function startMonitorInstance(handle){
             'User-agent':"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36",
             'Authorization':'Bearer '+ jjkidj
         },
-        timeout:600
+        timeout:700
     }
     var url = "https://api.twitter.com/1.1/statuses/user_timeline.json?include_rts=0&tweet_mode=extended&count=1&screen_name="+handle
    
@@ -1018,9 +1018,23 @@ function startNitroMonitor(Token) {
 
 
 
+global.oldOpenedLinks = []
 
 
+function clearLink(link){
+    const index = global.oldOpenedLinks.indexOf(link)
+    if (index > -1) {
+        global.oldOpenedLinks.splice(index, 1);
+        console.log('cleared: '+link)
+      }
 
+}
+
+
+ipcMain.on('clear:links',function(e){
+    global.oldOpenedLinks = []
+    console.log('linksCleared')
+})
 
 
 
@@ -1028,6 +1042,41 @@ function startNitroMonitor(Token) {
 function openLinks(message, possiblePass){
     var settings = global.settings
     let re = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gm
+    
+    if(message.match(re) != null){
+        for (index = 0; index < message.match(re).length; index++) { 
+            var link = message.match(re)[index]
+            if(global.oldOpenedLinks.includes(link) == false){
+
+                if(message.includes("https://twitter") == false){
+                    if(message.includes("https://t.co") == false){
+                        if(message.includes("https://pbs.twimg.com") == false){
+                            opn(link)
+                            global.oldOpenedLinks.push(link)
+                            console.log(settings.secondsAmount)
+                            setTimeout(function(){ clearLink(link) },parseInt(settings.secondsAmount)*1000)
+                        }
+                    }
+                }
+
+
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
+    /*
+    
+    
+    
+    
+    
+    
+    
     if(message.includes("https://twitter") == false){
         if(message.includes("https://t.co") == false){
             if(message.includes("https://pbs.twimg.com") == false){
@@ -1083,7 +1132,7 @@ function openLinks(message, possiblePass){
             }
             }
     }
-    }
+    }*/
 }
 
 
