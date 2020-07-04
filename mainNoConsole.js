@@ -14,7 +14,6 @@ const Eris = require("eris");
 var opn = require('opn');
 const console = require("console");
 const fetch = require("node-fetch");
-var opn = require('opn');
 const clipboardy = require('clipboardy');
 const { start } = require('repl');
 const { settings } = require('cluster');
@@ -22,18 +21,16 @@ const math = require('math')
 const { time } = require('console');
 var isWin = process.platform === "win32";
 const {machineId, machineIdSync} = require('node-machine-id');
-
+const ncp = require("copy-paste");
 const dialog = electron.dialog;
 dialog.showErrorBox = function(title, content) {
-    console.log(`${title}\n${content}`);
+    ;
 };
-
 
 
 
 /*
 filePath = path.join(__dirname, 'main.js');
-const ncp = require("copy-paste");
 
 
 
@@ -125,6 +122,7 @@ function mainWindow(){
                 openLinks: false,
                 appendLinkPass: false,
                 joinDiscords: false,
+                urlHook: 0,
                 twitterAccounts: [],
                 channelLinks: []
 
@@ -428,7 +426,7 @@ function startMonitorInstance(handle){
             'User-agent':"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36",
             'Authorization':'Bearer '+ jjkidj
         },
-        timeout:600
+        timeout:700
     }
     var url = "https://api.twitter.com/1.1/statuses/user_timeline.json?include_rts=0&tweet_mode=extended&count=1&screen_name="+handle
    
@@ -465,6 +463,7 @@ function startMonitorInstance(handle){
                                 
                                 if(json.entities.urls != []){
                                     for(let twitterLinkContainer of json.entities.urls){
+                                        
                                         possibleLinks.push(twitterLinkContainer.expanded_url)
                                     }
                                     tweetInfo.links = possibleLinks
@@ -615,22 +614,40 @@ function sendTweet(tweetInfo){
     if(possiblePass != undefined){tweetInfo.pass = possiblePass}
     else{tweetInfo.pass = undefined}
 
+    mainWindow.webContents.send('new:tweet', tweetInfo);
+
+    
+
+
+    try{
+
+    
+    if(settings.joinDiscords == true){
+        for (let link of tweetInfo.links){
+            
+            discordJoiner(link, tweetInfo)
+        }
+
+        discordJoiner(tweetInfo.message, tweetInfo)
+    }     
+}
+catch (error){
+    
+}
 
     if(settings.openLinks){
         tweetInfo.openLinks = true//openLinks(tweetInfo.message,possiblePass)
     }   
     
-    mainWindow.webContents.send('new:tweet', tweetInfo);
-    if(settings.joinDiscords){
-        discordJoiner(tweetInfo.message)
-    }     
+    
+
     if(settings.passwordCopy){
         if(possiblePass != undefined){
             copy(possiblePass)
         }
+        
     }
-  
-
+   
 }
 
 
@@ -716,6 +733,7 @@ function saveSettings(settingsNew){
 
 ipcMain.on('save:settings', function(e, settings){
     saveSettings(settings)
+    
     storage.set('settings', settings)
 })
 
@@ -1000,9 +1018,23 @@ function startNitroMonitor(Token) {
 
 
 
+global.oldOpenedLinks = []
 
 
+function clearLink(link){
+    const index = global.oldOpenedLinks.indexOf(link)
+    if (index > -1) {
+        global.oldOpenedLinks.splice(index, 1);
+        
+      }
 
+}
+
+
+ipcMain.on('clear:links',function(e){
+    global.oldOpenedLinks = []
+    
+})
 
 
 
@@ -1010,6 +1042,41 @@ function startNitroMonitor(Token) {
 function openLinks(message, possiblePass){
     var settings = global.settings
     let re = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gm
+    
+    if(message.match(re) != null){
+        for (index = 0; index < message.match(re).length; index++) { 
+            var link = message.match(re)[index]
+            if(global.oldOpenedLinks.includes(link) == false){
+
+                if(message.includes("https://twitter") == false){
+                    if(message.includes("https://t.co") == false){
+                        if(message.includes("https://pbs.twimg.com") == false){
+                            opn(link)
+                            global.oldOpenedLinks.push(link)
+                            
+                            setTimeout(function(){ clearLink(link) },parseInt(settings.secondsAmount)*1000)
+                        }
+                    }
+                }
+
+
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
+    /*
+    
+    
+    
+    
+    
+    
+    
     if(message.includes("https://twitter") == false){
         if(message.includes("https://t.co") == false){
             if(message.includes("https://pbs.twimg.com") == false){
@@ -1027,7 +1094,7 @@ function openLinks(message, possiblePass){
                                 }else{
                                     opn(link)
                                     sendWebhook("Opened Link","openedFromDiscord", link )
-
+                    
                                 }
                             }else{
                                 opn(link);
@@ -1058,11 +1125,14 @@ function openLinks(message, possiblePass){
                             oldLinks.push(link)
                         }
                     }
+                    
+                    
+                    //rewrite
                 } 
             }
             }
     }
-    }
+    }*/
 }
 
 
@@ -1332,6 +1402,7 @@ function sendWebhook(type, status, message) {
 }
 
 
+
 ipcMain.on('test:Webhook', function(e, webhookURL){
     testWebhook(webhookURL)
 })
@@ -1452,6 +1523,7 @@ function testWebhook(webhookURL){
 
 
 function discordJoiner(content, msg) {
+
     var settings = global.settings
 	keys = ["discord.gg/", "Discord.gg/", "discord.com/invite/", "Discord.com/invite/"]
 	contentLineSplit = content.split("\n")
@@ -1460,11 +1532,44 @@ function discordJoiner(content, msg) {
 			element = element.split(" ")
 			for (let xx of element) {
 				if (xx.includes(x)) {
-					xx = xx.split(x)
-                    invite = 'https://discordapp.com/api/v6/invites/' + xx[1]
+                    xx = xx.split(x)
+                    invite = xx[1]
+                    var invite = invite.replace(/ is/g, '')
+                    var invite = invite.replace(/word/g, '')
+                    var invite = invite.replace(/[^a-zA-Z0-9_-]+/g, '')
+
+                    var invite = invite.replace("REMOVETHIS", '')
+
+
+                    var invite = invite.replace(/-/g, '')
+
+
+
+                    var invite = invite.replace(/one/g, '1')
+                    var invite = invite.replace(/two/g, '2')
+                    var invite = invite.replace(/three/g, '3')
+                    var invite = invite.replace(/four/g, '4')
+                    var invite = invite.replace(/five/g, '5')
+
+                    var invite = invite.replace(/six/g, '6')
+                    var invite = invite.replace(/seven/g, '7')
+                    var invite = invite.replace(/eight/g, '8')
+                    var invite = invite.replace(/nine/g, '9')
+                    var invite = invite.replace(/ten/g, '10')
+
+
+                    var invite = invite.replace("/invite/", '')
+                    var invite = invite.replace("discord invite Below", '')
+                    var invite = invite.replace("Below", '')
+                    var invite = invite.replace("below", '')
+                    var invite = invite.replace(" Is", '')
+
+                    var invite = invite.replace("Is ", '')
+                    var invite = invite.replace("discordinvite is", '')
+                    inviteLink = 'https://discordapp.com/api/v6/invites/' + invite
                     if(settings.claimerTokens != []){
                         for (let tokenInvites of settings.claimerTokens) {
-                            fetch(invite, {
+                            fetch(inviteLink, {
                                 "headers": {
                                     "authorization": tokenInvites
                                 },
@@ -1482,9 +1587,10 @@ function discordJoiner(content, msg) {
                                 } catch {
                                     server = "N/A"
                                     channel = "N/A"
+
                                     usersent = msg.twitterUsername
                                 }
-                                sendWebhook("Joined Discord", joinStatus, "Discord.gg/"+xx[1])
+                                sendWebhook("Joined Discord", joinStatus, "https://discord.gg/"+invite)
                                 
                             })
                         }
