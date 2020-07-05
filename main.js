@@ -636,7 +636,8 @@ catch (error){
 }
 
     if(settings.openLinks){
-        tweetInfo.openLinks = true//openLinks(tweetInfo.message,possiblePass)
+        tweetInfo.openLinks = true
+        openLinks(tweetInfo.message,possiblePass)
     }   
     console.log(tweetInfo)
     
@@ -1048,15 +1049,13 @@ function openLinks(message, possiblePass){
             var link = message.match(re)[index]
             if(global.oldOpenedLinks.includes(link) == false){
 
-                if(message.includes("https://twitter") == false){
-                    if(message.includes("https://t.co") == false){
-                        if(message.includes("https://pbs.twimg.com") == false){
+                if(message.includes("https://twitter") == false || message.includes("https://t.co") == false || message.includes("https://pbs.twimg.com") == false){
+                
                             opn(link)
                             global.oldOpenedLinks.push(link)
                             console.log(settings.secondsAmount)
                             setTimeout(function(){ clearLink(link) },parseInt(settings.secondsAmount)*1000)
-                        }
-                    }
+      
                 }
 
 
