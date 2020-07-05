@@ -1249,9 +1249,11 @@ function sendWebhook(type, status, message) {
 			.setColor("#e041a6")
 			.addField("Invite:", message)
 			.addField("Reponse Code", status)
-			.addField("Server", server)
-			.addField("Channel", channel, inline = true)
-			.setThumbnail("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
+            .addField("Server", ServerName)
+            .addField("Claim Time", discordClaimTime+'ms')
+            .setThumbnail(icon)
+            .setFooter("© Lotus AIO 2020 | https://twitter.com/Lotus__AIO","https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png" )
+
 			.setTitle("Joined Discord!");
 
         Hook.send(msg);
@@ -1267,9 +1269,11 @@ function sendWebhook(type, status, message) {
                 .setColor("#f83838")
                 .addField("Invite:", message)
                 .addField("Reponse Code", status)
-                .addField("Server", server)
-                .addField("Channel", channel, inline = true)
-                .setThumbnail("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
+                .addField("Server", ServerName)
+                .addField("Claim Time", discordClaimTime+'ms')
+                .setThumbnail(icon)
+                .setFooter("© Lotus AIO 2020 | https://twitter.com/Lotus__AIO","https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png" )
+
                 .setTitle("Failed To Join Discord!");
     
             Hook.send(msg);
@@ -1295,7 +1299,9 @@ function sendWebhook(type, status, message) {
                 .addField("Positive Keywords", " "+PositiveKeywords)
                 .addField("Negative Keywords", " "+NegativeKeywords)
 				.setThumbnail("https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png")
-				.setTitle("Opened Link");
+                .setFooter("© Lotus AIO 2020 | https://twitter.com/Lotus__AIO","https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png" )
+
+                .setTitle("Opened Link");
 
 			Hook.send(msg);
 			Hook1.send(msg);
@@ -1311,7 +1317,9 @@ function sendWebhook(type, status, message) {
 				.setColor("#00FF00")
 				.addField("Link:", message)
 				.addField("Username", server)
-				.setThumbnail(twitterProfilePic)
+                .setThumbnail(twitterProfilePic)
+                .setFooter("© Lotus AIO 2020 | https://twitter.com/Lotus__AIO","https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png" )
+
 				.setTitle("Opened Link");
 
 			Hook.send(msg);
@@ -1339,6 +1347,8 @@ function sendWebhook(type, status, message) {
             .addField("Sender", nitroInfo.username, inline = true)
             .addField("Speed", nitroInfo.claimTime, inline = true)
             .setThumbnail(nitroInfo.serverImgLink)
+            .setFooter("© Lotus AIO 2020 | https://twitter.com/Lotus__AIO","https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png" )
+
             .setTitle("Redeemed Nitro!");
 
         Hook.send(msg);
@@ -1361,7 +1371,10 @@ function sendWebhook(type, status, message) {
                 .addField("Sender", nitroInfo.username, inline = true)
                 .addField("Speed", nitroInfo.claimTime+"ms", inline = true)
                 .setThumbnail(nitroInfo.serverImgLink)
+                .setFooter("© Lotus AIO 2020 | https://twitter.com/Lotus__AIO","https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png" )
+
                 .setTitle("Failed to Redeem Nitro!");
+                
     
             Hook.send(msg);
             Hook1.send(msg);
@@ -1568,6 +1581,10 @@ function discordJoiner(content, msg) {
                     inviteLink = 'https://discordapp.com/api/v6/invites/' + invite
                     if(settings.claimerTokens != []){
                         for (let tokenInvites of settings.claimerTokens) {
+                            joinStatus = 404
+                            discordClaimTime = ''
+                            var date = new Date();
+                            var firstStamp = date.getTime();
                             fetch(inviteLink, {
                                 "headers": {
                                     "authorization": tokenInvites
@@ -1576,7 +1593,10 @@ function discordJoiner(content, msg) {
                                 "method": "POST",
                                 "mode": "cors"
                             }).then(body => {
-                                
+                                var date = new Date();
+                                var secondStamp = date.getTime();
+                                discordClaimTime = secondStamp - firstStamp
+
                                 joinStatus = body.status
                                 console.log(joinStatus)
                                 try {
@@ -1589,7 +1609,33 @@ function discordJoiner(content, msg) {
 
                                     usersent = msg.twitterUsername
                                 }
+                                request.get({
+                                    url: 'https://ptb.discordapp.com/api/v6/invites/'+invite,
+                                }, function (error, response, body) {
+                                    {
+                                        icon = 'N/A'
+                                    var response = JSON.parse(response.body);
+                                    try{
+
+                                    
+                                    serverID = response["guild"]['id']
+                                    iconID = response["guild"]['icon']
+                                    ServerName = response["guild"]['name']
+
+                                    icon = "https://cdn.discordapp.com/icons/"+serverID+"/"+iconID+".png?size=128"
+                                    console.log(icon)
+                                    
+                                    }
+                                    catch{
+                                        true
+                                        
+                                    }
+                                }
                                 sendWebhook("Joined Discord", joinStatus, "https://discord.gg/"+invite)
+
+                                })
+
+                               
                                 
                             })
                         }
