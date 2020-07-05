@@ -1049,7 +1049,7 @@ function openLinks(message, possiblePass){
             var link = message.match(re)[index]
             if(global.oldOpenedLinks.includes(link) == false){
 
-                if(message.includes("https://twitter") == false || message.includes("https://t.co") == false || message.includes("https://pbs.twimg.com") == false){
+                if(message.includes("https://twitter") == false && message.includes("https://t.co") == false && message.includes("https://pbs.twimg.com") == false){
                 
                             opn(link)
                             global.oldOpenedLinks.push(link)
