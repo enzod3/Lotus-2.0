@@ -1050,13 +1050,43 @@ function openLinks(message, possiblePass){
             if(global.oldOpenedLinks.includes(link) == false){
 
                 if(message.includes("https://twitter") == false && message.includes("https://t.co") == false && message.includes("https://pbs.twimg.com") == false){
-                
+                    /*
                             opn(link)
                             
                             global.oldOpenedLinks.push(link)
                             console.log(settings.secondsAmount)
                             setTimeout(function(){ clearLink(link) },parseInt(settings.secondsAmount)*1000)
       
+                */
+
+                            if(settings.appendLinkPass){
+                                if(possiblePass != undefined){
+                                    opn(link)
+                                    global.oldOpenedLinks.push(link)
+                                    console.log(settings.secondsAmount)
+                                    setTimeout(function(){ clearLink(link) },parseInt(settings.secondsAmount)*1000)
+              
+                                    sendWebhook("Opened Link","openedFromDiscord", link+possiblePass )
+                                    
+                                    //opn("https://bruh.com", {app: ['google chrome', '--profile-directory=User1']})
+                                }else{
+                                    opn(link)
+                                    global.oldOpenedLinks.push(link)
+                                    console.log(settings.secondsAmount)
+                                    setTimeout(function(){ clearLink(link) },parseInt(settings.secondsAmount)*1000)
+              
+                                    sendWebhook("Opened Link","openedFromDiscord", link )
+                    
+                                }
+                            }else{
+                                opn(link)
+                                global.oldOpenedLinks.push(link)
+                                console.log(settings.secondsAmount)
+                                setTimeout(function(){ clearLink(link) },parseInt(settings.secondsAmount)*1000)
+          
+                                sendWebhook("Opened Link","openedFromDiscord", link )
+
+                            }
                 }
 
 
