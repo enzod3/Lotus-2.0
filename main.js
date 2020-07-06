@@ -1052,6 +1052,7 @@ function openLinks(message, possiblePass){
                 if(message.includes("https://twitter") == false && message.includes("https://t.co") == false && message.includes("https://pbs.twimg.com") == false){
                 
                             opn(link)
+                            
                             global.oldOpenedLinks.push(link)
                             console.log(settings.secondsAmount)
                             setTimeout(function(){ clearLink(link) },parseInt(settings.secondsAmount)*1000)
@@ -1234,6 +1235,7 @@ function bruhWebhook(bruh){
 
 
 function sendWebhook(type, status, message) {
+    ServerName = ' test'
     tweetInfo = message
     var settings = global.settings
 	if (type == "Joined Discord") {
@@ -1581,6 +1583,8 @@ function discordJoiner(content, msg) {
                     inviteLink = 'https://discordapp.com/api/v6/invites/' + invite
                     if(settings.claimerTokens != []){
                         for (let tokenInvites of settings.claimerTokens) {
+                            serverID = 'N/A'
+                            ServerName = 'N/A'
                             joinStatus = 404
                             discordClaimTime = ''
                             var date = new Date();
@@ -1613,7 +1617,7 @@ function discordJoiner(content, msg) {
                                     url: 'https://ptb.discordapp.com/api/v6/invites/'+invite,
                                 }, function (error, response, body) {
                                     {
-                                        icon = 'N/A'
+                                        icon = 'https://www.fullsailnwfl.com/assets/images/image-not-available.jpg'
                                     var response = JSON.parse(response.body);
                                     try{
 
