@@ -458,6 +458,7 @@ function startMonitorInstance(handle){
                                 tweetInfo.displayName = json.user.name
                                 tweetInfo.id = json.id_str
                                 tweetInfo.img = undefined
+                                tweetInfo.vid = undefined
 
                                 let possibleLinks = []
                                 
@@ -475,6 +476,24 @@ function startMonitorInstance(handle){
                                 if(json.entities.media != undefined){
                                     tweetInfo.img = json.entities.media[0].media_url
                                 }
+                                if(json.extended_entities != undefined){
+                                  if(json.extended_entities.media[0].video_info != undefined){
+                                      if(json.extended_entities.media[0].video_info.variants[0].content_type == "video/mp4"){
+                                          tweetInfo.vid = json.extended_entities.media[0].video_info.variants[0].url
+                                          //plainWebhook('**Video detected**\n'+json.extended_entities.media[0].video_info.variants[0].url)
+                                          //urlToVidtoText(json.extended_entities.media[0].video_info.variants[0].url)
+                                      }else if(json.extended_entities.media[0].video_info.variants[1].content_type == "video/mp4"){
+                                          tweetInfo.vid = json.extended_entities.media[0].video_info.variants[1].url
+                                          //plainWebhook('**Video detected**\n'+json.extended_entities.media[0].video_info.variants[1].url)
+                                          //urlToVidtoText(json.extended_entities.media[0].video_info.variants[1].url)
+                                      }
+                                      else{
+                                          tweetInfo.vid = json.extended_entities.media[0].video_info.variants[0].url
+                                          //plainWebhook('**Gif detected**\n'+json.extended_entities.media[0].video_info.variants[0].url)
+                                          //urlToVidtoText(json.extended_entities.media[0].video_info.variants[0].url)
+                                      }
+                                  }
+                                } 
                                 tweetInfo.receivedStamp = new Date().toISOString(); 
                                 //tweetInfo.receivedStamp = tweetInfo.receivedStamp.
                                 tweetInfo.timestamp = snowflakeToTimestamp(json.id_str)
@@ -614,7 +633,7 @@ function sendTweet(tweetInfo){
     if(possiblePass != undefined){tweetInfo.pass = possiblePass}
     else{tweetInfo.pass = undefined}
 
-    mainWindow.webContents.send('new:tweet', tweetInfo);
+    
 
     console.log("SETTINGS: "+settings.joinDiscords)
 
@@ -630,10 +649,10 @@ function sendTweet(tweetInfo){
 
         discordJoiner(tweetInfo.message, tweetInfo)
     }     
-}
-catch (error){
-    console.log(error)
-}
+    }
+    catch (error){
+        console.log(error)
+    }
 
     if(settings.openLinks){
         tweetInfo.openLinks = true
@@ -648,6 +667,7 @@ catch (error){
         }
         
     }
+    mainWindow.webContents.send('new:tweet', tweetInfo);
    
 }
 
@@ -656,6 +676,7 @@ catch (error){
 
 ipcMain.on('open:twitterLinks', function(e, tweetWithLinks, password){
     openLinks(tweetWithLinks,password)
+    console.log('recieved')
 })
 
 
