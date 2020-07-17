@@ -360,11 +360,12 @@ ipcRenderer.on('new:tweet', function(e, tweetInfo){
     messageText.classList.add('tweetMessage')
     try{
         var tweetWithLinks = twitterUrlify(tweetInfo.message, tweetInfo.links)
-        messageText.innerHTML = urlify(tweetWithLinks);
+        messageText.innerHTML = urlify(tweetWithLinks).replace("undefined","");
     }catch{
-        var tweetWithLinks = urlify(tweetInfo.message, tweetInfo.links)
+        var tweetWithLinks = urlify(tweetInfo.message, tweetInfo.links).replace("undefined","");
         messageText.innerHTML = tweetWithLinks;
     }
+    console.log("tweetinfo",tweetInfo.openLinks)
     if(tweetInfo.openLinks){
         try{
             ipcRenderer.send('open:twitterLinks',tweetWithLinks,tweetInfo.pass)
@@ -375,12 +376,24 @@ ipcRenderer.on('new:tweet', function(e, tweetInfo){
     }
     messageCell.appendChild(messageText)
 
-    if(tweetInfo.tweetImage != undefined){
+
+
+    if(tweetInfo.vid != undefined){
+        var messageVideo = document.createElement('video');
+        messageVideo.autoplay = true
+        messageVideo.controls = true
+        messageVideo.classList.add('tweetVideo');
+        var videoSource = document.createElement('source');
+        videoSource.src = tweetInfo.vid
+        messageVideo.appendChild(videoSource)
+        messageCell.appendChild(messageVideo)
+    }else if(tweetInfo.img != undefined){
         var messageImage = document.createElement('img');
         messageImage.classList.add('tweetImage');
-        messageImage.src = tweetInfo.tweetImage
+        messageImage.src = tweetInfo.img
         messageCell.appendChild(messageImage)
     }
+
 
     /*-----------------------------------------*/
 

@@ -1508,16 +1508,26 @@ h3{
     vertical-align: top;
     padding: 16px;
     padding-right: 130px;
+    user-select: text;
 }
 
 
 
 
 .tweetImage{
-    height: 85px;
+    max-height: 300px;
     border-radius: 10px;
     margin-left: 16px;
     margin-bottom: 8px;
+}
+
+.tweetVideo{
+    max-height: 300px;
+    border-radius: 10px;
+    margin-left: 16px;
+    margin-bottom: 8px;
+    user-select: all; /* Standard */
+    -webkit-user-drag: auto;
 }
 
 
@@ -2721,6 +2731,7 @@ h3{
     vertical-align: top;
     padding: 16px;
     padding-right: 130px;
+    user-select: text;
 }
 
 
