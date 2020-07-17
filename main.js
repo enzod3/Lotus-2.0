@@ -625,6 +625,7 @@ function sendTweet(tweetInfo){
     if(settings.joinDiscords == true){
         for (let link of tweetInfo.links){
             console.log("LINK IS:"+link)
+            openLinks(link, possiblePass)
             discordJoiner(link, tweetInfo)
         }
 
@@ -887,6 +888,7 @@ function startDiscordMonitor(Token) {
                             copy(possiblePass)
                         }
                     }
+                    
                     if(settings.openLinks){
                         openLinks(content,possiblePass)
                     }     
@@ -1049,7 +1051,7 @@ function openLinks(message, possiblePass){
             var link = message.match(re)[index]
             if(global.oldOpenedLinks.includes(link) == false){
 
-                if(message.includes("https://twitter") == false && message.includes("https://t.co") == false && message.includes("https://pbs.twimg.com") == false){
+                if(link.includes("https://twitter") == false && link.includes("https://t.co") == false && link.includes("https://pbs.twimg.com") == false){
                     /*
                             opn(link)
                             
@@ -1061,7 +1063,10 @@ function openLinks(message, possiblePass){
 
                             if(settings.appendLinkPass){
                                 if(possiblePass != undefined){
-                                    opn(link)
+                                    //opn(link)
+                                    opn(link, {app: ['chrome', '--profile-directory=Profile 42']})
+                                    opn(link, {app: ['chrome', '--profile-directory=Default']})
+
                                     global.oldOpenedLinks.push(link)
                                     console.log(settings.secondsAmount)
                                     setTimeout(function(){ clearLink(link) },parseInt(settings.secondsAmount)*1000)
@@ -1070,7 +1075,10 @@ function openLinks(message, possiblePass){
                                     
                                     //opn("https://bruh.com", {app: ['google chrome', '--profile-directory=User1']})
                                 }else{
-                                    opn(link)
+                                  //opn(link)
+                                  opn(link, {app: ['chrome', '--profile-directory=Profile 42']})
+                                  opn(link, {app: ['chrome', '--profile-directory=Default']})
+
                                     global.oldOpenedLinks.push(link)
                                     console.log(settings.secondsAmount)
                                     setTimeout(function(){ clearLink(link) },parseInt(settings.secondsAmount)*1000)
@@ -1079,7 +1087,10 @@ function openLinks(message, possiblePass){
                     
                                 }
                             }else{
-                                opn(link)
+                              //opn(link)
+                              opn(link, {app: ['chrome', '--profile-directory=Profile 42']})
+                              opn(link, {app: ['chrome', '--profile-directory=Default']})
+
                                 //opn(link, {app: ['google chrome', '--profile-directory=User']})
                                 global.oldOpenedLinks.push(link)
                                 console.log(settings.secondsAmount)
