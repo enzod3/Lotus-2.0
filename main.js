@@ -500,7 +500,7 @@ function startMonitorInstance(handle){
                                 //instances[handle].timestamp = new Date().getTime(); 
                                 //sendWebhook(tweetInfo)
                                 sendTweet(tweetInfo)
-                                sendWebhook("New Tweet", 200, tweetInfo)
+                                
                                 //console.log(tweetInfo.img)
                             }else{
                                 console.log('Old tweet')
@@ -669,6 +669,8 @@ function sendTweet(tweetInfo){
         
     }
     mainWindow.webContents.send('new:tweet', tweetInfo);
+
+    sendWebhook("New Tweet", 200, tweetInfo)
    
 }
 
@@ -1084,9 +1086,9 @@ function openLinks(message, possiblePass){
 
                             if(settings.appendLinkPass){
                                 if(possiblePass != undefined){
-                                    //opn(link)
-                                    opn(link, {app: ['chrome', '--profile-directory=Profile 42']})
-                                    opn(link, {app: ['chrome', '--profile-directory=Default']})
+                                    opn(link)
+                                    //opn(link, {app: ['chrome', '--profile-directory=Profile 42']})
+                                    //opn(link, {app: ['chrome', '--profile-directory=Default']})
 
                                     global.oldOpenedLinks.push(link)
                                     console.log(settings.secondsAmount)
@@ -1096,9 +1098,9 @@ function openLinks(message, possiblePass){
                                     
                                     //opn("https://bruh.com", {app: ['google chrome', '--profile-directory=User1']})
                                 }else{
-                                  //opn(link)
-                                  opn(link, {app: ['chrome', '--profile-directory=Profile 42']})
-                                  opn(link, {app: ['chrome', '--profile-directory=Default']})
+                                  opn(link)
+                                  //opn(link, {app: ['chrome', '--profile-directory=Profile 42']})
+                                  //opn(link, {app: ['chrome', '--profile-directory=Default']})
 
                                     global.oldOpenedLinks.push(link)
                                     console.log(settings.secondsAmount)
@@ -1108,9 +1110,9 @@ function openLinks(message, possiblePass){
                     
                                 }
                             }else{
-                              //opn(link)
-                              opn(link, {app: ['chrome', '--profile-directory=Profile 42']})
-                              opn(link, {app: ['chrome', '--profile-directory=Default']})
+                              opn(link)
+                              //opn(link, {app: ['chrome', '--profile-directory=Profile 42']})
+                              //opn(link, {app: ['chrome', '--profile-directory=Default']})
 
                                 //opn(link, {app: ['google chrome', '--profile-directory=User']})
                                 global.oldOpenedLinks.push(link)
@@ -1299,6 +1301,7 @@ function bruhWebhook(bruh){
 
 function sendWebhook(type, status, message) {
     console.log(message)
+
 
 
     tweetInfo = message
@@ -1840,7 +1843,54 @@ function sendWebhook(type, status, message) {
 
     }
     if (type == "New Tweet"){
+        console.log("BRUDUWYHQJKEYHQWJKEGQWJKHEGQWJKEGHQWHEJKQWGEJKQGWE")
+        if (tweetInfo.links.length > 0){
+          var webhookTwitterLinks =  tweetInfo.links.join("\n")
+
+        
         embedBody = {
+          "embeds": [
+            {
+              "title": "Tweet Detected",
+              "color": 14696870,
+              "fields": [
+                {
+                  "name": "User",
+                  "value": "@"+tweetInfo.username +" | "+tweetInfo.displayName,
+                  "inline": true
+                },
+                {
+                  "name": "Tweet Content:",
+                  "value": tweetInfo.message
+                },
+                {
+                  "name": "Links:",
+                  "value": webhookTwitterLinks
+                },
+                {
+                  "name": "Time:",
+                  "value": tweetInfo.time +" "+tweetInfo.date+" | "+tweetInfo.timestamp
+                }
+              ],
+              "footer": {
+                "text": "© Lotus AIO 2020 | https://twitter.com/Lotus__AIO",
+                "icon_url": "https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png"
+              },
+              "image": {
+                  "url": tweetInfo.img
+                },
+
+              "thumbnail": {
+                "url": tweetInfo.pfpLink
+              }
+            }
+          ],
+          "username": "Lotus Invite Claimer",
+          "avatar_url": "https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png"
+        }
+        }
+        else{
+          embedBody = {
             "embeds": [
               {
                 "title": "Tweet Detected",
@@ -1855,10 +1905,7 @@ function sendWebhook(type, status, message) {
                     "name": "Tweet Content:",
                     "value": tweetInfo.message
                   },
-                  {
-                    "name": "Links:",
-                    "value": webhookTwitterLinks
-                  },
+                  
                   {
                     "name": "Time:",
                     "value": tweetInfo.time +" "+tweetInfo.date+" | "+tweetInfo.timestamp
@@ -1871,7 +1918,7 @@ function sendWebhook(type, status, message) {
                 "image": {
                     "url": tweetInfo.img
                   },
-
+  
                 "thumbnail": {
                   "url": tweetInfo.pfpLink
                 }
@@ -1880,6 +1927,15 @@ function sendWebhook(type, status, message) {
             "username": "Lotus Invite Claimer",
             "avatar_url": "https://media.discordapp.net/attachments/695675733187624960/723726324203520070/QPyR9T3m_400x400.png"
           }
+        }
+      if (tweetInfo.img !=undefined){
+
+        embedBody["embeds"][0]["image"] = {
+
+          "url": tweetInfo.img
+        }
+      }
+      
 
           fetch(settings.urlHook, {
             "headers": {
