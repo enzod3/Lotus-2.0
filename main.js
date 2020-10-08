@@ -202,7 +202,7 @@ function checkForToken(){
         if(data != {}){
             request({
                 method: 'GET',
-                uri: 'https://lotus.llc/api/v1/activations/'+data,
+                uri: 'https://dash.lotus.llc/api/v1/activations/'+data,
                 headers: {'Authorization':'Bearer ak_WkJ_xxGcxT5AwKcRHZz1'},
                 },
                 function (err, response, body) {
@@ -238,7 +238,7 @@ ipcMain.on('newKey',function(e, key){
         console.log(keyInfo)
         request({
             method: 'POST',
-            uri: 'https://lotus.llc/api/v1/activations',
+            uri: 'https://dash.lotus.llc/api/v1/activations',
             headers: {'Authorization':'Bearer ak_WkJ_xxGcxT5AwKcRHZz1'},
             json: keyInfo,
             },
@@ -428,7 +428,7 @@ function startMonitorInstance(handle){
         },
         timeout:700
     }
-    var url = "https://api.twitter.com/1.1/statuses/user_timeline.json?include_rts=0&tweet_mode=extended&count=1&screen_name="+handle
+    var url = `https://api.twitter.com/1.1/statuses/user_timeline.json?include_rts=0&tweet_mode=extended&screen_name=`+handle
    
     axios.get(url, mainOptions)
     .then((response) => {
@@ -1219,7 +1219,7 @@ function checkForMainToken(){
         if(data != {}){
             request({
                 method: 'GET',
-                uri: 'https://lotus.llc/api/v1/activations/'+data,
+                uri: 'https://dash.lotus.llc/api/v1/activations/'+data,
                 headers: {'Authorization':'Bearer ak_WkJ_xxGcxT5AwKcRHZz1'},
                 },
                 function (err, response, body) {
